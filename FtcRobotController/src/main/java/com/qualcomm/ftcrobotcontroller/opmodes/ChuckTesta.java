@@ -8,17 +8,17 @@ import com.qualcomm.robotcore.hardware.Servo;
 */
 public class ChuckTesta extends OpMode {
 
-    DcMotor motorRightTread, motorLeftTread, motorRightSecondTread, motorLeftSecondTread;
+    DcMotor m1, m2, m3, m4;
     int task = 0;
 
     @Override
     public void init() {
         telemetry.addData("Status", "Get ready, it's CHUCK TESTA time.");
         telemetry.addData("Task", "Now initializing motors. Reason for error? Probably not configged right.");
-        motorLeftTread = hardwareMap.dcMotor.get("m1");
-        motorRightTread = hardwareMap.dcMotor.get("m2");
-        motorLeftSecondTread = hardwareMap.dcMotor.get("m3");
-        motorRightSecondTread = hardwareMap.dcMotor.get("m4");
+        m1 = hardwareMap.dcMotor.get("m1");
+        m2 = hardwareMap.dcMotor.get("m2");
+        m3 = hardwareMap.dcMotor.get("m3");
+        m4 = hardwareMap.dcMotor.get("m4");
     }
 
     @Override
@@ -39,10 +39,25 @@ public class ChuckTesta extends OpMode {
                 break;
             case 9:
                 telemetry.addData("Task", "M1 and m2!! yeahhh!!");
-                motorLeftTread.setPower(1f);
-                motorRightTread.setPower(1f);
+                m1.setPower(1f);
+                m2.setPower(1f);
+                break;
+            case 11:
+                telemetry.addData("Task", "now testing both");
+                finish();
                 break;
             case 12:
+                telemetry.addData("Task", "M1");
+                m1.setPower(1f);
+                break;
+            case 15:
+                finish();
+                break;
+            case 16:
+                telemetry.addData("Task", "M2");
+                m2.setPower(1f);
+                break;
+            case 19:
                 telemetry.addData("Task", "done.");
                 drive(0f, 0f);
                 break;
@@ -51,10 +66,16 @@ public class ChuckTesta extends OpMode {
 
     public void drive(float left, float right) {
         telemetry.addData("Hardware", "Motors should be movin! yee haw!!");
-        motorRightTread.setPower(right);
-        motorLeftTread.setPower(left);
-        motorRightSecondTread.setPower(right);
-        motorLeftSecondTread.setPower(left);
+        m1.setPower(right);
+        m2.setPower(left);
+        m3.setPower(right);
+        m4.setPower(left);
+    }
+    public void finish(){
+        m1.setPower(0);
+        m2.setPower(0);
+        m3.setPower(0);
+        m4.setPower(0);
     }
     public void say(String status, String task, String hardware) {
         if(status != "") telemetry.addData("Status", status);
