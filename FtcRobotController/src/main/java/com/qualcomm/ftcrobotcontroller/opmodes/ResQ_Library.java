@@ -122,7 +122,7 @@ public abstract class ResQ_Library extends OpMode {
 
         imu.startIMU();
         //Other Mapping
-        motorHangingMech = hardwareMap.dcMotor.get("m5");
+        //motorHangingMech = hardwareMap.dcMotor.get("m5");
        // srvoHang_1 = hardwareMap.servo.get("s1");
        // srvoHang_2 = hardwareMap.servo.get("s2");
         /*srvoDong_Left = hardwareMap.servo.get("s3"); //The left servo
