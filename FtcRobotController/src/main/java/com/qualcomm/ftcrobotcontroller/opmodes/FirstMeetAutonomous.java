@@ -52,6 +52,7 @@ public class FirstMeetAutonomous extends ResQ_Library {
 		initializeMapping();
 		driveGear = 3;
 		calibrateColors();
+		startIMU();
 	}
 	public void loop() {
 		if (foundLine && teamWeAreOn != Team.UNKNOWN) telemetry.addData("On team", teamWeAreOn.toString());

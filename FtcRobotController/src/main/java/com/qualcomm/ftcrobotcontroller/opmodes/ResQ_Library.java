@@ -119,8 +119,6 @@ public abstract class ResQ_Library extends OpMode {
         } catch(RobotCoreException rce) {
             telemetry.addData("RobotCoreException", rce.getMessage());
         }
-
-        imu.startIMU();
         //Other Mapping
         //motorHangingMech = hardwareMap.dcMotor.get("m5");
        // srvoHang_1 = hardwareMap.servo.get("s1");
@@ -141,7 +139,7 @@ public abstract class ResQ_Library extends OpMode {
         //srvoHang_1.setDirection(Servo.Direction.FORWARD);
     }
 
-    //****************TELEOP METHODS****************//
+    //****************DRIVE METHODS****************//
 
     //Reading from compass sensor
     public double getCompassDirection() {
@@ -172,6 +170,33 @@ public abstract class ResQ_Library extends OpMode {
         motorLeftSecondTread.setPower(left);
     }
 
+    public void driveStraight(double millis) {
+        /*
+         * This algorithm assumes yawAngle[0] returns
+         * values between 0—359 or -180—179.
+         */
+
+        double startDir = yawAngle[0];
+        double startTime = System.currentTimeMillis();
+        double currentTime = 0.0;
+
+        double rSpeed = 1.0f;
+        double lSpeed = 1.0f;
+
+        while(currentTime - startTime < millis) {
+            rSpeed = (180 + yawAngle[0]) * RIGHT_ROTATION_CONST + ROTATION_OFFSET;
+            lSpeed = (180 - yawAngle[0]) * LEFT_ROTATION_CONST + ROTATION_OFFSET;
+
+            //round any values <0 or >1 to 0 or 1.
+            rSpeed = Math.max(0, Math.min(1.0, rSpeed));
+            lSpeed = Math.max(0, Math.min(1.0, lSpeed));
+
+            drive((float) lSpeed, (float) rSpeed);
+            currentTime = System.currentTimeMillis();
+            sleep(10);
+        }
+    }
+
     public void stopDrive() {
         drive(0.0f, 0.0f);
     }
@@ -194,6 +219,13 @@ public abstract class ResQ_Library extends OpMode {
         return sensorUltra_1.getValue();
     }
 
+    public void startIMU() {
+        imu.startIMU();
+    }
+
+    /*
+     * @return gyro degrees 0-360
+     */
     public double getYaw() {
         imu.getIMUGyroAngles(rollAngle, pitchAngle, yawAngle);
         return 180 + yawAngle[0];

@@ -46,19 +46,11 @@ public class GyroTest extends OpMode {
 
     public void driveStraight(double millis) {
         /*
-         * This algorithm assumes gyro.getRotation() returns
-         * values between 0—359 or -180—179. The actual
-         * return value is not documented, therefore it has
-         * to be tested.
-         **/
-        /*
-        gyro.calibrate();
-        while(gyro.isCalibrating()) {
-            telemetry.addData("Calibrating: ", "gyro is calibrating...");
-        }
-        telemetry.clearData();
+         * This algorithm assumes yawAngle[0] returns
+         * values between 0—359 or -180—179.
+         */
 
-        double startDir = gyro.getRotation();
+        double startDir = yawAngle[0];
         double startTime = System.currentTimeMillis();
         double currentTime = 0.0;
 
@@ -66,8 +58,8 @@ public class GyroTest extends OpMode {
         double lSpeed = 1.0f;
 
         while(currentTime - startTime < millis) {
-            rSpeed = (180 + imu.getRotation()) * RIGHT_ROTATION_CONST + ROTATION_OFFSET;
-            lSpeed = (180 - imu.getRotation()) * LEFT_ROTATION_CONST + ROTATION_OFFSET;
+            rSpeed = (180 + yawAngle[0]) * RIGHT_ROTATION_CONST + ROTATION_OFFSET;
+            lSpeed = (180 - yawAngle[0]) * LEFT_ROTATION_CONST + ROTATION_OFFSET;
 
             //round any values <0 or >1 to 0 or 1.
             rSpeed = Math.max(0, Math.min(1.0, rSpeed));
@@ -75,17 +67,15 @@ public class GyroTest extends OpMode {
 
             drive((float) lSpeed, (float) rSpeed);
             currentTime = System.currentTimeMillis();
-            //we need a wait function
         }
     }
 
     /*
      * empty function meant to simulate the drive function so
      * moving test functions over to the library will be easy
-     *
+     */
     public void drive(float left, float right){
 
-    }*/
     }
 }
 
