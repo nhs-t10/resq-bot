@@ -41,6 +41,7 @@ public class GyroTest extends OpMode {
         telemetry.addData("Rotation Roll", rollAngle[0] + ", " + rollAngle[1]);
         telemetry.addData("Rotation Pitch", pitchAngle[0] + ", " + pitchAngle[1]);
         telemetry.addData("Rotation Yaw", yawAngle[0] + ", " + yawAngle[1]);
+        telemetry.addData("yawwwwww", yawAngle[0] + 180);
     }
 
     public void driveStraight(double millis) {

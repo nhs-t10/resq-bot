@@ -54,19 +54,14 @@ public class FirstMeetAutonomous extends ResQ_Library {
 		calibrateColors();
 	}
 	public void loop() {
-		if (foundLine && teamWeAreOn != Team.UNKNOWN) telemetry.addData("On team:", teamWeAreOn.toString());
+		if (foundLine && teamWeAreOn != Team.UNKNOWN) telemetry.addData("On team", teamWeAreOn.toString());
 		if(!foundLine) {
 			moveTillLine();
-            //approachBeacon();
 		} else if (!robotFirstTurn){
 			turnToBeacon();
 
 		} else {
-			double d = getDistance();
-			telemetry.addData("Distance", d);
-			if (d < DISTANCE_FROM_WALL) {
-				stopMoving();
-			}
+            approachBeacon();
 		}
 	}
 
@@ -102,16 +97,16 @@ public class FirstMeetAutonomous extends ResQ_Library {
 		//Simplified (DAMN JACOB)
         double yaw = getYaw();
         telemetry.addData("yaw", yaw);
-		if (yaw > 100) { //make this compass later
+		if ((teamWeAreOn == Team.RED && yaw >= 60 && yaw <= 65) || (teamWeAreOn == Team.BLUE && yaw >= 300 && yaw <= 305)) { //make this compass later
 			robotFirstTurn = true;
-			drive(1,1);
+			drive(0.2f,0.2f);
 		} else {
 			/*if (!turning) turning = true;
 			else {
 				angleGoal = sensorGyro.rawX() + 70;
 			}*/
 			int m = teamWeAreOn == Team.RED ? 1 : -1;
-			drive(-.5f * m, .5f * m);
+			drive(.2f * m, -.2f * m);
 		}
 	}
 
