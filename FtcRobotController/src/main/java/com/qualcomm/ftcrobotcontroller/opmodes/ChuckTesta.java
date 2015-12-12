@@ -35,16 +35,7 @@ public class ChuckTesta extends OpMode {
             case 6:
                 write("Turning Right", 1, 0, 1, 0);
                 break;
-            case 9:
-                write("M1 + M2", 1, 1, 0, 0);
-                break;
-            case 12:
-                write("M1", 1, 0, 0, 0);
-                break;
-            case 16:
-                write("M2", 0, 1, 0, 0);
-                break;
-            case 19:
+            case 10:
                 write("done", 0, 0, 0, 0);
                 break;
         }

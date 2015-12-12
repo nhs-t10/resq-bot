@@ -98,9 +98,9 @@ public abstract class ResQ_Library extends OpMode {
         //sensorRGB_1 = hardwareMap.colorSensor.get("color");
 
         //Other Mapping
-        motorHangingMech = hardwareMap.dcMotor.get("m5");
-        srvoHang_1 = hardwareMap.servo.get("s1");
-        srvoHang_2 = hardwareMap.servo.get("s2");
+        //motorHangingMech = hardwareMap.dcMotor.get("m5");
+        //srvoHang_1 = hardwareMap.servo.get("s1");
+        //srvoHang_2 = hardwareMap.servo.get("s2");
         /*srvoDong_Left = hardwareMap.servo.get("s3"); //The left servo
         srvoDong_Right = hardwareMap.servo.get("s4"); //The right servo
         srvoPushButton = hardwareMap.servo.get("s5");

@@ -92,7 +92,7 @@ public class ResQ_TeleOp extends ResQ_Library {
             //HangingAutomation();
         }
 
-        if (gamepad2.right_trigger >= 0.5f) {
+      /*  if (gamepad2.right_trigger >= 0.5f) {
             //release tension by letting go of string
             motorHangingMech.setPower(-1.0f);
         } else if (gamepad2.left_trigger >= 0.5f) {
@@ -100,10 +100,10 @@ public class ResQ_TeleOp extends ResQ_Library {
             motorHangingMech.setPower(1.0f);
         } else {
             motorHangingMech.setPower(0);
-        }
+        }*/
 
         //Hanging Servos
-        float srvoHang1JoyCheck = ProcessToMotorFromJoy(-gamepad2.left_stick_y);
+       /* float srvoHang1JoyCheck = ProcessToMotorFromJoy(-gamepad2.left_stick_y);
         float srvoHang2JoyCheck = ProcessToMotorFromJoy(-gamepad2.right_stick_y);
         //Position based hanging
         if(srvoHang1JoyCheck > 0.05) { //big servo
@@ -126,7 +126,7 @@ public class ResQ_TeleOp extends ResQ_Library {
         if(autoMoveArm) {
             autoMoveArm = hangingAutomation();
         }
-
+    */
         /*if(srvoHang1JoyCheck > 0.05) {
             srvoHang1Position += HangServoDelta;
         } else if (srvoHang1JoyCheck < -0.05) {
