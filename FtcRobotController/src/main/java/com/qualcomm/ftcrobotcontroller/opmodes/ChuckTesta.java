@@ -30,46 +30,31 @@ public class ChuckTesta extends OpMode {
                 telemetry.addData("Status", "Please stand clear. YEE HAW!");
                 break;
             case 3:
-                telemetry.addData("Task", "Turning left.");
-                drive(.5f, 0f);
+                write("Turning Left", 0, 1, 0, 1);
                 break;
             case 6:
-                telemetry.addData("Task", "Turning Right.");
-                drive(0f, .5f);
+                write("Turning Right", 1, 0, 1, 0);
                 break;
             case 9:
-                telemetry.addData("Task", "M1 and m2!! yeahhh!!");
-                m1.setPower(1f);
-                m2.setPower(1f);
-                break;
-            case 11:
-                telemetry.addData("Task", "now testing both");
-                finish();
+                write("M1 + M2", 1, 1, 0, 0);
                 break;
             case 12:
-                telemetry.addData("Task", "M1");
-                m1.setPower(1f);
-                break;
-            case 15:
-                finish();
+                write("M1", 1, 0, 0, 0);
                 break;
             case 16:
-                telemetry.addData("Task", "M2");
-                m2.setPower(1f);
+                write("M2", 0, 1, 0, 0);
                 break;
             case 19:
-                telemetry.addData("Task", "done.");
-                drive(0f, 0f);
+                write("done", 0, 0, 0, 0);
                 break;
         }
     }
-
-    public void drive(float left, float right) {
-        telemetry.addData("Hardware", "Motors should be movin! yee haw!!");
-        m1.setPower(right);
-        m2.setPower(left);
-        m3.setPower(right);
-        m4.setPower(left);
+    public void write(String desc, float M1, float M2, float M3, float M4){
+        m1.setPower(M1);
+        m2.setPower(M2);
+        m3.setPower(M3);
+        m4.setPower(M4);
+        telemetry.addData("Task", desc);
     }
     public void finish(){
         m1.setPower(0);
