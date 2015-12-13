@@ -24,10 +24,6 @@ public class TeleopAssist extends ResQ_Library {
 
         //Do the map thing
         initializeMapping();
-
-        //srvoHang1Position = srvoHang_1.getPosition();
-        //srvoHang2Position = srvoHang_2.getPosition();
-        //srvoHang_1.setPosition(1.0);
     }
 
 
@@ -48,7 +44,7 @@ public class TeleopAssist extends ResQ_Library {
         //Drive modifications
         if (gamepad1.left_trigger > 0.8 && !flip90Left) {
             flip90Left = true;
-            flip90LeftDest = (int) getYaw() + 90;
+            flip90LeftDest = add90(getYaw());
         }
         if(flip90Left && getYaw() < flip90LeftDest) {
             drive(0.5f, 0);
@@ -76,5 +72,10 @@ public class TeleopAssist extends ResQ_Library {
             }
         }
         return (int)closestAngle;
+    }
+    int add90(double yaw) {
+        int ret = (int) yaw + 90;
+        if(ret >= 360) return 360 - ret;
+        else return ret;
     }
 }
