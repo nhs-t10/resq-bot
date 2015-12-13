@@ -1,10 +1,8 @@
 package com.qualcomm.ftcrobotcontroller.opmodes.test;
 
-import com.qualcomm.ftcrobotcontroller.opmodes.test.AdafruitIMU;
+import com.qualcomm.ftcrobotcontroller.opmodes.AdafruitIMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.exception.RobotCoreException;
-import com.qualcomm.robotcore.hardware.I2cDevice;
-import java.util.concurrent.locks.Lock;
 
 /**
  * Created by Admin on 11/6/2015.

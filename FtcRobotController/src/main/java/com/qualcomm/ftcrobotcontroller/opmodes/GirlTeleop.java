@@ -63,5 +63,9 @@ public class GirlTeleop extends ResQ_Library {
             //reverse drive
             driveReverse = !driveReverse;
         }
+
+        if(gamepad1.dpad_up) {
+
+        }
     }
 }
