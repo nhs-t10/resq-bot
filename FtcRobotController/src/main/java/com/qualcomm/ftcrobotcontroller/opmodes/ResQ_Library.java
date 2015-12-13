@@ -198,7 +198,7 @@ public abstract class ResQ_Library extends OpMode {
      * inputted as a parameter.
      * @param degrees degree value for the robot to turn towards.
      */
-    public void turnDegrees(double degrees) { //90
+    public void turnDegrees(int degrees) { //90
         double initialAngle = getYaw();
         //the angle across from the initialAngle on a circle
         double oppositeAngle = scaleToAngle(initialAngle + 180);
@@ -225,6 +225,7 @@ public abstract class ResQ_Library extends OpMode {
         while(degrees > getYaw() && scaleToAngle(degrees + 5) < getYaw()) {
             drive(rightSpeed, leftSpeed);
         }
+        stopDrive();
     }
 
     public void stopDrive() {
