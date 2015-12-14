@@ -293,10 +293,6 @@ public abstract class ResQ_Library extends OpMode {
         }
     }
 
-    public int getHeading(){
-        return sensorGyro.getHeading();
-    }
-
     int normalizeForGear(int gear) {
         if (gear > 3) gear = 3;
         if (gear < 1) gear = 1;
