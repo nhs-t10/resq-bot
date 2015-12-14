@@ -57,7 +57,7 @@ public class FirstMeetAutonomous extends ResQ_Library {
 		if (foundLine && teamWeAreOn != Team.UNKNOWN) telemetry.addData("On team", teamWeAreOn.toString());
 		if(!foundLine) {
 			moveTillLine();
-		} else if (!robotFirstTurn){
+		}  else if (!robotFirstTurn){
 			turnToBeacon();
 
 		} else {
@@ -94,7 +94,6 @@ public class FirstMeetAutonomous extends ResQ_Library {
     }
 
 	public void turnToBeacon() { //(turn to beacon)
-		//Simplified (DAMN JACOB)
         double yaw = getYaw();
         telemetry.addData("yaw", yaw);
 		if ((teamWeAreOn == Team.RED && yaw >= 60 && yaw <= 65) || (teamWeAreOn == Team.BLUE && yaw >= 300 && yaw <= 305)) { //make this compass later
