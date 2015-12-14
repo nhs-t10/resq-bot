@@ -1,4 +1,4 @@
-package com.qualcomm.ftcrobotcontroller.opmodes.test;
+package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import android.util.Log;
 

@@ -1,19 +1,14 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
-import android.database.CrossProcessCursor;
-
-import com.qualcomm.robotcore.hardware.AnalogInput;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
-
 /**
  * Created by Aman on 10/11/2015.
  */
-public class GirlTeleop extends ResQ_Library {
+public class TeleopAssist extends ResQ_Library {
 
     double srvoHang1Position;
     double srvoHang2Position;
+    boolean flip90Left = false;
+    int flip90LeftDest = 0;
 
     @Override
     public void init() {
@@ -47,25 +42,12 @@ public class GirlTeleop extends ResQ_Library {
         drive(left, right); //Used with tracks
 
         //Drive modifications
-        if (gamepad1.x) {
-            //Track speed 100%
-            setDriveGear(3);
+        if (gamepad1.left_trigger > 0.8 && !flip90Left) {
+            flip90Left = true;
+            flip90LeftDest = (int) getYaw() + 90;
         }
-        if (gamepad1.y) {
-            //Track speed 50%
-            setDriveGear(2);
-        }
-        if (gamepad1.b) {
-            //Track speed 25%
-            setDriveGear(1);
-        }
-        if (gamepad1.a) {
-            //reverse drive
-            driveReverse = !driveReverse;
-        }
-
-        if(gamepad1.dpad_up) {
-
+        if(flip90Left && getYaw() < flip90LeftDest) {
+            drive(0.5f, 0);
         }
     }
 }

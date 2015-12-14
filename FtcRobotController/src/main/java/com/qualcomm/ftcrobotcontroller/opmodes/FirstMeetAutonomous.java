@@ -52,6 +52,7 @@ public class FirstMeetAutonomous extends ResQ_Library {
 		initializeMapping();
 		driveGear = 3;
 		calibrateColors();
+		startIMU();
 	}
 	public void loop() {
 		if (foundLine && teamWeAreOn != Team.UNKNOWN) telemetry.addData("On team", teamWeAreOn.toString());
@@ -104,8 +105,9 @@ public class FirstMeetAutonomous extends ResQ_Library {
 			else {
 				angleGoal = sensorGyro.rawX() + 70;
 			}*/
-			int m = teamWeAreOn == Team.RED ? 1 : -1;
-			drive(.2f * m, -.2f * m);
+			/*int m = teamWeAreOn == Team.RED ? 1 : -1;
+			drive(.2f * m, -.2f * m);*/
+            turnDegrees(60); //thx will p
 		}
 	}
 

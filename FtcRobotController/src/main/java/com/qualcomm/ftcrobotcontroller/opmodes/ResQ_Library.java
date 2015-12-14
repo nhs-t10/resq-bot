@@ -1,17 +1,13 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
-import com.qualcomm.ftcrobotcontroller.opmodes.test.AdafruitIMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.exception.RobotCoreException;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CompassSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
-import com.qualcomm.robotcore.hardware.UltrasonicSensor;
 import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.GyroSensor;
 
 /**
  * The Library responsible for every definition and method. All opmodes will inherit methods from here.
@@ -29,7 +25,6 @@ public abstract class ResQ_Library extends OpMode {
     //Sensors
     AnalogInput sensorUltra_1, sensorUltra_2;
     ColorSensor sensorRGB_1, sensorRGB_2;
-    GyroSensor sensorGyro;
     AdafruitIMU imu;
     String gyroName = "gyro";
 
@@ -119,8 +114,6 @@ public abstract class ResQ_Library extends OpMode {
         } catch(RobotCoreException rce) {
             telemetry.addData("RobotCoreException", rce.getMessage());
         }
-
-        imu.startIMU();
         //Other Mapping
         //motorHangingMech = hardwareMap.dcMotor.get("m5");
        // srvoHang_1 = hardwareMap.servo.get("s1");
@@ -141,7 +134,7 @@ public abstract class ResQ_Library extends OpMode {
         //srvoHang_1.setDirection(Servo.Direction.FORWARD);
     }
 
-    //****************TELEOP METHODS****************//
+    //****************DRIVE METHODS****************//
 
     //Reading from compass sensor
     public double getCompassDirection() {
@@ -172,6 +165,69 @@ public abstract class ResQ_Library extends OpMode {
         motorLeftSecondTread.setPower(left);
     }
 
+    public void driveStraight(double millis) {
+        /*
+         * This algorithm assumes yawAngle[0] returns
+         * values between 0—359 or -180—179.
+         */
+
+        double startDir = yawAngle[0];
+        double startTime = System.currentTimeMillis();
+        double currentTime = 0.0;
+
+        double rSpeed = 1.0f;
+        double lSpeed = 1.0f;
+
+        while(currentTime - startTime < millis) {
+            rSpeed = (180 + yawAngle[0]) * RIGHT_ROTATION_CONST + ROTATION_OFFSET;
+            lSpeed = (180 - yawAngle[0]) * LEFT_ROTATION_CONST + ROTATION_OFFSET;
+
+            //round any values <0 or >1 to 0 or 1.
+            rSpeed = Math.max(0, Math.min(1.0, rSpeed));
+            lSpeed = Math.max(0, Math.min(1.0, lSpeed));
+
+            drive((float) lSpeed, (float) rSpeed);
+            currentTime = System.currentTimeMillis();
+            sleep(10);
+        }
+    }
+
+    /**
+     * Turns the robot towards the given degree value via the quickest route.
+     * Note: This function does NOT turn the robot by the amount of degrees
+     * inputted as a parameter.
+     * @param degrees degree value for the robot to turn towards.
+     */
+    public void turnDegrees(int degrees) { //90
+        double initialAngle = getYaw();
+        //the angle across from the initialAngle on a circle
+        double oppositeAngle = scaleToAngle(initialAngle + 180);
+
+        float rightSpeed;
+        float leftSpeed;
+
+        /*
+         * Here is some pseudo code to try and help explain why the robot knows the quickest route to turn.
+         * -----------------------------------------------------------------------------------------------------
+         * if(we need to go passed the opposite angle, true || is the opposite angle below 180? If yes, true for
+         * all degree values above the initial Angle. : If no, true for all degree values below the inital angle.
+         */
+        if (degrees > oppositeAngle || (oppositeAngle < 180)? (degrees > initialAngle): (degrees < initialAngle)) {
+            //turn negative degrees
+            rightSpeed = 1.0f;
+            leftSpeed = -1.0f;
+        } else {
+            //turn positive degrees
+            rightSpeed = -1.0f;
+            leftSpeed = 1.0f;
+        }
+
+        while(degrees > getYaw() && scaleToAngle(degrees + 5) < getYaw()) {
+            drive(rightSpeed, leftSpeed);
+        }
+        stopDrive();
+    }
+
     public void stopDrive() {
         drive(0.0f, 0.0f);
     }
@@ -194,6 +250,13 @@ public abstract class ResQ_Library extends OpMode {
         return sensorUltra_1.getValue();
     }
 
+    public void startIMU() {
+        imu.startIMU();
+    }
+
+    /**
+     * @return gyro degrees 0-360
+     */
     public double getYaw() {
         imu.getIMUGyroAngles(rollAngle, pitchAngle, yawAngle);
         return 180 + yawAngle[0];
@@ -221,53 +284,6 @@ public abstract class ResQ_Library extends OpMode {
         }
     }
 
-    //****************NUMBER MANIPULATION METHODS****************//
-
-    float ProcessToMotorFromJoy(float input) { //This is used in any case where joystick input is to be converted to a motor
-        float output = 0.0f;
-
-        // clip the power values so that the values never exceed +/- 1
-        output = Range.clip(input, -1, 1);
-
-        // scale the joystick value to make it easier to control
-        // the robot more precisely at slower speeds.
-        output = (float) scaleInput(output);
-
-        return output;
-    }
-
-    double scaleInput(double dVal) {
-        /*
-         * This method scales the joystick input so for low joystick values, the
-	     * scaled value is less than linear.  This is to make it easier to drive
-	     * the robot more precisely at slower speeds.
-	     */
-        double[] scaleArray = {0.0, 0.05, 0.09, 0.10, 0.12, 0.15, 0.18, 0.24,
-                0.30, 0.36, 0.43, 0.50, 0.60, 0.72, 0.85, 1.00, 1.00};
-
-        // get the corresponding index for the scaleInput array.
-        int index = (int) (dVal * 16.0);
-
-        // index should be positive.
-        index = Math.abs(index);
-
-        // index cannot exceed size of array minus 1.
-        if (index > 16) {
-            index = 16;
-        }
-
-        // get value from the array.
-        double dScale = 0.0;
-        if (dVal < 0) {
-            dScale = -scaleArray[index];
-        } else {
-            dScale = scaleArray[index];
-        }
-
-        // return scaled value.
-        return dScale;
-    }
-
     public void calibrateColors() {
         offsetRed_1 = sensorRGB_1.red();
         offsetGreen_1 = sensorRGB_1.green();
@@ -293,6 +309,63 @@ public abstract class ResQ_Library extends OpMode {
         }
     }
 
+    //****************NUMBER MANIPULATION METHODS****************//
+
+    float ProcessToMotorFromJoy(float input) { //This is used in any case where joystick input is to be converted to a motor
+        float output = 0.0f;
+
+        // clip the power values so that the values never exceed +/- 1
+        output = Range.clip(input, -1, 1);
+
+        // scale the joystick value to make it easier to control
+        // the robot more precisely at slower speeds.
+        output = (float) scaleInput(output);
+
+        return output;
+    }
+
+    /**
+     * Converts any number to an angle value between 0 - 359.
+     */
+    double scaleToAngle(double val) {
+        double scaledVal = Math.abs(val);
+        while(scaledVal >= 360) {
+            scaledVal-=360;
+        }
+        return scaledVal;
+    }
+
+    /**
+     * This method scales the joystick input so for low joystick values, the
+     * scaled value is less than linear.  This is to make it easier to drive
+     * the robot more precisely at slower speeds.
+	 */
+    double scaleInput(double dVal) {
+        double[] scaleArray = {0.0, 0.05, 0.09, 0.10, 0.12, 0.15, 0.18, 0.24,
+                0.30, 0.36, 0.43, 0.50, 0.60, 0.72, 0.85, 1.00, 1.00};
+
+        // get the corresponding index for the scaleInput array.
+        int index = (int) (dVal * 16.0);
+
+        // index should be positive.
+        index = Math.abs(index);
+
+        // index cannot exceed size of array minus 1.
+        if (index > 16) {
+            index = 16;
+        }
+
+        // get value from the array.
+        double dScale = 0.0;
+        if (dVal < 0) {
+            dScale = -scaleArray[index];
+        } else {
+            dScale = scaleArray[index];
+        }
+
+        // return scaled value.
+        return dScale;
+    }
     int normalizeForGear(int gear) {
         if (gear > 3) gear = 3;
         if (gear < 1) gear = 1;
