@@ -1,10 +1,11 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
-import android.database.CrossProcessCursor;
+//import android.database.CrossProcessCursor;
 
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.robocol.Telemetry;
 import com.qualcomm.robotcore.util.Range;
 
 /**
@@ -36,8 +37,8 @@ public class ResQ_TeleOp extends ResQ_Library {
     @Override
     public void loop() {
 
-        float right = ProcessToMotorFromJoy(-gamepad1.right_stick_y); //Used with tracks
-        float left = ProcessToMotorFromJoy(-gamepad1.left_stick_y);
+        /*float right = ProcessToMotorFromJoy(-gamepad1.right_stick_y); //Used with tracks
+        float left = ProcessToMotorFromJoy(-gamepad1.left_stick_y);*/
         /*
          * Gamepad 1:
 		 * Left joystick moves the left track, and the right joystick moves the right track
@@ -45,7 +46,32 @@ public class ResQ_TeleOp extends ResQ_Library {
 
         //****************DRIVING****************//
 
-        drive(left, right); //Used with tracks
+        /* Procedure:
+            Get X and Y from the Joystick, do whatever scaling and calibrating you need to do based on your hardware.
+            Invert X
+            Calculate R+L (Call it V): V =(100-ABS(X)) * (Y/100) + Y
+            Calculate R-L (Call it W): W= (100-ABS(Y)) * (X/100) + X
+            Calculate R: R = (V+W) /2
+            Calculate L: L= (V-W)/2
+            Re-calibrate to work with motor hardware
+            Send those values to your Robot.
+         */
+        float X = -ProcessToMotorFromJoy(-gamepad1.left_stick_x); //X is inverted with the negative sign
+        float Y = ProcessToMotorFromJoy(-gamepad1.left_stick_y); //NOT inverted
+
+        float V = (100-Math.abs(X)) * (Y/100) + Y; // R+L
+        float W = (100-Math.abs(Y)) * (X/100) + X; // R-L
+
+        float right = (V+W)/2;
+        float left = (V-W)/2;
+
+        right = Range.clip(right, -1, 1);
+        left = Range.clip(left, -1, 1);
+
+        //drive(left, right);
+
+        telemetry.addData("Right:", ""+right);
+        telemetry.addData("Left:", ""+left);
 
         //Drive modifications
         if (gamepad1.x) {
@@ -92,58 +118,33 @@ public class ResQ_TeleOp extends ResQ_Library {
             //HangingAutomation();
         }
 
-      /*  if (gamepad2.right_trigger >= 0.5f) {
+        //Hanging
+        /**
+         * Winch: Right trigger is +tension, right bumper is -tension
+         * Tape: Left trigger is +length, left bumper is -length
+         */
+        //Winch
+        if (gamepad2.right_bumper) {
             //release tension by letting go of string
             motorHangingMech.setPower(-1.0f);
-        } else if (gamepad2.left_trigger >= 0.5f) {
+        } else if (gamepad2.right_trigger >= 0.5f) {
             //pull string and add tension
             motorHangingMech.setPower(1.0f);
         } else {
             motorHangingMech.setPower(0);
-        }*/
-
-        //Hanging Servos
-       /* float srvoHang1JoyCheck = ProcessToMotorFromJoy(-gamepad2.left_stick_y);
-        float srvoHang2JoyCheck = ProcessToMotorFromJoy(-gamepad2.right_stick_y);
-        //Position based hanging
-        if(srvoHang1JoyCheck > 0.05) { //big servo
-            srvoHang_1.setPosition(0.8f); //move out
-        } else if(srvoHang1JoyCheck < -0.05) {
-            srvoHang_1.setPosition(1.0f); //move in
         }
 
-        if(srvoHang2JoyCheck > 0.05) { //small servo
-            srvoHang_2.setPosition(0.0f); //move in
-        } else if(srvoHang2JoyCheck < -0.05) {
-            srvoHang_2.setPosition(0.7f); //move out
+        //Tape
+        if (gamepad2.left_bumper) {
+            //release tension by letting go of string
+            motorTapeMech.setPower(-1.0f);
+        } else if (gamepad2.left_trigger >= 0.5f) {
+            //pull string and add tension
+            motorTapeMech.setPower(1.0f);
+        } else {
+            motorTapeMech.setPower(0);
         }
 
-        //automatic arm hanging
-        if(gamepad2.dpad_down) {
-            autoMoveArm = true;
-        }
-
-        if(autoMoveArm) {
-            autoMoveArm = hangingAutomation();
-        }
-    */
-        /*if(srvoHang1JoyCheck > 0.05) {
-            srvoHang1Position += HangServoDelta;
-        } else if (srvoHang1JoyCheck < -0.05) {
-            srvoHang1Position -= HangServoDelta;
-        }
-        if(srvoHang2JoyCheck > 0.05) {
-            srvoHang2Position += HangServoDelta;
-        } else if (srvoHang2JoyCheck < -0.05) {
-            srvoHang2Position -= HangServoDelta;
-        }
-
-        srvoHang1Position = Range.clip(srvoHang1Position, HANG1_MIN_RANGE, HANG1_MAX_RANGE);
-        srvoHang2Position = Range.clip(srvoHang2Position, HANG2_MIN_RANGE, HANG2_MAX_RANGE);
-        srvoHang_1.setPosition(srvoHang1Position);
-        srvoHang_2.setPosition(srvoHang2Position);
-        telemetry.addData("Shoulder Servo", ""+srvoHang1Position);
-        telemetry.addData("Elbow Servo", ""+srvoHang2Position);*/
 
 
 
