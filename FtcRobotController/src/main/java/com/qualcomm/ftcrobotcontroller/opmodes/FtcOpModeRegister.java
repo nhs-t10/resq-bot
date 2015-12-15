@@ -38,6 +38,7 @@ import com.qualcomm.ftcrobotcontroller.opmodes.ftcdefault.PushBotAuto;
 import com.qualcomm.ftcrobotcontroller.opmodes.ftcdefault.PushBotManual;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.ColorTest;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.GyroTest;
+import com.qualcomm.ftcrobotcontroller.opmodes.test.NxtGyroTest;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.ServoTest;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.UltraTest;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
@@ -66,12 +67,11 @@ public class FtcOpModeRegister implements OpModeRegister {
      */
     manager.register("TeleOp", ResQ_TeleOp.class);
     manager.register("Autonomous", FirstMeetAutonomous.class);
-      manager.register("Chuck Testa", ChuckTesta.class);
+    manager.register("Chuck Testa", ChuckTesta.class);
     /*manager.register ("Minibot", MinibotTeleOp.class);
     manager.register("UltraTest", UltraTest.class);
     manager.register("SensorTest", GyroTest.class);
     manager.register("ColorTest", ColorTest.class);
     manager.register("ServoTest", ServoTest.class);*/
-
   }
 }

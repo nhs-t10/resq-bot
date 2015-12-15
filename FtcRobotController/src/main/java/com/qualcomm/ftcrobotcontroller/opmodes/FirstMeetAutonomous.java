@@ -5,15 +5,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.LightSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.robocol.Telemetry;
 
 /**
  * Autonomous program - for first meet use only
  * This autonomous program is for the first robotics competition on November 14/21 ONLY
  *
- * It assumes that other robots barely have an autonomous program at all, and its not dynamic to alliance
- * For best use, place robot in starting position closest to center line
- * Program of movement:
- * 		- Move forward until hits line (ultrasonic to stop movement if alliance robot is moving in front)
+ * It assumes that other robots barely have an autonomvement if alliance robot is moving in front)
  * 		- We detect what color the line is to determine what team we're on, sepreate codes for each.
  * 		- turn X amount of degrees to face beacon in general direction
  * 		- some IMU sensor to keep straight path
@@ -26,15 +24,15 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 @SuppressWarnings("all")
 public class FirstMeetAutonomous extends ResQ_Library {
 
-	ColorSensor sensorRGB;
-
 	float leftPower;
 	float rightPower;
+	final double DISTANCE_FROM_WALL = 10;
 	double currentTimeCatch;
 
 	boolean foundLine = false;
 	boolean robotFirstTurn = false; //when we get to the line, turn in the general direction of the beacon
-
+	int angleGoal;
+	private boolean turning = false;
 
 	/**
 	 * Blue Team Information:
@@ -52,31 +50,27 @@ public class FirstMeetAutonomous extends ResQ_Library {
 	public void init() {
 		//Do the map thing
 		initializeMapping();
+        loadSensor(Team.RED);
 		driveGear = 3;
 		calibrateColors();
+		startIMU();
 	}
-
-	@Override
 	public void loop() {
+		if (foundLine && teamWeAreOn != Team.UNKNOWN) telemetry.addData("On team", teamWeAreOn.toString());
 		if(!foundLine) {
 			moveTillLine();
-		}
-		else if (!robotFirstTurn){
-			//Turn();
-			if(teamWeAreOn == Team.RED) telemetry.addData("On team:", "RED");
-			if(teamWeAreOn == Team.BLUE) telemetry.addData("On team:", "BLUE");
-		}
-	}
+		}  else if (!robotFirstTurn){
+			turnToBeacon();
 
-	@Override
-	public void stop() {
-
+		} else {
+            approachBeacon();
+		}
 	}
 
 	public void moveTillLine() {
 		teamWeAreOn = getColor();
 		if(teamWeAreOn == Team.UNKNOWN) {
-			goForward();
+			approach(1);
 		}
 		else {
 			stopMoving();
@@ -84,42 +78,40 @@ public class FirstMeetAutonomous extends ResQ_Library {
 		}
 	}
 
-	public void TurnToBeacon() { //(turn to beacon)
-		//Simplified (DAMN JACOB)
-		if (1!=1) { //robotFirstTurn
+    public void approachBeacon(){
+        double ultraValue = getDistance();
+        telemetry.addData("ultra", ultraValue);
+        if(ultraValue > 12){
+            approach(1);
+        }
+        else {
+            stopMoving();
+            foundLine = true;
+        }
+    }
+
+	public void turnToBeacon() { //(turn to beacon)
+        double yaw = getYaw();
+        telemetry.addData("yaw", yaw);
+		if ((teamWeAreOn == Team.RED && yaw >= 60 && yaw <= 65) || (teamWeAreOn == Team.BLUE && yaw >= 300 && yaw <= 305)) { //make this compass later
 			robotFirstTurn = true;
-			drive(1,1);
+			drive(0.2f,0.2f);
 		} else {
-			int m = teamWeAreOn == Team.RED ? 1 : -1;
-			drive(-.5f * m, .5f * m);
+			/*if (!turning) turning = true;
+			else {
+				angleGoal = sensorGyro.rawX() + 70;
+			}*/
+			/*int m = teamWeAreOn == Team.RED ? 1 : -1;
+			drive(.2f * m, -.2f * m);*/
+            turnDegrees(60); //thx will p
 		}
-
-
-		//If we're red, turn left 70 degrees
-		//Do some compass thing in order to stop our turning
-		/*if(teamWeAreOn == Team.RED){ //false so we're on red team
-			if (1!=1){ //If compass detects that we're finished turning
-				//Drive straight
-				drive(1.0f, 1.0f);
-			} else { //we're not finished turning fam
-				drive(-0.5f, 0.5f);
-			}
-		}
-
-		else if(teamWeAreOn == Team.BLUE){ //true, so we're on blue team
-			//If we're blue, turn right 70 degrees
-			if (1!=1){ //If compass detects that we're finished turning
-				//Drive straight
-				drive(1.0f, 1.0f);
-			} else { //we're not finished turning fam
-				drive(0.5f, -0.5f);
-			}
-		}*/
 	}
 
-	public void goForward(){
-		leftPower = -1.0f;
-		rightPower = -1.0f;
+
+
+	public void approach(int direction){
+		leftPower = 0.1f * direction;
+		rightPower = 0.1f * direction;
 		drive(leftPower, rightPower);
 	}
 	public void stopMoving(){

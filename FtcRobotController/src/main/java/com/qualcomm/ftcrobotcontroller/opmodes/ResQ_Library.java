@@ -1,12 +1,12 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.exception.RobotCoreException;
 import com.qualcomm.robotcore.hardware.AnalogInput;
+import com.qualcomm.robotcore.hardware.CompassSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
-import com.qualcomm.robotcore.hardware.UltrasonicSensor;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 
 /**
@@ -25,8 +25,12 @@ public abstract class ResQ_Library extends OpMode {
     //Sensors
     AnalogInput sensorUltra_1, sensorUltra_2;
     ColorSensor sensorRGB_1, sensorRGB_2;
+    AdafruitIMU imu;
+    String gyroName = "gyro";
 
-    int offsetRed, offsetGreen, offsetBlue;
+    CompassSensor compassSensor;
+
+    int offsetRed_1, offsetGreen_1, offsetBlue_1, offsetRed_2, offsetBlue_2, offsetGreen_2;
 
     /*
         motorHangingMech: responsible for lifting entire robot
@@ -45,7 +49,14 @@ public abstract class ResQ_Library extends OpMode {
     final static double RIGHT_TARGET_DISTANCE = 27.0, LEFT_TARGET_DISTANCE = 27.0, STOP_CONST = 6.0;
 
     //Color Sensor Calibrations
-    final static int COLOR_THRESHOLD = 220;
+    final static int COLOR_THRESHOLD = 80;
+
+    //gyro offsets
+    final static double RIGHT_ROTATION_CONST = 0.0027;
+    final static double LEFT_ROTATION_CONST = 0.0027;
+    final static double ROTATION_OFFSET = 0.1;
+
+    volatile double[] rollAngle = new double[2], pitchAngle = new double[2], yawAngle = new double[2];
 
     //Constants that determine how strong the robot's speed and turning should be
     final static double SPEED_CONST = 0.005, LEFT_STEERING_CONST = 0.85, RIGHT_STEERING_CONST = 0.8;
@@ -79,6 +90,10 @@ public abstract class ResQ_Library extends OpMode {
         RED, BLUE, UNKNOWN
     }
 
+    public enum Color {
+        RED, BLUE, GREEN, WHITE, NONE
+    }
+
     Team teamWeAreOn = Team.UNKNOWN; //enum thats represent team
 
     public ResQ_Library() {
@@ -89,15 +104,20 @@ public abstract class ResQ_Library extends OpMode {
     public void initializeMapping() {
         //Debug statements to prevent color1 error
         telemetry.addData("Version", "Sensorless. COLOR ERROR SHOULD NOT SHOW UP!");
+        hardwareMap.logDevices();
         //Driving Mapping
         motorLeftTread = hardwareMap.dcMotor.get("m1");
         motorRightTread = hardwareMap.dcMotor.get("m2");
         motorLeftSecondTread = hardwareMap.dcMotor.get("m3");
         motorRightSecondTread = hardwareMap.dcMotor.get("m4");
-
         //Sensors
-        //sensorRGB_1 = hardwareMap.colorSensor.get("color");
-
+        //(color sensors are initted w/ loadSensor(Team)
+        sensorUltra_1 = hardwareMap.analogInput.get("u1");
+        try {
+            imu = new AdafruitIMU(hardwareMap, gyroName, (byte)(AdafruitIMU.BNO055_ADDRESS_A * 2), (byte)AdafruitIMU.OPERATION_MODE_IMU);
+        } catch(RobotCoreException rce) {
+            telemetry.addData("RobotCoreException", rce.getMessage());
+        }
         //Other Mapping
         motorHangingMech = hardwareMap.dcMotor.get("m5");
         motorTapeMech = hardwareMap.dcMotor.get("m6");
@@ -108,15 +128,29 @@ public abstract class ResQ_Library extends OpMode {
         srvoPushButton = hardwareMap.servo.get("s5");
         srvoScoreClimbers = hardwareMap.servo.get("s6");*/
 
-
         //set the direction of the motors
         motorRightTread.setDirection(DcMotor.Direction.REVERSE);
         motorRightSecondTread.setDirection(DcMotor.Direction.REVERSE);
 
-        telemetry.addData("Version", "non autonomous. COLOR ERROR SHOULD NOT SHOW UP!");
+        //set the direction of the servos (99% sure this isn't neccesary but yolo)
+        /*srvoDong_Left.setDirection(Servo.Direction.FORWARD);
+        srvoDong_Right.setDirection(Servo.Direction.FORWARD);*/
+        //srvoHang_1.setDirection(Servo.Direction.FORWARD);
+        //srvoHang_1.setDirection(Servo.Direction.FORWARD);
     }
 
-    //****************TELEOP METHODS****************//
+    //****************DRIVE METHODS****************//
+
+    //Reading from compass sensor
+    public double getCompassDirection() {
+        return compassSensor.getDirection();
+    }
+
+    public void loadSensor(Team t) {
+        String myteam = t == Team.RED ? "colorL" : "colorR";
+        sensorRGB_1 = hardwareMap.colorSensor.get(myteam);
+        sensorRGB_1 = hardwareMap.colorSensor.get(myteam);
+    }
 
     public void drive(float left, float right) {
         // Drives
@@ -140,6 +174,73 @@ public abstract class ResQ_Library extends OpMode {
         motorLeftTread.setPower(left);
         motorRightSecondTread.setPower(right);
         motorLeftSecondTread.setPower(left);
+    }
+
+    public void driveStraight(double millis) {
+        /*
+         * This algorithm assumes yawAngle[0] returns
+         * values between 0—359 or -180—179.
+         */
+
+        double startDir = yawAngle[0];
+        double startTime = System.currentTimeMillis();
+        double currentTime = 0.0;
+
+        double rSpeed = 1.0f;
+        double lSpeed = 1.0f;
+
+        while(currentTime - startTime < millis) {
+            rSpeed = (180 + yawAngle[0]) * RIGHT_ROTATION_CONST + ROTATION_OFFSET;
+            lSpeed = (180 - yawAngle[0]) * LEFT_ROTATION_CONST + ROTATION_OFFSET;
+
+            //round any values <0 or >1 to 0 or 1.
+            rSpeed = Math.max(0, Math.min(1.0, rSpeed));
+            lSpeed = Math.max(0, Math.min(1.0, lSpeed));
+
+            drive((float) lSpeed, (float) rSpeed);
+            currentTime = System.currentTimeMillis();
+            sleep(10);
+        }
+    }
+
+    /**
+     * Turns the robot towards the given degree value via the quickest route.
+     * Note: This function does NOT turn the robot by the amount of degrees
+     * inputted as a parameter.
+     * @param degrees degree value for the robot to turn towards.
+     */
+    public void turnDegrees(int degrees) { //90
+        double initialAngle = getYaw();
+        //the angle across from the initialAngle on a circle
+        double oppositeAngle = scaleToAngle(initialAngle + 180);
+
+        float rightSpeed;
+        float leftSpeed;
+
+        /*
+         * Here is some pseudo code to try and help explain why the robot knows the quickest route to turn.
+         * -----------------------------------------------------------------------------------------------------
+         * if(we need to go passed the opposite angle, true || is the opposite angle below 180? If yes, true for
+         * all degree values above the initial Angle. : If no, true for all degree values below the inital angle.
+         */
+        if (degrees > oppositeAngle || (oppositeAngle < 180)? (degrees > initialAngle): (degrees < initialAngle)) {
+            //turn negative degrees
+            rightSpeed = 1.0f;
+            leftSpeed = -1.0f;
+        } else {
+            //turn positive degrees
+            rightSpeed = -1.0f;
+            leftSpeed = 1.0f;
+        }
+
+        while(degrees > getYaw() && scaleToAngle(degrees + 5) < getYaw()) {
+            drive(rightSpeed, leftSpeed);
+        }
+        stopDrive();
+    }
+
+    public void stopDrive() {
+        drive(0.0f, 0.0f);
     }
 
     public void setDriveGear(int gear) {
@@ -167,6 +268,22 @@ public abstract class ResQ_Library extends OpMode {
     }
 
     //****************SENSOR METHODS****************//
+    public double getDistance() {
+        return sensorUltra_1.getValue();
+    }
+
+    public void startIMU() {
+        imu.startIMU();
+    }
+
+    /**
+     * @return gyro degrees 0-360
+     */
+    public double getYaw() {
+        imu.getIMUGyroAngles(rollAngle, pitchAngle, yawAngle);
+        return 180 + yawAngle[0];
+    }
+
     public void moveToClosestObject() {
         double ultraRight, ultraLeft;
         double rightSpeed, leftSpeed;
@@ -188,6 +305,46 @@ public abstract class ResQ_Library extends OpMode {
         }
     }
 
+    public void calibrateColors() {
+        offsetRed_1 = sensorRGB_1.red();
+        offsetGreen_1 = sensorRGB_1.green();
+        offsetBlue_1 = sensorRGB_1.blue();
+        offsetRed_2 = sensorRGB_2.red();
+        offsetGreen_2 = sensorRGB_2.green();
+        offsetBlue_2 = sensorRGB_2.blue();
+    }
+
+    public Team getColor() {
+        Color color = getHue();
+        if (color == Color.BLUE) {
+            return Team.BLUE;
+        } else if (color == Color.RED) {
+            return Team.RED;
+        } else {
+            return Team.UNKNOWN;
+        }
+    }
+
+    public Color getHue() {
+        int r1 = Math.abs(sensorRGB_1.red() - offsetRed_1), r2 = Math.abs(sensorRGB_2.red() - offsetRed_2);
+        int b1 = Math.abs(sensorRGB_1.blue() - offsetBlue_1), b2 = Math.abs(sensorRGB_2.blue() - offsetBlue_2);
+        int a1 = Math.abs(sensorRGB_1.alpha()), a2 = Math.abs(sensorRGB_2.alpha());
+        telemetry.addData("Red 1", r1);
+        telemetry.addData("Blue 1", b1);
+        telemetry.addData("White 1", a1);
+        if ((b1 > r1 && b1 > COLOR_THRESHOLD) || (b2 > r2 && b2 > COLOR_THRESHOLD)) {
+            return Color.BLUE;
+        } else if ((r1 > b1 && r1 > COLOR_THRESHOLD) || (r2 > b2 && r2 > COLOR_THRESHOLD)) {
+            return Color.RED;
+        }
+        else if((a1 > 1000) || (a2 > 1000)) {
+            return Color.WHITE;
+        }
+        else {
+            return Color.NONE;
+        }
+    }
+
     //****************NUMBER MANIPULATION METHODS****************//
 
     float ProcessToMotorFromJoy(float input) { //This is used in any case where joystick input is to be converted to a motor
@@ -203,9 +360,25 @@ public abstract class ResQ_Library extends OpMode {
         return output;
     }
 
+    /**
+     * Converts any number to an angle value between 0 - 359.
+     */
+    double scaleToAngle(double val) {
+        double scaledVal = Math.abs(val);
+        while(scaledVal >= 360) {
+            scaledVal-=360;
+        }
+        return scaledVal;
+    }
+
+    /**
+     * This method scales the joystick input so for low joystick values, the
+     * scaled value is less than linear.  This is to make it easier to drive
+     * the robot more precisely at slower speeds.
+	 */
     double scaleInput(double dVal) {
-        /*
-         * This method scales the joystick input so for low joystick values, the
+     /*
+      * This method scales the joystick input so for low joystick values, the
       * scaled value is less than linear.  This is to make it easier to drive
       * the robot more precisely at slower speeds.
       */
@@ -234,24 +407,6 @@ public abstract class ResQ_Library extends OpMode {
         // return scaled value.
         return dScale;
     }
-
-    public void calibrateColors() {
-        offsetRed = sensorRGB_1.red() + 200;
-        offsetGreen = sensorRGB_1.green();
-        offsetBlue = sensorRGB_1.blue();
-    }
-
-    public Team getColor() {
-        int r = sensorRGB_1.red() - offsetRed, b = sensorRGB_1.blue() - offsetBlue;
-        if (b > r && b > COLOR_THRESHOLD) {
-            return Team.BLUE;
-        } else if (r > b && r > COLOR_THRESHOLD) {
-            return Team.RED;
-        } else {
-            return Team.UNKNOWN;
-        }
-    }
-
     int normalizeForGear(int gear) {
         if (gear > 3) gear = 3;
         if (gear < 1) gear = 1;

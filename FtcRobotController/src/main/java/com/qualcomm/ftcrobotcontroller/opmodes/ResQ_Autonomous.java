@@ -15,22 +15,14 @@ public class ResQ_Autonomous extends ResQ_Library {
     double armPosition;
     double clawPosition;
 
-    DcMotor motorRightTread;
-    DcMotor motorLeftTread;
-
-    ColorSensor sensorRGB;
-
     @Override
     public void init() {
-        sensorRGB = hardwareMap.colorSensor.get("color");
-
+        initializeMapping();
     }
 
     @Override
     public void loop() {
-        telemetry.addData("Red  ", sensorRGB.red());
-        telemetry.addData("Green", sensorRGB.green());
-        telemetry.addData("Blue ", sensorRGB.blue());
+
     }
 
     @Override
