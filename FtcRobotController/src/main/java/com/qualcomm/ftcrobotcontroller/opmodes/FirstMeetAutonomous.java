@@ -71,7 +71,7 @@ public class FirstMeetAutonomous extends ResQ_Library {
 	public void moveTillLine() {
 		teamWeAreOn = getColor();
 		if(teamWeAreOn == Team.UNKNOWN) {
-			approach(-1);
+			approach(1);
 		}
 		else {
 			stopMoving();
