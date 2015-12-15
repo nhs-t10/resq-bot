@@ -36,6 +36,7 @@ public abstract class ResQ_Library extends OpMode {
         srvoDong_Right: ^
      */
     DcMotor motorHangingMech;
+    DcMotor motorTapeMech;
     Servo srvoHang_1, srvoHang_2, srvoDong_Left, srvoDong_Right;
 
 
@@ -98,7 +99,8 @@ public abstract class ResQ_Library extends OpMode {
         //sensorRGB_1 = hardwareMap.colorSensor.get("color");
 
         //Other Mapping
-        //motorHangingMech = hardwareMap.dcMotor.get("m5");
+        motorHangingMech = hardwareMap.dcMotor.get("m5");
+        motorTapeMech = hardwareMap.dcMotor.get("m6");
         //srvoHang_1 = hardwareMap.servo.get("s1");
         //srvoHang_2 = hardwareMap.servo.get("s2");
         /*srvoDong_Left = hardwareMap.servo.get("s3"); //The left servo
