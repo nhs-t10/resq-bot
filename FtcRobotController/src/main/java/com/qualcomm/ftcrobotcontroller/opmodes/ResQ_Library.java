@@ -89,6 +89,10 @@ public abstract class ResQ_Library extends OpMode {
         RED, BLUE, UNKNOWN
     }
 
+    public enum Color {
+        RED, BLUE, GREEN, WHITE, NONE
+    }
+
     Team teamWeAreOn = Team.UNKNOWN; //enum thats represent team
 
     public ResQ_Library() {
@@ -106,8 +110,7 @@ public abstract class ResQ_Library extends OpMode {
         motorLeftSecondTread = hardwareMap.dcMotor.get("m3");
         motorRightSecondTread = hardwareMap.dcMotor.get("m4");
         //Sensors
-        sensorRGB_1 = hardwareMap.colorSensor.get("color1");
-        sensorRGB_2 = hardwareMap.colorSensor.get("color2");
+        //(color sensors are initted w/ loadSensor(Team)
         sensorUltra_1 = hardwareMap.analogInput.get("u1");
         try {
             imu = new AdafruitIMU(hardwareMap, gyroName, (byte)(AdafruitIMU.BNO055_ADDRESS_A * 2), (byte)AdafruitIMU.OPERATION_MODE_IMU);
@@ -139,6 +142,12 @@ public abstract class ResQ_Library extends OpMode {
     //Reading from compass sensor
     public double getCompassDirection() {
         return compassSensor.getDirection();
+    }
+
+    public void loadSensor(Team t) {
+        String myteam = t == Team.RED ? "colorL" : "colorR";
+        sensorRGB_1 = hardwareMap.colorSensor.get(myteam);
+        sensorRGB_1 = hardwareMap.colorSensor.get(myteam);
     }
 
     public void drive(float left, float right) {
@@ -306,6 +315,26 @@ public abstract class ResQ_Library extends OpMode {
             return Team.RED;
         } else {
             return Team.UNKNOWN;
+        }
+    }
+
+    public Color getHue() {
+        int r1 = Math.abs(sensorRGB_1.red() - offsetRed_1), r2 = Math.abs(sensorRGB_2.red() - offsetRed_2);
+        int b1 = Math.abs(sensorRGB_1.blue() - offsetBlue_1), b2 = Math.abs(sensorRGB_2.blue() - offsetBlue_2);
+        int a1 = Math.abs(sensorRGB_1.alpha()), a2 = Math.abs(sensorRGB_2.alpha());
+        telemetry.addData("Red 1", r1);
+        telemetry.addData("Blue 1", b1);
+        telemetry.addData("White 1", a1);
+        if ((b1 > r1 && b1 > COLOR_THRESHOLD) || (b2 > r2 && b2 > COLOR_THRESHOLD)) {
+            return Color.BLUE;
+        } else if ((r1 > b1 && r1 > COLOR_THRESHOLD) || (r2 > b2 && r2 > COLOR_THRESHOLD)) {
+            return Color.RED;
+        }
+        else if((a1 > 1000) || (a2 > 1000)) {
+            return Color.WHITE;
+        }
+        else {
+            return Color.NONE;
         }
     }
 

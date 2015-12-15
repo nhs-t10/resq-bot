@@ -50,6 +50,7 @@ public class FirstMeetAutonomous extends ResQ_Library {
 	public void init() {
 		//Do the map thing
 		initializeMapping();
+        loadSensor(Team.RED);
 		driveGear = 3;
 		calibrateColors();
 		startIMU();
@@ -66,10 +67,6 @@ public class FirstMeetAutonomous extends ResQ_Library {
 		}
 	}
 
-	@Override
-	public void stop() {
-
-	}
 
 	public void moveTillLine() {
 		teamWeAreOn = getColor();
