@@ -2,8 +2,10 @@ package com.qualcomm.ftcrobotcontroller.opmodes.test;
 
 import com.qualcomm.ftcrobotcontroller.opmodes.ResQ_Library;
 
+import com.qualcomm.ftcrobotcontroller.opmodes.ResQ_Library;
+
 /**
- * Created by Aman on 10/11/2015.
+ * This is the not official testing code to have sensors assist in teleop matches.
  */
 public class TeleopAssist extends ResQ_Library {
 

@@ -136,11 +136,11 @@ public class ResQ_TeleOp extends ResQ_Library {
 
         //Tape
         if (gamepad2.left_bumper) {
-            //release tension by letting go of string
-            motorTapeMech.setPower(-1.0f);
+            //bring the tape back;
+            motorTapeMech.setPower(-0.5f);
         } else if (gamepad2.left_trigger >= 0.5f) {
-            //pull string and add tension
-            motorTapeMech.setPower(1.0f);
+            //send the tape out
+            motorTapeMech.setPower(0.5f);
         } else {
             motorTapeMech.setPower(0);
         }
