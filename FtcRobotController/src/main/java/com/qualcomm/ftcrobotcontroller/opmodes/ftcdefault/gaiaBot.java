@@ -45,6 +45,8 @@ public class gaiaBot extends OpMode {
 
     DcMotor motorRight;
     DcMotor motorLeft;
+    DcMotor motorRight1;
+    DcMotor motorLeft1;
 
     /**
      * Constructor
@@ -68,16 +70,21 @@ public class gaiaBot extends OpMode {
 		
 		/*
 		 * For the demo Tetrix K9 bot we assume the following,
-		 *   There are two motors "motor_1" and "motor_2"
-		 *   "motor_1" is on the right side of the bot.
-		 *   "motor_2" is on the left side of the bot.
+		 *   There are four motors: "motor_1", "motor_2", "motor_3", and "motor_4".
+		 *   "motor_1" is on the front left side of the bot.
+		 *   "motor_2" is on the front right side of the bot.
+		 *   "motor_3" is on the back left side of the bot.
+		 *   "motor_4" is on the back right side of the bot.
 		 *   
 		 * We don't assume we have any servos on the test bot, but it could happen.
 		 *    "servo_1" would control the arm joint of the manipulator.
 		 *    "servo_6" would control the claw joint of the manipulator.
 		 */
-        motorRight = hardwareMap.dcMotor.get("motor_2");
-        motorLeft = hardwareMap.dcMotor.get("motor_1");
+        motorRight = hardwareMap.dcMotor.get("motor_1");
+        motorLeft = hardwareMap.dcMotor.get("motor_2");
+        motorRight1 = hardwareMap.dcMotor.get("motor_3");
+        motorLeft1 = hardwareMap.dcMotor.get("motor_4");
+
         motorLeft.setDirection(DcMotor.Direction.REVERSE);
 
 
@@ -98,7 +105,7 @@ public class gaiaBot extends OpMode {
 		 * out and program it.
 		 */
 
-        // tank drive
+        // here we are mimicking a tank drive
         // note that if y equal -1 then joystick is pushed all of the way forward.
         float left = -gamepad1.left_stick_y;
         float right = -gamepad1.right_stick_y;
@@ -115,27 +122,43 @@ public class gaiaBot extends OpMode {
         // write the values to the motors
         motorRight.setPower(right);
         motorLeft.setPower(left);
+        motorRight1.setPower(right);
+        motorLeft1.setPower(left);
+
+
+        //Motor Right = motor 1
+        //Motor Left= motor2
+        //Motor Right1= motor 3
+        //Motor Left1= motor 4
 
         // stop robot
         if (gamepad1.a) {
             motorRight.setPower(0f);
             motorLeft.setPower(0f);
+            motorRight1.setPower(0f);
+            motorLeft1.setPower(0f);
         }
 
         // turning
         if (gamepad1.left_bumper) {
             motorRight.setPower(.7f);
             motorLeft.setPower(-.7f);
+            motorRight1.setPower(.7f);
+            motorLeft1.setPower(-.7f);
         }
 
         if (gamepad1.right_bumper) {
             motorLeft.setPower(.7f);
             motorRight.setPower(-.7f);
+            motorLeft1.setPower(.7f);
+            motorRight1.setPower(-.7f);
         }
 
         if (gamepad1.right_bumper && gamepad1.left_bumper)
             motorLeft.setPower(1f);
-        motorRight.setPower(1f);
+            motorRight.setPower(1f);
+            motorLeft1.setPower(1f);
+            motorRight1.setPower(1f);
 
         //driving can be done using both bumpers or triggers, users choice. #triggered
         //Driving
@@ -143,27 +166,37 @@ public class gaiaBot extends OpMode {
         if (gamepad1.left_trigger > 0.25 && gamepad1.right_trigger > 0.25) {
             motorRight.setPower(-.7f);
             motorLeft.setPower(-.7f);
+            motorRight1.setPower(-.7f);
+            motorLeft1.setPower(-.7f);
         }
 
         if (gamepad1.right_trigger > .25)
             motorLeft.setPower(.7f);
-        motorRight.setPower(.7f);
+            motorRight.setPower(.7f);
+            motorLeft1.setPower(.7f);
+            motorRight1.setPower(.7f);
 
         // intricate steering for accuracy
         if (gamepad1.b) {
             motorLeft.setPower(-.1f);
             motorRight.setPower(-.1f);
+            motorLeft1.setPower(-.1f);
+            motorRight1.setPower(-.1f);
         }
 
         if (gamepad1.x) {
             motorLeft.setPower(.1f);
             motorRight.setPower(.1f);
+            motorLeft1.setPower(.1f);
+            motorRight1.setPower(.1f);
 
         }
 
         if (gamepad1.y) {
             motorRight.setPower(1f);
             motorLeft.setPower(1f);
+            motorRight1.setPower(1f);
+            motorLeft1.setPower(1f);
 
         }
 
@@ -180,11 +213,7 @@ public class gaiaBot extends OpMode {
         telemetry.addData("right tgt pwr", "right pwr: " + String.format("%.2f", right));
     }
 
-    /*
-     * Code to run when the op mode is first disabled goes here
-     *
-     * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#stop()
-     */
+
     @Override
     public void stop() {
 
