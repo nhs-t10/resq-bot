@@ -205,11 +205,18 @@ public abstract class ResQ_Library extends OpMode {
 
     /**
      * Turns the robot towards the given degree value via the quickest route.
-     * Note: This function does NOT turn the robot by the amount of degrees
-     * inputted as a parameter.
      * @param degrees degree value for the robot to turn towards.
      */
-    public void turnDegrees(int degrees) { //90
+    public void driveTurnDegrees(int degrees) {
+        driveTurnDegrees(degrees, 5);
+    }
+
+    /**
+     * Turns the robot towards the given degree value via the quickest route.
+     * @param degrees degree value for the robot to turn towards.
+     * @param precision how precise the turning is. (lower values increase the possibilty of error.)
+     */
+    public void driveTurnDegrees(int degrees, int precision) {
         double initialAngle = getYaw();
         //the angle across from the initialAngle on a circle
         double oppositeAngle = scaleToAngle(initialAngle + 180);
@@ -225,7 +232,7 @@ public abstract class ResQ_Library extends OpMode {
          */
         if (degrees > oppositeAngle || (oppositeAngle < 180)? (degrees > initialAngle): (degrees < initialAngle)) {
             //turn negative degrees
-            rightSpeed = 1.0f;
+            rightSpeed = 0.f;
             leftSpeed = -1.0f;
         } else {
             //turn positive degrees
@@ -233,7 +240,7 @@ public abstract class ResQ_Library extends OpMode {
             leftSpeed = 1.0f;
         }
 
-        while(degrees > getYaw() && scaleToAngle(degrees + 5) < getYaw()) {
+        while(scaleToAngle(degrees - precision) > getYaw() && scaleToAngle(degrees + precision) < getYaw()) {
             drive(rightSpeed, leftSpeed);
         }
         stopDrive();
@@ -325,6 +332,8 @@ public abstract class ResQ_Library extends OpMode {
         }
     }
 
+
+    //br? huehuehuehuehuehue
     public Color getHue() {
         int r1 = Math.abs(sensorRGB_1.red() - offsetRed_1), r2 = Math.abs(sensorRGB_2.red() - offsetRed_2);
         int b1 = Math.abs(sensorRGB_1.blue() - offsetBlue_1), b2 = Math.abs(sensorRGB_2.blue() - offsetBlue_2);
@@ -347,7 +356,7 @@ public abstract class ResQ_Library extends OpMode {
 
     //****************NUMBER MANIPULATION METHODS****************//
 
-    float ProcessToMotorFromJoy(float input) { //This is used in any case where joystick input is to be converted to a motor
+    public float ProcessToMotorFromJoy(float input) { //This is used in any case where joystick input is to be converted to a motor
         float output = 0.0f;
 
         // clip the power values so that the values never exceed +/- 1
@@ -415,13 +424,6 @@ public abstract class ResQ_Library extends OpMode {
 
     //****************MISC METHODS****************//
     public void sleep(int millis) {
-        /*ElapsedTime timer = new ElapsedTime();
-        double startTime = timer.time();
-        double currentTime = 0.0;
-        while (currentTime - startTime < millis) {
-            currentTime = timer.time();
-        }
-    }*/
         try {
             Thread.sleep(millis);
         } catch (Exception err) {

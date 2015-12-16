@@ -1,4 +1,6 @@
-package com.qualcomm.ftcrobotcontroller.opmodes;
+package com.qualcomm.ftcrobotcontroller.opmodes.test;
+
+import com.qualcomm.ftcrobotcontroller.opmodes.ResQ_Library;
 
 /**
  * Created by Aman on 10/11/2015.
@@ -48,6 +50,16 @@ public class TeleopAssist extends ResQ_Library {
         }
         if(flip90Left && getYaw() < flip90LeftDest) {
             drive(0.5f, 0);
+        }
+
+        if(gamepad1.dpad_up) {
+            driveTurnDegrees(0);
+        } else if(gamepad1.dpad_right) {
+            driveTurnDegrees(90);
+        } else if(gamepad1.dpad_down) {
+            driveTurnDegrees(180);
+        } else if(gamepad1.dpad_left) {
+            driveTurnDegrees(270);
         }
     }
 }

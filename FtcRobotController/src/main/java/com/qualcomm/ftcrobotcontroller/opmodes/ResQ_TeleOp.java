@@ -133,7 +133,7 @@ public class ResQ_TeleOp extends ResQ_Library {
         } else {
             motorHangingMech.setPower(0);
         }
-        
+
         //Tape
         if (gamepad2.left_bumper) {
             //release tension by letting go of string
