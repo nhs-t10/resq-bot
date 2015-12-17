@@ -114,7 +114,7 @@ public abstract class ResQ_Library extends OpMode {
     public void loadSensor(Team t) {
         String myteam = t == Team.RED ? "colorL" : "colorR";
         sensorRGB_1 = hardwareMap.colorSensor.get(myteam);
-        sensorRGB_1 = hardwareMap.colorSensor.get(myteam);
+        sensorRGB_2 = hardwareMap.colorSensor.get(myteam);
     }
 
     public void drive(float left, float right) {
