@@ -28,9 +28,7 @@ public class ResQ_TeleOp extends ResQ_Library {
 
         //Do the map thing
         initializeMapping();
-
-        //srvoHang1Position = srvoHang_1.getPosition();
-        //srvoHang2Position = srvoHang_2.getPosition();
+        telemetry.addData("Version", "Sensorless. COLOR ERROR SHOULD NOT SHOW UP!");
     }
 
 
@@ -46,7 +44,7 @@ public class ResQ_TeleOp extends ResQ_Library {
 
         //****************DRIVING****************//
 
-        /* Procedure:
+        /* Procedure for Aman's tank single stick drive code:
             Get X and Y from the Joystick, do whatever scaling and calibrating you need to do based on your hardware.
             Invert X
             Calculate R+L (Call it V): V =(100-ABS(X)) * (Y/100) + Y
@@ -68,10 +66,7 @@ public class ResQ_TeleOp extends ResQ_Library {
         right = Range.clip(right, -1, 1);
         left = Range.clip(left, -1, 1);
 
-        //drive(left, right);
-
-        telemetry.addData("Right:", ""+right);
-        telemetry.addData("Left:", ""+left);
+        drive(left, right);
 
         //Drive modifications
         if (gamepad1.x) {
@@ -86,37 +81,9 @@ public class ResQ_TeleOp extends ResQ_Library {
             //Track speed 25%
             setDriveGear(1);
         }
-        if (gamepad1.a) {
-            //reverse drive
-            driveReverse = !driveReverse;
-        }
 
-        //****************BLOCK MANIPULATION****************//
-
-        if (gamepad2.x) {
-            //toggle block intake
-        }
-        if (gamepad2.a) {
-            //Toggle conveyor movement
-            if (isConveyorMoving) { //it's already moving, stop it
-
-                isConveyorMoving = !isConveyorMoving;
-            } else { //its not, so start it up
-
-            }
-        }
-        if (gamepad2.b) {
-            //have the servo switch which side the blocks fall into
-            //create an enum code to know which side the servo is already facing by default so we can change
-        }
 
         //****************OTHER****************//
-
-        //Hanging Winch
-        if (gamepad2.y) {
-            //Hanging automation procedure
-            //HangingAutomation();
-        }
 
         //Hanging
         /**
@@ -127,9 +94,11 @@ public class ResQ_TeleOp extends ResQ_Library {
         if (gamepad2.right_bumper) {
             //release tension by letting go of string
             motorHangingMech.setPower(-1.0f);
+            telemetry.addData("Winch:", "Releasing String");
         } else if (gamepad2.right_trigger >= 0.5f) {
             //pull string and add tension
             motorHangingMech.setPower(1.0f);
+            telemetry.addData("Winch:", "Pulling String");
         } else {
             motorHangingMech.setPower(0);
         }
@@ -138,19 +107,29 @@ public class ResQ_TeleOp extends ResQ_Library {
         if (gamepad2.left_bumper) {
             //bring the tape back;
             motorTapeMech.setPower(-0.5f);
+            telemetry.addData("Tape:", "Pulling Tape");
         } else if (gamepad2.left_trigger >= 0.5f) {
             //send the tape out
             motorTapeMech.setPower(0.5f);
+            telemetry.addData("Tape:", "Sending Tape");
         } else {
             motorTapeMech.setPower(0);
         }
 
-
+        //Deflector
+        if (gamepad1.a) { //Deflector Toggle
+            if(isDeflectorDown){ //Is down, bring back up
+                //set position up
+            }
+            else { //Is up, deploy down
+                //set position down
+            }
+            isDeflectorDown = !isDeflectorDown;
+        }
 
 
         //****************TELEMETRY****************/
 
-        String tel_Bool_Reverse = (driveReverse) ? "REVERSED" : "normal";
         String tel_Bool_Speed = "error speed";
         if (driveGear == 3) { //highest 100% setting, essentially don't change it
             tel_Bool_Speed = "at 100% speed";
@@ -159,7 +138,6 @@ public class ResQ_TeleOp extends ResQ_Library {
         } else if (driveGear == 1) { //lowest 25% setting
             tel_Bool_Speed = "at 25% speed";
         }
-        telemetry.addData("", "Driving is " + tel_Bool_Reverse + " and " + tel_Bool_Speed);
-
+        telemetry.addData("", "Driving is " + " and " + tel_Bool_Speed);
     }
 }

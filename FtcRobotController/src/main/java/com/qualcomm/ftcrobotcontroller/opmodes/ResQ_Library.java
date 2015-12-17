@@ -18,9 +18,12 @@ public abstract class ResQ_Library extends OpMode {
 
     //For Driving Only
     DcMotor motorRightTread, motorLeftTread, motorRightSecondTread, motorLeftSecondTread;
+    DcMotor motorHangingMech;
+    DcMotor motorTapeMech;
 
     //Autonomous
     Servo srvoScoreClimbers, srvoPushButton;
+    Servo srvoRightDeflector, srvoLeftDeflector;
 
     //Sensors
     AnalogInput sensorUltra_1, sensorUltra_2;
@@ -31,17 +34,6 @@ public abstract class ResQ_Library extends OpMode {
     CompassSensor compassSensor;
 
     int offsetRed_1, offsetGreen_1, offsetBlue_1, offsetRed_2, offsetBlue_2, offsetGreen_2;
-
-    /*
-        motorHangingMech: responsible for lifting entire robot
-        srvoHang_1: servo closer to base(elbow)
-        srvoHang_2: servo closer to the hook(wrist)
-        srvoDong_Left: frees hanging climbers
-        srvoDong_Right: ^
-     */
-    DcMotor motorHangingMech;
-    DcMotor motorTapeMech;
-    Servo srvoHang_1, srvoHang_2, srvoDong_Left, srvoDong_Right;
 
 
     //****************OTHER DEFINITIONS****************//
@@ -73,18 +65,12 @@ public abstract class ResQ_Library extends OpMode {
 
 
     //Booleans
-    boolean areTracksExtended = false; //are the Second tracks extended or not (they not at the beginning)
-
-    //Bools and other important stuff
-    boolean isPlowDown = false; //at the start of the match, declare true and lower plow. When teleop starts, driver will recall it back up and declare false.
-    boolean driveReverse = false; //this reverses the drive so when the robot goes on the ramp, everything works out fine.
-    boolean leftDongDown = false; //when dong is all the way down, release and press again to go back up automatically
-    boolean rightDongDown = false; //same as above but with the right dongler
-    boolean isConveyorMoving = false; //false if conveyor is not moving. changes if it is
+    boolean isDeflectorDown = false;
 
     //Other
     int driveGear = 3; //3 is 100%, 2 is 50%, 1 is 25%
-    double HangServoDelta = 0.1;
+    double DeflectorServoUpPos = 0.1;
+    double DeflectorServoDownPos = 0.1;
 
     public enum Team {
         RED, BLUE, UNKNOWN
@@ -102,41 +88,34 @@ public abstract class ResQ_Library extends OpMode {
 
     //****************INITIALIZE METHOD****************//
     public void initializeMapping() {
-        //Debug statements to prevent color1 error
-        telemetry.addData("Version", "Sensorless. COLOR ERROR SHOULD NOT SHOW UP!");
+        //Debug statements to prevent color errors
         hardwareMap.logDevices();
         //Driving Mapping
         motorLeftTread = hardwareMap.dcMotor.get("m1");
         motorRightTread = hardwareMap.dcMotor.get("m2");
         motorLeftSecondTread = hardwareMap.dcMotor.get("m3");
         motorRightSecondTread = hardwareMap.dcMotor.get("m4");
+
         //Sensors
         //(color sensors are initted w/ loadSensor(Team)
-        sensorUltra_1 = hardwareMap.analogInput.get("u1");
+        /*sensorUltra_1 = hardwareMap.analogInput.get("u1");
         try {
             imu = new AdafruitIMU(hardwareMap, gyroName, (byte)(AdafruitIMU.BNO055_ADDRESS_A * 2), (byte)AdafruitIMU.OPERATION_MODE_IMU);
         } catch(RobotCoreException rce) {
             telemetry.addData("RobotCoreException", rce.getMessage());
-        }
+        }*/
+
         //Other Mapping
         motorHangingMech = hardwareMap.dcMotor.get("m5");
         motorTapeMech = hardwareMap.dcMotor.get("m6");
-        //srvoHang_1 = hardwareMap.servo.get("s1");
-        //srvoHang_2 = hardwareMap.servo.get("s2");
-        /*srvoDong_Left = hardwareMap.servo.get("s3"); //The left servo
-        srvoDong_Right = hardwareMap.servo.get("s4"); //The right servo
-        srvoPushButton = hardwareMap.servo.get("s5");
-        srvoScoreClimbers = hardwareMap.servo.get("s6");*/
+        /*srvoScoreClimbers = hardwareMap.servo.get("s1");
+        srvoRightDeflector = hardwareMap.servo.get("s2");
+        srvoLeftDeflector = hardwareMap.servo.get("s3");*/
+
 
         //set the direction of the motors
         motorRightTread.setDirection(DcMotor.Direction.REVERSE);
         motorRightSecondTread.setDirection(DcMotor.Direction.REVERSE);
-
-        //set the direction of the servos (99% sure this isn't neccesary but yolo)
-        /*srvoDong_Left.setDirection(Servo.Direction.FORWARD);
-        srvoDong_Right.setDirection(Servo.Direction.FORWARD);*/
-        //srvoHang_1.setDirection(Servo.Direction.FORWARD);
-        //srvoHang_1.setDirection(Servo.Direction.FORWARD);
     }
 
     //****************DRIVE METHODS****************//
@@ -154,10 +133,6 @@ public abstract class ResQ_Library extends OpMode {
 
     public void drive(float left, float right) {
         // Drives
-        if (driveReverse) { //we've reversed the drive in order to climb the ramp
-            right = -right;
-            left = -left;
-        } //if we haven't just leave it be
 
         if (driveGear == 3) { //highest 100% setting, essentially don't change it
             left = 1f * left;
@@ -259,21 +234,6 @@ public abstract class ResQ_Library extends OpMode {
      * Should be called in a loop.
      * @return returns true when the arm is in the process of moving.
      */
-    public boolean hangingAutomation() {
-        double hang1Position = Math.max(srvoHang_1.getPosition() - HangServoDelta, HANG1_MIN_RANGE);
-
-        srvoHang_1.setPosition(hang1Position);
-        //when big servo is midway through it's travel from min to max...
-        if(srvoHang_1.getPosition() < (HANG1_MAX_RANGE+HANG1_MIN_RANGE)/2) {
-            //tell the big servo to go to it's max range (as fast as possible)
-            srvoHang_1.setPosition(HANG1_MAX_RANGE);
-            //start the small servo to create a lunging effect
-            srvoHang_2.setPosition(HANG2_MAX_RANGE);
-            return  false;
-        }
-        return true;
-    }
-
     //****************SENSOR METHODS****************//
     public double getDistance() {
         return sensorUltra_1.getValue();
@@ -332,8 +292,6 @@ public abstract class ResQ_Library extends OpMode {
         }
     }
 
-
-    //br? huehuehuehuehuehue
     public Color getHue() {
         int r1 = Math.abs(sensorRGB_1.red() - offsetRed_1), r2 = Math.abs(sensorRGB_2.red() - offsetRed_2);
         int b1 = Math.abs(sensorRGB_1.blue() - offsetBlue_1), b2 = Math.abs(sensorRGB_2.blue() - offsetBlue_2);

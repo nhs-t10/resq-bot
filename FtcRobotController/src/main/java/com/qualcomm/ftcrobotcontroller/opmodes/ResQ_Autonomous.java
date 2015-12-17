@@ -103,7 +103,7 @@ public class ResQ_Autonomous extends ResQ_Library {
 			}*/
 			/*int m = teamWeAreOn == Team.RED ? 1 : -1;
 			drive(.2f * m, -.2f * m);*/
-            turnDegrees(60); //thx will p
+            driveTurnDegrees(60); //thx will p
         }
     }
 
