@@ -86,7 +86,7 @@ public class ResQ_Autonomous extends ResQ_Library {
         }
         else {
             stopMoving();
-            foundLine = true;
+            dropClimbers();
         }
     }
 
