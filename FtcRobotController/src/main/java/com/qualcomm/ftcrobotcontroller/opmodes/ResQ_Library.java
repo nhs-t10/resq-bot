@@ -29,7 +29,6 @@ public abstract class ResQ_Library extends OpMode {
     AnalogInput sensorUltra_1, sensorUltra_2;
     ColorSensor sensorRGB_1, sensorRGB_2;
     AdafruitIMU imu;
-    String gyroName = "gyro";
 
     CompassSensor compassSensor;
 
@@ -100,7 +99,7 @@ public abstract class ResQ_Library extends OpMode {
         //(color sensors are initted w/ loadSensor(Team)
         /*sensorUltra_1 = hardwareMap.analogInput.get("u1");
         try {
-            imu = new AdafruitIMU(hardwareMap, gyroName, (byte)(AdafruitIMU.BNO055_ADDRESS_A * 2), (byte)AdafruitIMU.OPERATION_MODE_IMU);
+            imu = new AdafruitIMU(hardwareMap, "g1", (byte)(AdafruitIMU.BNO055_ADDRESS_A * 2), (byte)AdafruitIMU.OPERATION_MODE_IMU);
         } catch(RobotCoreException rce) {
             telemetry.addData("RobotCoreException", rce.getMessage());
         }*/
@@ -108,10 +107,14 @@ public abstract class ResQ_Library extends OpMode {
         //Other Mapping
         motorHangingMech = hardwareMap.dcMotor.get("m5");
         motorTapeMech = hardwareMap.dcMotor.get("m6");
+<<<<<<< HEAD
         /*srvoScoreClimbers = hardwareMap.servo.get("s1");
         srvoRightDeflector = hardwareMap.servo.get("s2");
         srvoLeftDeflector = hardwareMap.servo.get("s3");*/
 
+=======
+        srvoScoreClimbers = hardwareMap.servo.get("s1");
+>>>>>>> origin/master
 
         //set the direction of the motors
         motorRightTread.setDirection(DcMotor.Direction.REVERSE);
@@ -176,6 +179,11 @@ public abstract class ResQ_Library extends OpMode {
             currentTime = System.currentTimeMillis();
             sleep(10);
         }
+    }
+
+    public void dropClimbers() {
+        srvoScoreClimbers.setPosition(0.2);
+        srvoScoreClimbers.setPosition(0.4);
     }
 
     /**
@@ -330,7 +338,7 @@ public abstract class ResQ_Library extends OpMode {
     /**
      * Converts any number to an angle value between 0 - 359.
      */
-    double scaleToAngle(double val) {
+    public double scaleToAngle(double val) {
         double scaledVal = Math.abs(val);
         while(scaledVal >= 360) {
             scaledVal-=360;
@@ -343,7 +351,7 @@ public abstract class ResQ_Library extends OpMode {
      * scaled value is less than linear.  This is to make it easier to drive
      * the robot more precisely at slower speeds.
 	 */
-    double scaleInput(double dVal) {
+    public double scaleInput(double dVal) {
      /*
       * This method scales the joystick input so for low joystick values, the
       * scaled value is less than linear.  This is to make it easier to drive
@@ -374,7 +382,8 @@ public abstract class ResQ_Library extends OpMode {
         // return scaled value.
         return dScale;
     }
-    int normalizeForGear(int gear) {
+
+    private int normalizeForGear(int gear) {
         if (gear > 3) gear = 3;
         if (gear < 1) gear = 1;
         return gear;
