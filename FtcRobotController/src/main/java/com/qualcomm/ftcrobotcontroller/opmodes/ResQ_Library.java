@@ -120,12 +120,7 @@ public abstract class ResQ_Library extends OpMode {
         //Other Mapping
         motorHangingMech = hardwareMap.dcMotor.get("m5");
         motorTapeMech = hardwareMap.dcMotor.get("m6");
-        //srvoHang_1 = hardwareMap.servo.get("s1");
-        //srvoHang_2 = hardwareMap.servo.get("s2");
-        /*srvoDong_Left = hardwareMap.servo.get("s3"); //The left servo
-        srvoDong_Right = hardwareMap.servo.get("s4"); //The right servo
-        srvoPushButton = hardwareMap.servo.get("s5");
-        srvoScoreClimbers = hardwareMap.servo.get("s6");*/
+        srvoScoreClimbers = hardwareMap.servo.get("s1");
 
         //set the direction of the motors
         motorRightTread.setDirection(DcMotor.Direction.REVERSE);
@@ -200,6 +195,11 @@ public abstract class ResQ_Library extends OpMode {
             currentTime = System.currentTimeMillis();
             sleep(10);
         }
+    }
+
+    public void dropClimbers() {
+        srvoScoreClimbers.setPosition(0.2);
+        srvoScoreClimbers.setPosition(0.4);
     }
 
     /**
