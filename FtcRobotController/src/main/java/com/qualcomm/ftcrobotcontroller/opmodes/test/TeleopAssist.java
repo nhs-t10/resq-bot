@@ -54,14 +54,27 @@ public class TeleopAssist extends ResQ_Library {
             drive(0.5f, 0);
         }
 
+        double[] wallAngles = {0, 90, 180, 270};
         if(gamepad1.dpad_up) {
-            driveTurnDegrees(0);
+            driveTurnDegrees((int)wallAngles[0]);
         } else if(gamepad1.dpad_right) {
-            driveTurnDegrees(90);
+            driveTurnDegrees((int)wallAngles[1]);
         } else if(gamepad1.dpad_down) {
-            driveTurnDegrees(180);
+            driveTurnDegrees((int)wallAngles[2]);
         } else if(gamepad1.dpad_left) {
-            driveTurnDegrees(270);
+            driveTurnDegrees((int)wallAngles[3]);
         }
+    }
+
+    int getClosestAngle(double num, double[] angles) {
+        double scaledAngle;
+        double closestAngle = num;
+        for(Double angle : angles) {
+            scaledAngle = scaleToAngle(angle);
+            if(closestAngle >= scaleToAngle(scaledAngle - num)) {
+                closestAngle = scaledAngle;
+            }
+        }
+        return (int)closestAngle;
     }
 }
