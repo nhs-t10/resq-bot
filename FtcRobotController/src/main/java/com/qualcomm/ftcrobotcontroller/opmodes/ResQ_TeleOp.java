@@ -13,10 +13,6 @@ import com.qualcomm.robotcore.util.Range;
  */
 public class ResQ_TeleOp extends ResQ_Library {
 
-    double srvoHang1Position;
-    double srvoHang2Position;
-
-    boolean autoMoveArm;
 
     @Override
     public void init() {
