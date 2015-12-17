@@ -40,7 +40,7 @@ public abstract class ResQ_Library extends OpMode {
     final static double RIGHT_TARGET_DISTANCE = 27.0, LEFT_TARGET_DISTANCE = 27.0, STOP_CONST = 6.0;
 
     //Color Sensor Calibrations
-    final static int COLOR_THRESHOLD = 80;
+    final static int COLOR_THRESHOLD = 50;
 
     //gyro offsets
     final static double RIGHT_ROTATION_CONST = 0.0027;

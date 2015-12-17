@@ -61,7 +61,6 @@ public class ResQ_Autonomous extends ResQ_Library {
             moveTillLine();
         }  else if (!robotFirstTurn){
             turnToBeacon();
-
         } else {
             approachBeacon();
         }
@@ -110,8 +109,8 @@ public class ResQ_Autonomous extends ResQ_Library {
 
 
     public void approach(int direction){
-        leftPower = 0.1f * direction;
-        rightPower = 0.1f * direction;
+        leftPower = 0.2f * direction;
+        rightPower = 0.2f * direction;
         drive(leftPower, rightPower);
     }
     public void stopMoving(){
