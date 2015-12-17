@@ -52,16 +52,6 @@ public abstract class ResQ_Library extends OpMode {
     //Constants that determine how strong the robot's speed and turning should be
     final static double SPEED_CONST = 0.005, LEFT_STEERING_CONST = 0.85, RIGHT_STEERING_CONST = 0.8;
 
-    //Servo Min's and Max's (to prevent the servo from extending too far in any direction
-    final static double HANG1_MIN_RANGE  = 0.8;
-    final static double HANG1_MAX_RANGE  = 1.00;
-    final static double HANG2_MIN_RANGE  = 0.00;
-    final static double HANG2_MAX_RANGE  = 0.7;
-    final static double DONG1_MIN_RANGE  = 0.20;
-    final static double DONG1_MAX_RANGE  = 0.90;
-    final static double DONG2_MIN_RANGE  = 0.20;
-    final static double DONG2_MAX_RANGE  = 0.90;
-
 
     //Booleans
     boolean isDeflectorDown = false;
@@ -97,12 +87,12 @@ public abstract class ResQ_Library extends OpMode {
 
         //Sensors
         //(color sensors are initted w/ loadSensor(Team)
-        /*sensorUltra_1 = hardwareMap.analogInput.get("u1");
+        sensorUltra_1 = hardwareMap.analogInput.get("u1");
         try {
             imu = new AdafruitIMU(hardwareMap, "g1", (byte)(AdafruitIMU.BNO055_ADDRESS_A * 2), (byte)AdafruitIMU.OPERATION_MODE_IMU);
         } catch(RobotCoreException rce) {
             telemetry.addData("RobotCoreException", rce.getMessage());
-        }*/
+        }
 
         //Other Mapping
         motorHangingMech = hardwareMap.dcMotor.get("m5");
@@ -110,8 +100,8 @@ public abstract class ResQ_Library extends OpMode {
         srvoScoreClimbers = hardwareMap.servo.get("s1");
 
         //set the direction of the motors
-        motorRightTread.setDirection(DcMotor.Direction.REVERSE);
-        motorRightSecondTread.setDirection(DcMotor.Direction.REVERSE);
+        motorLeftTread.setDirection(DcMotor.Direction.REVERSE);
+        motorLeftSecondTread.setDirection(DcMotor.Direction.REVERSE);
     }
 
     //****************DRIVE METHODS****************//

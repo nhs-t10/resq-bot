@@ -96,7 +96,7 @@ public class ResQ_Autonomous extends ResQ_Library {
         if ((teamWeAreOn == Team.RED && yaw >= 60 && yaw <= 65) || (teamWeAreOn == Team.BLUE && yaw >= 300 && yaw <= 305)) { //make this compass later
             robotFirstTurn = true;
             drive(0.2f,0.2f);
-        } else {
+        } else { //markisagod
 			/*if (!turning) turning = true;
 			else {
 				angleGoal = sensorGyro.rawX() + 70;
