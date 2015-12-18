@@ -79,11 +79,19 @@ public abstract class ResQ_Library extends OpMode {
     public void initializeMapping() {
         //Debug statements to prevent color errors
         hardwareMap.logDevices();
-        //Driving Mapping
+
+        //Motors
         motorLeftTread = hardwareMap.dcMotor.get("m1");
         motorRightTread = hardwareMap.dcMotor.get("m2");
         motorLeftSecondTread = hardwareMap.dcMotor.get("m3");
         motorRightSecondTread = hardwareMap.dcMotor.get("m4");
+        motorHangingMech = hardwareMap.dcMotor.get("m5");
+        motorTapeMech = hardwareMap.dcMotor.get("m6");
+
+        //Servos
+        srvoScoreClimbers = hardwareMap.servo.get("s1");
+        srvoRightDeflector = hardwareMap.servo.get("s2");
+        srvoLeftDeflector = hardwareMap.servo.get("s3");
 
         //Sensors
         //(color sensors are initted w/ loadSensor(Team)
@@ -93,12 +101,6 @@ public abstract class ResQ_Library extends OpMode {
         } catch(RobotCoreException rce) {
             telemetry.addData("RobotCoreException", rce.getMessage());
         }
-
-        //Other Mapping
-        motorHangingMech = hardwareMap.dcMotor.get("m5");
-        motorTapeMech = hardwareMap.dcMotor.get("m6");
-
-        srvoScoreClimbers = hardwareMap.servo.get("s1");
 
         //set the direction of the motors
         motorLeftTread.setDirection(DcMotor.Direction.REVERSE);

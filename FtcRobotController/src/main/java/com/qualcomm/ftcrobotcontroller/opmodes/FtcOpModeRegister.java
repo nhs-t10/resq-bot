@@ -61,6 +61,6 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register("Autonomous", ResQ_Autonomous.class);
     manager.register("ServoTest", ServoTest.class);
     manager.register("Assisted TeleOp", TeleopAssist.class);
-    manager.register("CameraTest", CameraOp.class);
+    //manager.register("CameraTest", CameraOp.class);
   }
 }
