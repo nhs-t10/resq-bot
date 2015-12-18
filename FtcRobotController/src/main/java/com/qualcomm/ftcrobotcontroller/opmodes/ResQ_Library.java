@@ -112,7 +112,7 @@ public abstract class ResQ_Library extends OpMode {
     }
 
     public void loadSensor(Team t) {
-        String myteam = t == Team.RED ? "colorL" : "colorR";
+        String myteam = t == Team.RED ? "colorR" : "colorL";
         sensorRGB_1 = hardwareMap.colorSensor.get(myteam);
         sensorRGB_2 = hardwareMap.colorSensor.get(myteam);
     }
@@ -174,7 +174,7 @@ public abstract class ResQ_Library extends OpMode {
      * @param degrees degree value for the robot to turn towards.
      */
     public void driveTurnDegrees(int degrees) {
-        driveTurnDegrees(degrees, 5);
+        driveTurnDegrees(degrees, 2);
     }
 
     /**
@@ -198,7 +198,7 @@ public abstract class ResQ_Library extends OpMode {
          */
         if (degrees > oppositeAngle || (oppositeAngle < 180)? (degrees > initialAngle): (degrees < initialAngle)) {
             //turn negative degrees
-            rightSpeed = 0.f;
+            rightSpeed = -1.0f;
             leftSpeed = -1.0f;
         } else {
             //turn positive degrees
@@ -208,6 +208,7 @@ public abstract class ResQ_Library extends OpMode {
 
         while(scaleToAngle(degrees - precision) > getYaw() && scaleToAngle(degrees + precision) < getYaw()) {
             drive(rightSpeed, leftSpeed);
+            sleep(10);
         }
         stopDrive();
     }
