@@ -60,11 +60,12 @@ public class ResQ_Autonomous extends ResQ_Library {
         if(!foundLine) {
             moveTillLine();
         }  else if (!robotFirstTurn){
-            turnToBeacon();
-            driveTurnDegrees(230);
-        } else {
-            approachBeacon();
-        }
+            //turnToBeacon();
+            robotFirstTurn = true; //this
+            driveTurnDegrees(230); //is
+        } /*else { //for
+            approachBeacon(); //patsios
+        } */ //^
     }
 
     public void moveTillLine() {
