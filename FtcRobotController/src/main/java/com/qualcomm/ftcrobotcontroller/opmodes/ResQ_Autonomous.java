@@ -56,23 +56,25 @@ public class ResQ_Autonomous extends ResQ_Library {
         startIMU();
     }
     public void loop() {
-        if (foundLine && teamWeAreOn != Team.UNKNOWN) telemetry.addData("On team", teamWeAreOn.toString());
+        if (foundLine && teamWeAreOn != Color.NONE) telemetry.addData("On team", teamWeAreOn.toString());
         if(!foundLine) {
             moveTillLine();
         }  else if (!robotFirstTurn){
-            turnToBeacon();
-
-        } else {
-            approachBeacon();
-        }
+            //turnToBeacon();
+            robotFirstTurn = true; //this
+            driveTurnDegrees(230); //is
+        } /*else { //for
+            approachBeacon(); //patsios
+        } */ //^
     }
 
     public void moveTillLine() {
-        teamWeAreOn = getColor();
-        if(teamWeAreOn == Team.UNKNOWN) {
+        teamWeAreOn = getHue();
+        if(teamWeAreOn == Color.NONE) {
             approach(1);
         }
         else {
+            teamWeAreOn = Color.RED;
             stopMoving();
             foundLine = true;
         }
@@ -93,7 +95,7 @@ public class ResQ_Autonomous extends ResQ_Library {
     public void turnToBeacon() { //(turn to beacon)
         double yaw = getYaw();
         telemetry.addData("yaw", yaw);
-        if ((teamWeAreOn == Team.RED && yaw >= 60 && yaw <= 65) || (teamWeAreOn == Team.BLUE && yaw >= 300 && yaw <= 305)) { //make this compass later
+        if ((teamWeAreOn == Color.RED && yaw >= 220 && yaw <= 230) || (teamWeAreOn == Color.BLUE && yaw >= 300 && yaw <= 305)) { //make this compass later
             robotFirstTurn = true;
             drive(0.2f,0.2f);
         } else { //markisagod
@@ -101,17 +103,17 @@ public class ResQ_Autonomous extends ResQ_Library {
 			else {
 				angleGoal = sensorGyro.rawX() + 70;
 			}*/
-			/*int m = teamWeAreOn == Team.RED ? 1 : -1;
-			drive(.2f * m, -.2f * m);*/
-            driveTurnDegrees(60); //thx will p
+			int m = teamWeAreOn == Color.RED ? -1 : 1;
+			drive(.3f * m, -.3f * m);
+            //driveTurnDegrees(60); //thx will p
         }
     }
 
 
 
     public void approach(int direction){
-        leftPower = 0.1f * direction;
-        rightPower = 0.1f * direction;
+        leftPower = 0.2f * direction;
+        rightPower = 0.2f * direction;
         drive(leftPower, rightPower);
     }
     public void stopMoving(){

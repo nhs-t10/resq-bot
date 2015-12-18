@@ -40,7 +40,7 @@ public abstract class ResQ_Library extends OpMode {
     final static double RIGHT_TARGET_DISTANCE = 27.0, LEFT_TARGET_DISTANCE = 27.0, STOP_CONST = 6.0;
 
     //Color Sensor Calibrations
-    final static int COLOR_THRESHOLD = 80;
+    final static int COLOR_THRESHOLD = 50;
 
     //gyro offsets
     final static double RIGHT_ROTATION_CONST = 0.0027;
@@ -69,7 +69,7 @@ public abstract class ResQ_Library extends OpMode {
         RED, BLUE, GREEN, WHITE, NONE
     }
 
-    Team teamWeAreOn = Team.UNKNOWN; //enum thats represent team
+    Color teamWeAreOn = Color.NONE; //enum thats represent team
 
     public ResQ_Library() {
 
@@ -115,9 +115,9 @@ public abstract class ResQ_Library extends OpMode {
     }
 
     public void loadSensor(Team t) {
-        String myteam = t == Team.RED ? "colorL" : "colorR";
+        String myteam = t == Team.RED ? "colorR" : "colorL";
         sensorRGB_1 = hardwareMap.colorSensor.get(myteam);
-        sensorRGB_1 = hardwareMap.colorSensor.get(myteam);
+        sensorRGB_2 = hardwareMap.colorSensor.get(myteam);
     }
 
     public void drive(float left, float right) {
@@ -177,7 +177,7 @@ public abstract class ResQ_Library extends OpMode {
      * @param degrees degree value for the robot to turn towards.
      */
     public void driveTurnDegrees(int degrees) {
-        driveTurnDegrees(degrees, 5);
+        driveTurnDegrees(degrees, 2);
     }
 
     /**
@@ -190,6 +190,8 @@ public abstract class ResQ_Library extends OpMode {
         //the angle across from the initialAngle on a circle
         double oppositeAngle = scaleToAngle(initialAngle + 180);
 
+        telemetry.addData("turning", "Began turning");
+
         float rightSpeed;
         float leftSpeed;
 
@@ -201,7 +203,7 @@ public abstract class ResQ_Library extends OpMode {
          */
         if (degrees > oppositeAngle || (oppositeAngle < 180)? (degrees > initialAngle): (degrees < initialAngle)) {
             //turn negative degrees
-            rightSpeed = 0.f;
+            rightSpeed = -1.0f;
             leftSpeed = -1.0f;
         } else {
             //turn positive degrees
@@ -211,7 +213,9 @@ public abstract class ResQ_Library extends OpMode {
 
         while(scaleToAngle(degrees - precision) > getYaw() && scaleToAngle(degrees + precision) < getYaw()) {
             drive(rightSpeed, leftSpeed);
+            sleep(10);
         }
+        telemetry.addData("turning", "Finished turning.");
         stopDrive();
     }
 
@@ -275,7 +279,7 @@ public abstract class ResQ_Library extends OpMode {
         offsetBlue_2 = sensorRGB_2.blue();
     }
 
-    public Team getColor() {
+    /*public Team getColor() {
         Color color = getHue();
         if (color == Color.BLUE) {
             return Team.BLUE;
@@ -284,7 +288,7 @@ public abstract class ResQ_Library extends OpMode {
         } else {
             return Team.UNKNOWN;
         }
-    }
+    }*/
 
     public Color getHue() {
         int r1 = Math.abs(sensorRGB_1.red() - offsetRed_1), r2 = Math.abs(sensorRGB_2.red() - offsetRed_2);
