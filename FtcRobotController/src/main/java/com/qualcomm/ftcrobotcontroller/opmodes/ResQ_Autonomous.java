@@ -67,7 +67,7 @@ public class ResQ_Autonomous extends ResQ_Library {
     }
 
     public void moveTillLine() {
-        teamWeAreOn = getColor();
+        //teamWeAreOn = getColor();
         if(teamWeAreOn == Team.UNKNOWN) {
             approach(1);
         }
@@ -100,9 +100,9 @@ public class ResQ_Autonomous extends ResQ_Library {
 			else {
 				angleGoal = sensorGyro.rawX() + 70;
 			}*/
-			/*int m = teamWeAreOn == Team.RED ? 1 : -1;
-			drive(.2f * m, -.2f * m);*/
-            driveTurnDegrees(60); //thx will p
+			int m = teamWeAreOn == Team.RED ? -1 : 1;
+			drive(.3f * m, -.3f * m);
+            //driveTurnDegrees(60); //thx will p
         }
     }
 

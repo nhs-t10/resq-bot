@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.exception.RobotCoreException;
  */
 public class GyroTest extends OpMode {
     AdafruitIMU imu;
-    String gyroName = "gyro";
+    String gyroName = "g1";
 
     final static double RIGHT_ROTATION_CONST = 0.0027;
     final static double LEFT_ROTATION_CONST = 0.0027;

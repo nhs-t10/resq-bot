@@ -31,6 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+import com.qualcomm.ftcrobotcontroller.opmodes.test.GyroTest;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.ServoTest;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.TeleopAssist;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
@@ -62,5 +63,7 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register("ServoTest", ServoTest.class);
     manager.register("Assisted TeleOp", TeleopAssist.class);
     manager.register("CameraTest", CameraOp.class);
+      manager.register("GyroTest", GyroTest.class);
+
   }
 }

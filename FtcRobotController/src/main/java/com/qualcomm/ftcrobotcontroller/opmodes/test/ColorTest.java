@@ -24,7 +24,7 @@ public class ColorTest extends ResQ_Library {
     @Override
     public void loop() {
         if(this.time >= 4){ //normal operation
-            Team scaledColor = getColor();
+            /*Team scaledColor = getColor();
             if(scaledColor != Team.UNKNOWN && !teamed) {
                 teamed = true;
                 currentTeam = scaledColor;
@@ -38,7 +38,7 @@ public class ColorTest extends ResQ_Library {
             //telemetry.addData("green", offsettedGreen);
             telemetry.addData("assumed", scaledColor);
 
-            telemetry.addData("Status", "Running");
+            telemetry.addData("Status", "Running");*/
         }
         else if(this.time == 3) {
             telemetry.addData("Status", "Now Calibrating");

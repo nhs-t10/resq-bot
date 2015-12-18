@@ -273,7 +273,7 @@ public abstract class ResQ_Library extends OpMode {
         offsetBlue_2 = sensorRGB_2.blue();
     }
 
-    public Team getColor() {
+    /*public Team getColor() {
         Color color = getHue();
         if (color == Color.BLUE) {
             return Team.BLUE;
@@ -282,7 +282,7 @@ public abstract class ResQ_Library extends OpMode {
         } else {
             return Team.UNKNOWN;
         }
-    }
+    }*/
 
     public Color getHue() {
         int r1 = Math.abs(sensorRGB_1.red() - offsetRed_1), r2 = Math.abs(sensorRGB_2.red() - offsetRed_2);
