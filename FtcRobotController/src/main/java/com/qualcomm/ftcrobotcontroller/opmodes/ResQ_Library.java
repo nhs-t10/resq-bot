@@ -187,6 +187,8 @@ public abstract class ResQ_Library extends OpMode {
         //the angle across from the initialAngle on a circle
         double oppositeAngle = scaleToAngle(initialAngle + 180);
 
+        telemetry.addData("turning", "Began turning");
+
         float rightSpeed;
         float leftSpeed;
 
@@ -210,6 +212,7 @@ public abstract class ResQ_Library extends OpMode {
             drive(rightSpeed, leftSpeed);
             sleep(10);
         }
+        telemetry.addData("turning", "Finished turning.");
         stopDrive();
     }
 

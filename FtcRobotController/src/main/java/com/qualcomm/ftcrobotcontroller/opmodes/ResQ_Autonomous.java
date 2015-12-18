@@ -61,6 +61,7 @@ public class ResQ_Autonomous extends ResQ_Library {
             moveTillLine();
         }  else if (!robotFirstTurn){
             turnToBeacon();
+            driveTurnDegrees(230);
         } else {
             approachBeacon();
         }
@@ -72,6 +73,7 @@ public class ResQ_Autonomous extends ResQ_Library {
             approach(1);
         }
         else {
+            teamWeAreOn = Color.RED;
             stopMoving();
             foundLine = true;
         }
