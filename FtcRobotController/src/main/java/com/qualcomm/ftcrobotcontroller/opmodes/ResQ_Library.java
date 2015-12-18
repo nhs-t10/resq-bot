@@ -183,6 +183,7 @@ public abstract class ResQ_Library extends OpMode {
      * @param precision how precise the turning is. (lower values increase the possibilty of error.)
      */
     public void driveTurnDegrees(int degrees, int precision) {
+		boolean startTurn = true;
         double initialAngle = getYaw();
         //the angle across from the initialAngle on a circle
         double oppositeAngle = scaleToAngle(initialAngle + 180);
@@ -209,8 +210,10 @@ public abstract class ResQ_Library extends OpMode {
         }
 
         while(scaleToAngle(degrees - precision) > getYaw() && scaleToAngle(degrees + precision) < getYaw()) {
-            drive(rightSpeed, leftSpeed);
-            sleep(10);
+            if(startTurn) {
+				drive(rightSpeed, leftSpeed);
+				startTurn = false;
+            }
         }
         telemetry.addData("turning", "Finished turning.");
         stopDrive();
