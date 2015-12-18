@@ -69,7 +69,7 @@ public abstract class ResQ_Library extends OpMode {
         RED, BLUE, GREEN, WHITE, NONE
     }
 
-    Team teamWeAreOn = Team.UNKNOWN; //enum thats represent team
+    Color teamWeAreOn = Color.NONE; //enum thats represent team
 
     public ResQ_Library() {
 
