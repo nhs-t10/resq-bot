@@ -79,11 +79,19 @@ public abstract class ResQ_Library extends OpMode {
     public void initializeMapping() {
         //Debug statements to prevent color errors
         hardwareMap.logDevices();
-        //Driving Mapping
+
+        //Motors
         motorLeftTread = hardwareMap.dcMotor.get("m1");
         motorRightTread = hardwareMap.dcMotor.get("m2");
         motorLeftSecondTread = hardwareMap.dcMotor.get("m3");
         motorRightSecondTread = hardwareMap.dcMotor.get("m4");
+        motorHangingMech = hardwareMap.dcMotor.get("m5");
+        motorTapeMech = hardwareMap.dcMotor.get("m6");
+
+        //Servos
+        srvoScoreClimbers = hardwareMap.servo.get("s1");
+        srvoRightDeflector = hardwareMap.servo.get("s2");
+        srvoLeftDeflector = hardwareMap.servo.get("s3");
 
         //Sensors
         //(color sensors are initted w/ loadSensor(Team)
@@ -98,7 +106,6 @@ public abstract class ResQ_Library extends OpMode {
         motorHangingMech = hardwareMap.dcMotor.get("m5");
         motorTapeMech = hardwareMap.dcMotor.get("m6");
         //srvoScoreClimbers = hardwareMap.servo.get("s1");
-
         //set the direction of the motors
         motorLeftTread.setDirection(DcMotor.Direction.REVERSE);
         motorLeftSecondTread.setDirection(DcMotor.Direction.REVERSE);
@@ -183,6 +190,7 @@ public abstract class ResQ_Library extends OpMode {
      * @param precision how precise the turning is. (lower values increase the possibilty of error.)
      */
     public void driveTurnDegrees(int degrees, int precision) {
+		boolean startTurn = true;
         double initialAngle = getYaw();
         //the angle across from the initialAngle on a circle
         double oppositeAngle = scaleToAngle(initialAngle + 180);
@@ -209,8 +217,11 @@ public abstract class ResQ_Library extends OpMode {
         }
 
         while(scaleToAngle(degrees - precision) > getYaw() && scaleToAngle(degrees + precision) < getYaw()) {
-            drive(rightSpeed, leftSpeed);
-            sleep(10);
+            telemetry.addData("turning", "" + scaleToAngle(degrees - precision) + " > " + getYaw());
+			if(startTurn) {
+				drive(rightSpeed, leftSpeed);
+				startTurn = false;
+            }
         }
         telemetry.addData("turning", "Finished turning.");
         stopDrive();
