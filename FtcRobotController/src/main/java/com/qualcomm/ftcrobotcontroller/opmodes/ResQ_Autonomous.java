@@ -103,9 +103,10 @@ public class ResQ_Autonomous extends ResQ_Library {
         rightPower = 0.2f * direction;
         drive(leftPower, rightPower);
     }
-    public void stopMoving(){
+
+    public void  stopMoving(){
         leftPower = 0.0f;
         rightPower = 0.0f;
-        drive(leftPower, rightPower);
+        stopDrive();
     }
 }
