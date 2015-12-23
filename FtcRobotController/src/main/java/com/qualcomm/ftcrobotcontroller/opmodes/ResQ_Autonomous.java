@@ -24,8 +24,6 @@ import com.qualcomm.robotcore.robocol.Telemetry;
 @SuppressWarnings("all")
 public class ResQ_Autonomous extends ResQ_Library {
 
-    float leftPower;
-    float rightPower;
     final double DISTANCE_FROM_WALL = 10;
     double currentTimeCatch;
 
@@ -74,7 +72,7 @@ public class ResQ_Autonomous extends ResQ_Library {
             approach(1);
         }
         else {
-            stopMoving();
+            stopDrive();
             dropClimbers();
         }
     }
@@ -94,19 +92,5 @@ public class ResQ_Autonomous extends ResQ_Library {
 			drive(.3f * m, -.3f * m);
             //driveTurnDegrees(60); //thx will p
         }
-    }
-
-
-
-    public void approach(int direction){
-        leftPower = 0.2f * direction;
-        rightPower = 0.2f * direction;
-        drive(leftPower, rightPower);
-    }
-
-    public void  stopMoving(){
-        leftPower = 0.0f;
-        rightPower = 0.0f;
-        stopDrive();
     }
 }
