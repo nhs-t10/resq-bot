@@ -89,18 +89,18 @@ public abstract class ResQ_Library extends OpMode {
         motorTapeMech = hardwareMap.dcMotor.get("m6");
 
         //Servos
-        srvoScoreClimbers = hardwareMap.servo.get("s1");
+        /*srvoScoreClimbers = hardwareMap.servo.get("s1");
         srvoRightDeflector = hardwareMap.servo.get("s2");
-        srvoLeftDeflector = hardwareMap.servo.get("s3");
+        srvoLeftDeflector = hardwareMap.servo.get("s3");*/
 
         //Sensors
         //(color sensors are initted w/ loadSensor(Team)
-        sensorUltra_1 = hardwareMap.analogInput.get("u1");
+        /*sensorUltra_1 = hardwareMap.analogInput.get("u1");
         try {
             imu = new AdafruitIMU(hardwareMap, "g1", (byte)(AdafruitIMU.BNO055_ADDRESS_A * 2), (byte)AdafruitIMU.OPERATION_MODE_IMU);
         } catch(RobotCoreException rce) {
             telemetry.addData("RobotCoreException", rce.getMessage());
-        }
+        }*/
 
         //Other Mapping
         motorHangingMech = hardwareMap.dcMotor.get("m5");
