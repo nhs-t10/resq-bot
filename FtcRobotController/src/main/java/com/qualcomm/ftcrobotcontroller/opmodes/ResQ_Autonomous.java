@@ -56,28 +56,13 @@ public class ResQ_Autonomous extends ResQ_Library {
         startIMU();
     }
     public void loop() {
-        if (foundLine && teamWeAreOn != Color.NONE) telemetry.addData("On team", teamWeAreOn.toString());
-        if(!foundLine) {
-            moveTillLine();
-        }  else if (!robotFirstTurn){
+        if (!robotFirstTurn){
             //turnToBeacon();
             robotFirstTurn = true; //this
             driveTurnDegrees(230); //is
         } /*else { //for
             approachBeacon(); //patsios
         } */ //^
-    }
-
-    public void moveTillLine() {
-        teamWeAreOn = getHue();
-        if(teamWeAreOn == Color.NONE) {
-            approach(1);
-        }
-        else {
-            teamWeAreOn = Color.RED;
-            stopMoving();
-            foundLine = true;
-        }
     }
 
     public void approachBeacon(){

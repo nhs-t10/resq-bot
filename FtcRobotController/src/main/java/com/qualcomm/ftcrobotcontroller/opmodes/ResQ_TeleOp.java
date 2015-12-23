@@ -16,12 +16,6 @@ public class ResQ_TeleOp extends ResQ_Library {
 
     @Override
     public void init() {
-        /*
-         * Use the hardwareMap to get the dc motors and servos by name. Note
-		 * that the names of the devices must match the names used when you
-		 * configured your robot and created the configuration file.
-		 */
-
         //Do the map thing
         initializeMapping();
         telemetry.addData("Version", "Sensorless. COLOR ERROR SHOULD NOT SHOW UP!");
