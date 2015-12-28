@@ -52,6 +52,17 @@ public abstract class ResQ_Library extends OpMode {
     //Constants that determine how strong the robot's speed and turning should be
     final static double SPEED_CONST = 0.005, LEFT_STEERING_CONST = 0.85, RIGHT_STEERING_CONST = 0.8;
 
+    //Deflector Positions
+    final static double LDefDownPos = 0.3;
+    final static double LDefUpPos = 1.0;
+    final static double RDefDownPos = 0.7;
+    final static double RDefUpPos = 0.0;
+
+    double RDefPos;
+    double LDefPos;
+
+    double servoDelta = 0.1;
+
 
     //Booleans
     boolean isDeflectorDown = false;
@@ -171,10 +182,6 @@ public abstract class ResQ_Library extends OpMode {
         }
     }
 
-    public void dropClimbers() {
-        srvoScoreClimbers.setPosition(0.2);
-        srvoScoreClimbers.setPosition(0.4);
-    }
 
     /**
      * Turns the robot towards the given degree value via the quickest route.

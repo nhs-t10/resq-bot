@@ -50,22 +50,20 @@ public class ServoTest extends OpMode {
 
         // change servo positions
         if (gamepad2.left_bumper){ //increase servo
-            switch (currentServoAssignment) {
-                case Climbers:
-                    climberPos += servoDelta;
-                case RightDef:
-                    LDefPos += servoDelta;
-                case LeftDef:
-                    RDefPos += servoDelta;
+            if (currentServoAssignment == ServoAssignment.Climbers){
+                climberPos += servoDelta;
+            } else if (currentServoAssignment == ServoAssignment.RightDef) {
+                RDefPos += servoDelta;
+            } else if (currentServoAssignment == ServoAssignment.LeftDef) {
+                LDefPos += servoDelta;
             }
         } else if (gamepad2.right_bumper) { //decrease servo
-            switch (currentServoAssignment) {
-                case Climbers:
-                    climberPos -= servoDelta;
-                case RightDef:
-                    LDefPos -= servoDelta;
-                case LeftDef:
-                    RDefPos -= servoDelta;
+            if (currentServoAssignment == ServoAssignment.Climbers){
+                climberPos -= servoDelta;
+            } else if (currentServoAssignment == ServoAssignment.RightDef) {
+                RDefPos -= servoDelta;
+            } else if (currentServoAssignment == ServoAssignment.LeftDef) {
+                LDefPos -= servoDelta;
             }
         }
 
@@ -78,13 +76,12 @@ public class ServoTest extends OpMode {
         srvoLeftDeflector.setPosition(LDefPos);
         srvoRightDeflector.setPosition(RDefPos);
 
-        switch (currentServoAssignment) {
-            case Climbers:
-                telemetry.addData("Current:", "Climber Drop");
-            case RightDef:
-                telemetry.addData("Current:", "Right Deflector");
-            case LeftDef:
-                telemetry.addData("Current:", "Left Deflector");
+        if (currentServoAssignment == ServoAssignment.Climbers){
+            telemetry.addData("Current:", "Climber Drop");
+        } else if (currentServoAssignment == ServoAssignment.RightDef) {
+            telemetry.addData("Current:", "Right Deflector");
+        } else if (currentServoAssignment == ServoAssignment.LeftDef) {
+            telemetry.addData("Current:", "Left Deflector");
         }
         telemetry.addData("Climbers:", "" +climberPos);
         telemetry.addData("Right Deflector:", ""+RDefPos);

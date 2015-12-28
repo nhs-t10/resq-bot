@@ -19,6 +19,13 @@ public class ResQ_TeleOp extends ResQ_Library {
         //Do the map thing
         initializeMapping();
         telemetry.addData("Version", "Sensorless. COLOR ERROR SHOULD NOT SHOW UP!");
+
+        //Set Deflectors Up
+        RDefPos = RDefUpPos;
+        LDefPos = LDefUpPos;
+        srvoLeftDeflector.setPosition(LDefPos);
+        srvoRightDeflector.setPosition(RDefPos);
+        isDeflectorDown = false;
     }
 
 
@@ -106,20 +113,57 @@ public class ResQ_TeleOp extends ResQ_Library {
             motorTapeMech.setPower(0);
         }
 
-        //Deflector
-        if (gamepad1.a) { //Deflector Toggle
-            if(isDeflectorDown){ //Is down, bring back up
+
+        /*if (gamepad1.a) { //Deflector Toggle
+            /*if(isDeflectorDown){ //Is down, bring back up
                 //set position up
+                RDefPos = RDefUpPos;
+                LDefPos = LDefUpPos;
+                RDefPos = Range.clip(RDefPos, 0.0, 1.0);
+                LDefPos = Range.clip(LDefPos, 0.0, 1.0);
             }
             else { //Is up, deploy down
                 //set position down
+                RDefPos = RDefDownPos;
+                LDefPos = LDefDownPos;
+                RDefPos = Range.clip(RDefPos, 0.0, 1.0);
+                LDefPos = Range.clip(LDefPos, 0.0, 1.0);
+            }
+            srvoRightDeflector.setPosition(RDefPos);
+            srvoLeftDeflector.setPosition(LDefPos);
+            if(isDeflectorDown){
+                RDefPos += servoDelta;
+                LDefPos += servoDelta;
+            } else {
+                RDefPos -= servoDelta;
+                LDefPos -= servoDelta;
             }
             isDeflectorDown = !isDeflectorDown;
+        }*/
+
+        if (gamepad1.left_bumper){ //increase servo
+            LDefPos -= servoDelta;
+            RDefPos += servoDelta;
+        } else if (gamepad1.right_bumper) { //decrease servo
+            LDefPos += servoDelta;
+            RDefPos -= servoDelta;
+        }
+
+
+        RDefPos = Range.clip(RDefPos, 0.0, 0.8);
+        LDefPos = Range.clip(LDefPos, 0.2, 1.0);
+        srvoLeftDeflector.setPosition(LDefPos);
+        srvoRightDeflector.setPosition(RDefPos);
+
+        if (gamepad1.a) {
+            //lower the climber drop
+            srvoScoreClimbers.setPosition(0.0);
+        } else {
+            srvoScoreClimbers.setPosition(1.0);
         }
 
 
         //****************TELEMETRY****************/
-
         String tel_Bool_Speed = "error speed";
         if (driveGear == 3) { //highest 100% setting, essentially don't change it
             tel_Bool_Speed = "at 100% speed";

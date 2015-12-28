@@ -73,7 +73,7 @@ public class ResQ_Autonomous extends ResQ_Library {
         }
         else {
             stopMoving();
-            dropClimbers();
+            srvoScoreClimbers.setPosition(0.0);
         }
     }
 
@@ -89,7 +89,7 @@ public class ResQ_Autonomous extends ResQ_Library {
 				angleGoal = sensorGyro.rawX() + 70;
 			}*/
 			int m = teamWeAreOn == Color.RED ? -1 : 1;
-			drive(.3f * m, -.3f * m);
+            drive(.3f * m, -.3f * m);
             //driveTurnDegrees(60); //thx will p
         }
     }
