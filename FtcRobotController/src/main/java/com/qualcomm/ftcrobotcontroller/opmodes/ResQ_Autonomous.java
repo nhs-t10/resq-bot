@@ -73,7 +73,7 @@ public class ResQ_Autonomous extends ResQ_Library {
         }
         else {
             stopMoving();
-            srvoScoreClimbers.setPosition(0.0);
+            //srvoScoreClimbers.setPosition(0.0);
         }
     }
 

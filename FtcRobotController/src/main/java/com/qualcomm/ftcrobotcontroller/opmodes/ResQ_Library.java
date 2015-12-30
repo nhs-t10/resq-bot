@@ -22,8 +22,7 @@ public abstract class ResQ_Library extends OpMode {
     DcMotor motorTapeMech;
 
     //Autonomous
-    Servo srvoScoreClimbers, srvoPushButton;
-    Servo srvoRightDeflector, srvoLeftDeflector;
+    //Servo srvoScoreClimbers, srvoPushButton;
 
     //Sensors
     AnalogInput sensorUltra_1, sensorUltra_2;
@@ -62,6 +61,9 @@ public abstract class ResQ_Library extends OpMode {
     double LDefPos;
 
     double servoDelta = 0.1;
+
+    float accelerationValue = 0.1f;
+
 
 
     //Booleans
@@ -131,8 +133,8 @@ public abstract class ResQ_Library extends OpMode {
 
     public void loadSensor(Team t) {
         String myteam = t == Team.RED ? "colorR" : "colorL";
-        sensorRGB_1 = hardwareMap.colorSensor.get(myteam);
-        sensorRGB_2 = hardwareMap.colorSensor.get(myteam);
+        //sensorRGB_1 = hardwareMap.colorSensor.get(myteam);
+        //sensorRGB_2 = hardwareMap.colorSensor.get(myteam);
     }
 
     public void drive(float left, float right) {
@@ -148,6 +150,12 @@ public abstract class ResQ_Library extends OpMode {
             left = 0.25f * left;
             right = 0.25f * right;
         } //if there's a bug and it's not 1, 2 or 3, default to max drive
+
+        float motorRightCurrentPower = (float)motorRightTread.getPower();
+        float motorLeftCurrentPower = (float)motorLeftTread.getPower();
+
+        right = slew(motorRightCurrentPower, right);
+        left = slew(motorLeftCurrentPower, left);
 
         motorRightTread.setPower(right);
         motorLeftTread.setPower(left);
@@ -401,5 +409,13 @@ public abstract class ResQ_Library extends OpMode {
         } catch (Exception err) {
             telemetry.addData("ERROR", "UR THREADS SUCK HEE HEE");
         }
+    }
+
+    float slew (float motorOut, float analogIn) {
+        if (accelerationValue < (Math.abs(motorOut - analogIn))) {
+            if (motorOut - analogIn < 0) return (motorOut + accelerationValue);
+            else return (motorOut - accelerationValue);
+        }
+        else return analogIn;
     }
 }
