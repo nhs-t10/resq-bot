@@ -22,7 +22,7 @@ public abstract class ResQ_Library extends OpMode {
     DcMotor motorTapeMech;
 
     //Autonomous
-    //Servo srvoScoreClimbers, srvoPushButton;
+    Servo srvoScoreClimbers, srvoPushButton;
 
     //Sensors
     AnalogInput sensorUltra_1, sensorUltra_2;
@@ -65,9 +65,9 @@ public abstract class ResQ_Library extends OpMode {
     float accelerationValue = 0.1f;
 
 
-
     //Booleans
     boolean isDeflectorDown = false;
+    boolean isGrabberDown = false;
 
     //Other
     int driveGear = 3; //3 is 100%, 2 is 50%, 1 is 25%
@@ -78,10 +78,15 @@ public abstract class ResQ_Library extends OpMode {
         RED, BLUE, UNKNOWN
     }
 
+    public enum DropperPosition {
+        LEFT, RIGHT, CENTER
+    }
+
     public enum Color {
         RED, BLUE, GREEN, WHITE, NONE
     }
 
+    DropperPosition dropperPos = DropperPosition.CENTER;
     Color teamWeAreOn = Color.NONE; //enum thats represent team
 
     public ResQ_Library() {
@@ -104,10 +109,14 @@ public abstract class ResQ_Library extends OpMode {
         //Servos
         /*srvoScoreClimbers = hardwareMap.servo.get("s1");
         srvoRightDeflector = hardwareMap.servo.get("s2");
-        srvoLeftDeflector = hardwareMap.servo.get("s3");*/
+        srvoLeftDeflector = hardwareMap.servo.get("s3");
+        srvoBlockGrabber = hardwareMap.servo.get("s4");
+        srvoBlockDropper = hardwareMap.servo.get("s5");
+        srvoBeaconPusher = hardwareMap.servo.get("s6");
+        */
 
         //Sensors
-        //(color sensors are initted w/ loadSensor(Team)
+        //(color sensors are initialized w/ loadSensor(Team)
         /*sensorUltra_1 = hardwareMap.analogInput.get("u1");
         try {
             imu = new AdafruitIMU(hardwareMap, "g1", (byte)(AdafruitIMU.BNO055_ADDRESS_A * 2), (byte)AdafruitIMU.OPERATION_MODE_IMU);
@@ -118,7 +127,7 @@ public abstract class ResQ_Library extends OpMode {
         //Other Mapping
         motorHangingMech = hardwareMap.dcMotor.get("m5");
         motorTapeMech = hardwareMap.dcMotor.get("m6");
-        //srvoScoreClimbers = hardwareMap.servo.get("s1");
+
         //set the direction of the motors
         motorLeftTread.setDirection(DcMotor.Direction.REVERSE);
         motorLeftSecondTread.setDirection(DcMotor.Direction.REVERSE);

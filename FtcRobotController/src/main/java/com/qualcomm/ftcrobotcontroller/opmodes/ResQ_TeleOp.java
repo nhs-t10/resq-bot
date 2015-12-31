@@ -79,6 +79,30 @@ public class ResQ_TeleOp extends ResQ_Library {
             setDriveGear(1);
         }
 
+        //****************BLOCK SCORING****************//
+
+        if (gamepad1.a) { //Grabber Servo
+            if(isGrabberDown){ //grabber is down, move it back up
+
+            } else { //grabber is up, move it back down
+
+            }
+            isGrabberDown = !isGrabberDown;
+        }
+
+        if (gamepad1.x) { //Dropper Left Pos
+            DropperPosition dropperPos = DropperPosition.LEFT;
+        }
+
+        if (gamepad1.y) { //Dropper Center
+            DropperPosition dropperPos = DropperPosition.CENTER;
+        }
+
+        if (gamepad1.b) { //Dropper Right Pos
+            DropperPosition dropperPos = DropperPosition.RIGHT;
+        }
+
+
 
         //****************OTHER****************//
 
