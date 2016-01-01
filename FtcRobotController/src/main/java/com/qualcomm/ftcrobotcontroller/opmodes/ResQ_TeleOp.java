@@ -188,7 +188,7 @@ public class ResQ_TeleOp extends ResQ_Library {
 
 
         //****************TELEMETRY****************/
-        String tel_Bool_Speed = "error speed";
+        /*String tel_Bool_Speed = "error speed";
         if (driveGear == 3) { //highest 100% setting, essentially don't change it
             tel_Bool_Speed = "at 100% speed";
         } else if (driveGear == 2) { //medium 50% setting
@@ -196,6 +196,9 @@ public class ResQ_TeleOp extends ResQ_Library {
         } else if (driveGear == 1) { //lowest 25% setting
             tel_Bool_Speed = "at 25% speed";
         }
-        telemetry.addData("", "Driving is " + " and " + tel_Bool_Speed);
+        telemetry.addData("", "Driving is " + " and " + tel_Bool_Speed);*/
+
+        telemetry.addData("Current Power Right", "" + (float)motorRightTread.getPower());
+        telemetry.addData("Current Power Left", "" + (float)motorLeftTread.getPower());
     }
 }
