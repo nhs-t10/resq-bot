@@ -19,6 +19,7 @@ public class EncoderTest extends ResQ_Library {
     @Override
     public void init() {
         testingEncoderMotor = hardwareMap.dcMotor.get("m1");
+        testingEncoderMotor.setPower(0.25);
     }
 
     @Override
@@ -48,16 +49,10 @@ public class EncoderTest extends ResQ_Library {
         if (Y > 0.25) { // joystick is up
             testingEncoderMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
             testingEncoderMotor.setTargetPosition(0);
-            testingEncoderMotor.setPower(0.5);
         }
         else if (Y < -0.25) { //joystick is down
             testingEncoderMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
             testingEncoderMotor.setTargetPosition(-440);
-            testingEncoderMotor.setPower(0.5);
-        } else {
-            /*testingEncoderMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-            testingEncoderMotor.setTargetPosition(-200);
-            testingEncoderMotor.setPower(1);*/
         }
 
 

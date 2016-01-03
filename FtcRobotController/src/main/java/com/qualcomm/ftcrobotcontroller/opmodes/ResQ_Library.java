@@ -380,6 +380,79 @@ public abstract class ResQ_Library extends OpMode {
             float right = value;
 
             //collects the actual current power to compare
+            float motorRightCurrentPower = (float)motorRightTread.getPower();
+            float rightPowerChange = right - motorRightCurrentPower;
+
+            if (System.currentTimeMillis() > rightDelayUntil) { // We can change it
+                //We're changing it by too much, restrict it
+                if (Math.abs(rightPowerChange) > accelerationThreshold) {
+                    if(value != 0) {
+                        motorRightCurrentPower += accelerationThreshold * value / Math.abs(value);
+                    }else{
+                        motorRightCurrentPower = 0;
+                    }
+                    rightDelayUntil = System.currentTimeMillis() + (long) accelerationTime;
+                } else {
+                    // Small enough change that we can allow it right away
+                    rightDelayUntil = 0;
+                    motorRightCurrentPower = right;
+                }
+            }
+            return motorRightCurrentPower;
+
+        } else if (side == "left") {
+            float left = value;
+            telemetry.addData("initial value", ""+value);
+
+            //collects the actual current power to compare
+            float motorLeftCurrentPower = (float)motorLeftTread.getPower();
+            float leftPowerChange = left - motorLeftCurrentPower;
+
+            if (System.currentTimeMillis() > leftDelayUntil) { // We can change it
+                //We're changing it by too much, restrict it
+                if (Math.abs(leftPowerChange) > accelerationThreshold) {
+                    if(value != 0) {
+                        motorLeftCurrentPower += accelerationThreshold * value / Math.abs(value);
+                        telemetry.addData("change value", "" + accelerationThreshold * value / Math.abs(value));
+                    }else{
+                        motorLeftCurrentPower = 0;
+                    }
+                    leftDelayUntil = System.currentTimeMillis() + (long)accelerationTime;
+                } else {
+                    // Small enough change that we can allow it left away
+                    leftDelayUntil = 0;
+                    motorLeftCurrentPower = left;
+                }
+            }
+            return motorLeftCurrentPower;
+
+        } else {
+            telemetry.addData("Error", "Motor values unable to accelerate");
+            return value;
+        }
+    }
+
+    @Deprecated
+    public float AccelerateAman (float value, String side) {
+        //Acceleration Code
+        /**
+         * How it works:
+         *  We collect the current power for both sides of motors and deal with them separately
+         *  We find the delta between the desired motor value and the current power
+         *  We use the system's time to time a change amount. If the system's time is more than the delay, it changes
+         *  If the time threshold has not been crossed, the target power is the current power (doesn't change)
+         *
+         *  We compare the change amount to the threshold (currently .1); if the change is bigger, we restrict it
+         *  if the change is lower, we'll let it pass exactly as it is instead of changing by .1
+         *
+         *  the actual power variable changes, so we'll pass that below the if statement whether or not the time works
+         */
+
+
+        if (side == "right") {
+            float right = value;
+
+            //collects the actual current power to compare
             float motorRightCurrentPower = (float) motorRightTread.getPower();
             float rightPowerChange = right - motorRightCurrentPower;
 
