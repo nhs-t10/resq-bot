@@ -44,24 +44,24 @@ public class EncoderTest extends ResQ_Library {
             isGrabberDown = !isGrabberDown;
         }*/
 
-        float Y = -ProcessToMotorFromJoy(-gamepad1.left_stick_y);
+        float Y = ProcessToMotorFromJoy(-gamepad1.left_stick_y);
         if (Y > 0.25) { // joystick is up
-            testingEncoderMotor.setChannelMode(DcMotorController.RunMode.RUN_TO_POSITION);
+            testingEncoderMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
             testingEncoderMotor.setTargetPosition(0);
-            testingEncoderMotor.setPower(1);
+            testingEncoderMotor.setPower(0.5);
         }
-        else if (Y < 0.25) { //joystick is down
-            testingEncoderMotor.setChannelMode(DcMotorController.RunMode.RUN_TO_POSITION);
+        else if (Y < -0.25) { //joystick is down
+            testingEncoderMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
             testingEncoderMotor.setTargetPosition(-440);
-            testingEncoderMotor.setPower(1);
+            testingEncoderMotor.setPower(0.5);
         } else {
-            testingEncoderMotor.setChannelMode(DcMotorController.RunMode.RUN_TO_POSITION);
+            /*testingEncoderMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
             testingEncoderMotor.setTargetPosition(-200);
-            testingEncoderMotor.setPower(1);
+            testingEncoderMotor.setPower(1);*/
         }
 
 
-
+        telemetry.addData("joy output", "" + Y);
         telemetry.addData("Current Pos v", ""+testingEncoderMotor.getCurrentPosition());
     }
 }

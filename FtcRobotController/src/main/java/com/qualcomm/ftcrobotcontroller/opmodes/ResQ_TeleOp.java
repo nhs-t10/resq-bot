@@ -90,19 +90,15 @@ public class ResQ_TeleOp extends ResQ_Library {
             isGrabberDown = !isGrabberDown;
         }
 
-        if (gamepad1.x) { //Dropper Left Pos
+        if (gamepad2.x) { //Dropper Left Pos
             DropperPosition dropperPos = DropperPosition.LEFT;
-            srvoBlockDropper.setPosition(0.4);
-        }
-
-        if (gamepad1.y) { //Dropper Center
+            srvoBlockDropper.setPosition(0.75);
+        } else if (gamepad2.y) { //Dropper Center
             DropperPosition dropperPos = DropperPosition.CENTER;
-            srvoBlockDropper.setPosition(0.5);
-        }
-
-        if (gamepad1.b) { //Dropper Right Pos
-            DropperPosition dropperPos = DropperPosition.RIGHT;
             srvoBlockDropper.setPosition(0.6);
+        } else if (gamepad2.b) { //Dropper Right Pos
+            DropperPosition dropperPos = DropperPosition.RIGHT;
+            srvoBlockDropper.setPosition(0.5);
         }
 
 
