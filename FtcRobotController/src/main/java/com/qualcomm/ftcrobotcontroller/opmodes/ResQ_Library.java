@@ -380,27 +380,49 @@ public abstract class ResQ_Library extends OpMode {
             float right = value;
 
             //collects the actual current power to compare
-            float motorRightCurrentPower = (float)motorRightTread.getPower();
+            float motorRightCurrentPower = (float) motorRightTread.getPower();
             float rightPowerChange = right - motorRightCurrentPower;
 
             if (System.currentTimeMillis() > rightDelayUntil) { // We can change it
                 //We're changing it by too much, restrict it
                 if (Math.abs(rightPowerChange) > accelerationThreshold) {
-                    if(value != 0) {
-                        motorRightCurrentPower += accelerationThreshold * value / Math.abs(value);
-                    }else{
-                        motorRightCurrentPower = 0;
+                    if (value != 0) {
+                        // Small enough change that we can allow it right away
+                        motorRightCurrentPower = right;
                     }
+                    // increased delay until so that the acceleration can continually work, setting the time
+                    // to the next acceleration increment
                     rightDelayUntil = System.currentTimeMillis() + (long) accelerationTime;
-                } else {
-                    // Small enough change that we can allow it right away
-                    rightDelayUntil = 0;
-                    motorRightCurrentPower = right;
                 }
+                return motorRightCurrentPower;
             }
-            return motorRightCurrentPower;
+        }
 
-        } else if (side == "left") {
+        if (side == "left") {
+            float left = value;
+
+            //collects the actual current power to compare
+            float motorLeftCurrentPower = (float) motorLeftTread.getPower();
+            float leftPowerChange = left - motorLeftCurrentPower;
+
+            if (System.currentTimeMillis() > leftDelayUntil) { // We can change it
+                //We're changing it by too much, restrict it
+                if (Math.abs(leftPowerChange) > accelerationThreshold) {
+                    if (value != 0) {
+                        // Small enough change that we can allow it right away
+                        motorLeftCurrentPower = left;
+                    }
+                    // increased delay until so that the acceleration can continually work, setting the time
+                    // to the next acceleration increment
+                    leftDelayUntil = System.currentTimeMillis() + (long) accelerationTime;
+                }
+                return motorLeftCurrentPower;
+
+            }
+        }
+
+        // why is the left different than the right?
+        /*else if (side == "left") {
             float left = value;
             telemetry.addData("initial value", ""+value);
 
@@ -413,6 +435,12 @@ public abstract class ResQ_Library extends OpMode {
                 if (Math.abs(leftPowerChange) > accelerationThreshold) {
                     if(value != 0) {
                         motorLeftCurrentPower += accelerationThreshold * value / Math.abs(value);
+                        motorRightCurrentPower += accelerationThreshold * value / Math.abs(value);
+                    }else{
+                        motorRightCurrentPower = 0;
+                    }
+                    rightDelayUntil = System.currentTimeMillis() + (long) accelerationTime;
+                } else {
                         telemetry.addData("change value", "" + accelerationThreshold * value / Math.abs(value));
                     }else{
                         motorLeftCurrentPower = 0;
@@ -430,6 +458,7 @@ public abstract class ResQ_Library extends OpMode {
             telemetry.addData("Error", "Motor values unable to accelerate");
             return value;
         }
+        */
     }
 
     public float ProcessToMotorFromJoy(float input) { //This is used in any case where joystick input is to be converted to a motor
