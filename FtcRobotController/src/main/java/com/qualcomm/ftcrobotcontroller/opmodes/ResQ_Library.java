@@ -459,6 +459,7 @@ public abstract class ResQ_Library extends OpMode {
             return value;
         }
         */
+    return 0;
     }
 
     public float ProcessToMotorFromJoy(float input) { //This is used in any case where joystick input is to be converted to a motor
