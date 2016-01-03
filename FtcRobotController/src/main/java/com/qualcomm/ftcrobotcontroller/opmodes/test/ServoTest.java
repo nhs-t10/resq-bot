@@ -11,80 +11,54 @@ import com.qualcomm.robotcore.util.Range;
  */
 public class ServoTest extends OpMode {
 
-    Servo srvoScoreClimbers, srvoPushButton;
-    Servo srvoRightDeflector, srvoLeftDeflector;
+    Servo srvoBlockGrabber;
 
-    double climberPos, RDefPos, LDefPos;
+    double grabberPos;
 
     double servoDelta = 0.1;
 
     public enum ServoAssignment {
-        Climbers, RightDef, LeftDef
+        grabber
     }
 
-    ServoAssignment currentServoAssignment = ServoAssignment.Climbers; //enum that represents the current servo testing
+    ServoAssignment currentServoAssignment = ServoAssignment.grabber; //enum that represents the current servo testing
 
     @Override
     public void init() {
-        srvoScoreClimbers = hardwareMap.servo.get("s1");
-        srvoRightDeflector = hardwareMap.servo.get("s2");
-        srvoLeftDeflector = hardwareMap.servo.get("s3");
+        srvoBlockGrabber = hardwareMap.servo.get("s4");
     }
 
     @Override
     public void loop() {
+        grabberPos = srvoBlockGrabber.getPosition();
 
         //change what servo we're using
-        if(gamepad2.a){
-            //change to climbers
-            currentServoAssignment = ServoAssignment.Climbers;
-        }
         if(gamepad2.b){
-            //change to right deflector
-            currentServoAssignment = ServoAssignment.RightDef;
-        }
-        if(gamepad2.x){
-            //change to left deflector
-            currentServoAssignment = ServoAssignment.LeftDef;
+            //change to grabber
+            currentServoAssignment = ServoAssignment.grabber;
         }
 
         // change servo positions
         if (gamepad2.left_bumper){ //increase servo
-            if (currentServoAssignment == ServoAssignment.Climbers){
-                climberPos += servoDelta;
-            } else if (currentServoAssignment == ServoAssignment.RightDef) {
-                RDefPos += servoDelta;
-            } else if (currentServoAssignment == ServoAssignment.LeftDef) {
-                LDefPos += servoDelta;
+            if (currentServoAssignment == ServoAssignment.grabber) {
+                //srvoBlockGrabber.setPosition(Range.clip(srvoBlockGrabber.getPosition()+0.001, 0.0, 1.0));
+                srvoBlockGrabber.setPosition(1.0);
             }
         } else if (gamepad2.right_bumper) { //decrease servo
-            if (currentServoAssignment == ServoAssignment.Climbers){
-                climberPos -= servoDelta;
-            } else if (currentServoAssignment == ServoAssignment.RightDef) {
-                RDefPos -= servoDelta;
-            } else if (currentServoAssignment == ServoAssignment.LeftDef) {
-                LDefPos -= servoDelta;
+            if (currentServoAssignment == ServoAssignment.grabber) {
+                //srvoBlockGrabber.setPosition(Range.clip(srvoBlockGrabber.getPosition()-0.001, 0.0, 1.0));
+                srvoBlockGrabber.setPosition(0.0);
             }
         }
 
         //servo manipulation and settings
-        climberPos = Range.clip(climberPos, 0.0, 1.0);
-        RDefPos = Range.clip(RDefPos, 0.0, 1.0);
-        LDefPos = Range.clip(LDefPos, 0.0, 1.0);
+        //grabberPos = Range.clip(grabberPos, 0.0, 1.0);
 
-        srvoScoreClimbers.setPosition(climberPos);
-        srvoLeftDeflector.setPosition(LDefPos);
-        srvoRightDeflector.setPosition(RDefPos);
+        //srvoBlockGrabber.setPosition(grabberPos);
 
-        if (currentServoAssignment == ServoAssignment.Climbers){
-            telemetry.addData("Current:", "Climber Drop");
-        } else if (currentServoAssignment == ServoAssignment.RightDef) {
-            telemetry.addData("Current:", "Right Deflector");
-        } else if (currentServoAssignment == ServoAssignment.LeftDef) {
-            telemetry.addData("Current:", "Left Deflector");
+        if (currentServoAssignment == ServoAssignment.grabber) {
+            telemetry.addData("Current: ", "Grabber");
         }
-        telemetry.addData("Climbers:", "" +climberPos);
-        telemetry.addData("Right Deflector:", ""+RDefPos);
-        telemetry.addData("Left Deflector:", ""+LDefPos);
+        telemetry.addData("Grabber", ""+srvoBlockGrabber.getPosition());
     }
 }

@@ -83,23 +83,26 @@ public class ResQ_TeleOp extends ResQ_Library {
 
         if (gamepad1.a) { //Grabber Servo
             if(isGrabberDown){ //grabber is down, move it back up
-
+                srvoBlockGrabber.setPosition(0.2);
             } else { //grabber is up, move it back down
-
+                srvoBlockGrabber.setPosition(0.7);
             }
             isGrabberDown = !isGrabberDown;
         }
 
         if (gamepad1.x) { //Dropper Left Pos
             DropperPosition dropperPos = DropperPosition.LEFT;
+            srvoBlockDropper.setPosition(0.4);
         }
 
         if (gamepad1.y) { //Dropper Center
             DropperPosition dropperPos = DropperPosition.CENTER;
+            srvoBlockDropper.setPosition(0.5);
         }
 
         if (gamepad1.b) { //Dropper Right Pos
             DropperPosition dropperPos = DropperPosition.RIGHT;
+            srvoBlockDropper.setPosition(0.6);
         }
 
 
@@ -198,7 +201,8 @@ public class ResQ_TeleOp extends ResQ_Library {
         }
         telemetry.addData("", "Driving is " + " and " + tel_Bool_Speed);*/
 
-        telemetry.addData("Current Power Right", "" + (float)motorRightTread.getPower());
+
+
         telemetry.addData("Current Power Left", "" + (float)motorLeftTread.getPower());
     }
 }
