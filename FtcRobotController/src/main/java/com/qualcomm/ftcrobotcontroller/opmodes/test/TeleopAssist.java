@@ -2,7 +2,8 @@ package com.qualcomm.ftcrobotcontroller.opmodes.test;
 
 import com.qualcomm.ftcrobotcontroller.opmodes.ResQ_Library;
 
-import com.qualcomm.ftcrobotcontroller.opmodes.ResQ_Library;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 /**
  * This is the not official testing code to have sensors assist in teleop matches.
@@ -73,6 +74,7 @@ public class TeleopAssist extends ResQ_Library {
         }
         return (int)closestAngle;
     }
+
     int add90(double yaw) {
         int ret = (int) yaw + 90;
         if(ret >= 360) return 360 - ret;

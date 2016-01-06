@@ -73,7 +73,6 @@ public class ResQ_Autonomous extends ResQ_Library {
         }
         else {
             stopDrive();
-            dropClimbers();
         }
     }
 
@@ -88,6 +87,7 @@ public class ResQ_Autonomous extends ResQ_Library {
 			else {
 				angleGoal = sensorGyro.rawX() + 70;
 			}*/
+
 			int m = teamWeAreOn == Team.RED ? -1 : 1;
 			drive(.3f * m, -.3f * m);
             //driveTurnDegrees(60); //thx will p

@@ -52,7 +52,6 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         }
         else {
             stopDrive();
-            dropClimbers();
         }
     }
 

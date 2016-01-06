@@ -31,6 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+import com.qualcomm.ftcrobotcontroller.opmodes.test.EncoderTest;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.GyroTest;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.ServoTest;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.TeleopAssist;
@@ -63,7 +64,7 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register("Autonomous Blue", ResQ_Autonomous_Blue.class);
     manager.register("Autonomous Old", ResQ_Autonomous.class);
     manager.register("ServoTest", ServoTest.class);
-    manager.register("Assisted TeleOp", TeleopAssist.class);
+    manager.register("Encoders", EncoderTest.class);
     manager.register("CameraTest", CameraOp.class);
     manager.register("GyroTest", GyroTest.class);
   }
