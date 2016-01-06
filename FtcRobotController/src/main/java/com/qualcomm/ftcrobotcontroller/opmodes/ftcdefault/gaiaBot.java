@@ -34,6 +34,7 @@ package com.qualcomm.ftcrobotcontroller.opmodes.ftcdefault;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 //import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.util.Range;
 
 /**
@@ -47,6 +48,9 @@ public class gaiaBot extends OpMode {
     DcMotor motorLeft;
     DcMotor motorRight1;
     DcMotor motorLeft1;
+    
+
+
 
     /**
      * Constructor
@@ -85,7 +89,6 @@ public class gaiaBot extends OpMode {
         motorRight1 = hardwareMap.dcMotor.get("motor_3");
         motorLeft1 = hardwareMap.dcMotor.get("motor_4");
 
-        motorLeft.setDirection(DcMotor.Direction.REVERSE);
 
 
     }
