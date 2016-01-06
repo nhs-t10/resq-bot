@@ -13,24 +13,19 @@ import com.qualcomm.robotcore.util.Range;
  */
 public class ResQ_TeleOp extends ResQ_Library {
 
-    double srvoHang1Position;
-    double srvoHang2Position;
-
-    boolean autoMoveArm;
 
     @Override
     public void init() {
-        /*
-         * Use the hardwareMap to get the dc motors and servos by name. Note
-		 * that the names of the devices must match the names used when you
-		 * configured your robot and created the configuration file.
-		 */
-
         //Do the map thing
         initializeMapping();
+        telemetry.addData("Version", "Sensorless. COLOR ERROR SHOULD NOT SHOW UP!");
 
-        //srvoHang1Position = srvoHang_1.getPosition();
-        //srvoHang2Position = srvoHang_2.getPosition();
+        //Set Deflectors Up
+        RDefPos = RDefUpPos;
+        LDefPos = LDefUpPos;
+        //srvoLeftDeflector.setPosition(LDefPos);
+        //srvoRightDeflector.setPosition(RDefPos);
+        isDeflectorDown = false;
     }
 
 
@@ -46,7 +41,7 @@ public class ResQ_TeleOp extends ResQ_Library {
 
         //****************DRIVING****************//
 
-        /* Procedure:
+        /* Procedure for Aman's tank single stick drive code:
             Get X and Y from the Joystick, do whatever scaling and calibrating you need to do based on your hardware.
             Invert X
             Calculate R+L (Call it V): V =(100-ABS(X)) * (Y/100) + Y
@@ -68,10 +63,7 @@ public class ResQ_TeleOp extends ResQ_Library {
         right = Range.clip(right, -1, 1);
         left = Range.clip(left, -1, 1);
 
-        //drive(left, right);
-
-        telemetry.addData("Right:", ""+right);
-        telemetry.addData("Left:", ""+left);
+        drive(left, right);
 
         //Drive modifications
         if (gamepad1.x) {
@@ -86,37 +78,32 @@ public class ResQ_TeleOp extends ResQ_Library {
             //Track speed 25%
             setDriveGear(1);
         }
-        if (gamepad1.a) {
-            //reverse drive
-            driveReverse = !driveReverse;
-        }
 
-        //****************BLOCK MANIPULATION****************//
+        //****************BLOCK SCORING****************//
 
-        if (gamepad2.x) {
-            //toggle block intake
-        }
-        if (gamepad2.a) {
-            //Toggle conveyor movement
-            if (isConveyorMoving) { //it's already moving, stop it
-
-                isConveyorMoving = !isConveyorMoving;
-            } else { //its not, so start it up
-
+        if (gamepad1.a) { //Grabber Servo
+            if(isGrabberDown){ //grabber is down, move it back up
+                srvoBlockGrabber.setPosition(0.2);
+            } else { //grabber is up, move it back down
+                srvoBlockGrabber.setPosition(0.7);
             }
+            isGrabberDown = !isGrabberDown;
         }
-        if (gamepad2.b) {
-            //have the servo switch which side the blocks fall into
-            //create an enum code to know which side the servo is already facing by default so we can change
+
+        if (gamepad2.x) { //Dropper Left Pos
+            DropperPosition dropperPos = DropperPosition.LEFT;
+            srvoBlockDropper.setPosition(0.75);
+        } else if (gamepad2.y) { //Dropper Center
+            DropperPosition dropperPos = DropperPosition.CENTER;
+            srvoBlockDropper.setPosition(0.6);
+        } else if (gamepad2.b) { //Dropper Right Pos
+            DropperPosition dropperPos = DropperPosition.RIGHT;
+            srvoBlockDropper.setPosition(0.5);
         }
+
+
 
         //****************OTHER****************//
-
-        //Hanging Winch
-        if (gamepad2.y) {
-            //Hanging automation procedure
-            //HangingAutomation();
-        }
 
         //Hanging
         /**
@@ -127,31 +114,80 @@ public class ResQ_TeleOp extends ResQ_Library {
         if (gamepad2.right_bumper) {
             //release tension by letting go of string
             motorHangingMech.setPower(-1.0f);
+            telemetry.addData("Winch:", "Releasing String");
         } else if (gamepad2.right_trigger >= 0.5f) {
             //pull string and add tension
             motorHangingMech.setPower(1.0f);
+            telemetry.addData("Winch:", "Pulling String");
         } else {
             motorHangingMech.setPower(0);
         }
 
         //Tape
         if (gamepad2.left_bumper) {
-            //release tension by letting go of string
-            motorTapeMech.setPower(-1.0f);
+            //bring the tape back;
+            motorTapeMech.setPower(-0.5f);
+            telemetry.addData("Tape:", "Pulling Tape");
         } else if (gamepad2.left_trigger >= 0.5f) {
-            //pull string and add tension
-            motorTapeMech.setPower(1.0f);
+            //send the tape out
+            motorTapeMech.setPower(0.5f);
+            telemetry.addData("Tape:", "Sending Tape");
         } else {
             motorTapeMech.setPower(0);
         }
 
 
+        /*if (gamepad1.a) { //Deflector Toggle
+            /*if(isDeflectorDown){ //Is down, bring back up
+                //set position up
+                RDefPos = RDefUpPos;
+                LDefPos = LDefUpPos;
+                RDefPos = Range.clip(RDefPos, 0.0, 1.0);
+                LDefPos = Range.clip(LDefPos, 0.0, 1.0);
+            }
+            else { //Is up, deploy down
+                //set position down
+                RDefPos = RDefDownPos;
+                LDefPos = LDefDownPos;
+                RDefPos = Range.clip(RDefPos, 0.0, 1.0);
+                LDefPos = Range.clip(LDefPos, 0.0, 1.0);
+            }
+            srvoRightDeflector.setPosition(RDefPos);
+            srvoLeftDeflector.setPosition(LDefPos);
+            if(isDeflectorDown){
+                RDefPos += servoDelta;
+                LDefPos += servoDelta;
+            } else {
+                RDefPos -= servoDelta;
+                LDefPos -= servoDelta;
+            }
+            isDeflectorDown = !isDeflectorDown;
+        }*/
+
+        if (gamepad1.left_bumper){ //increase servo
+            LDefPos -= servoDelta;
+            RDefPos += servoDelta;
+        } else if (gamepad1.right_bumper) { //decrease servo
+            LDefPos += servoDelta;
+            RDefPos -= servoDelta;
+        }
 
 
-        //****************TELEMETRY****************//
+        RDefPos = Range.clip(RDefPos, 0.0, 0.8);
+        LDefPos = Range.clip(LDefPos, 0.2, 1.0);
+        //srvoLeftDeflector.setPosition(LDefPos);
+        //srvoRightDeflector.setPosition(RDefPos);
 
-        String tel_Bool_Reverse = (driveReverse) ? "REVERSED" : "normal";
-        String tel_Bool_Speed = "error speed";
+        if (gamepad1.a) {
+            //lower the climber drop
+            //srvoScoreClimbers.setPosition(0.0);
+        } else {
+            //srvoScoreClimbers.setPosition(1.0);
+        }
+
+
+        //****************TELEMETRY****************/
+        /*String tel_Bool_Speed = "error speed";
         if (driveGear == 3) { //highest 100% setting, essentially don't change it
             tel_Bool_Speed = "at 100% speed";
         } else if (driveGear == 2) { //medium 50% setting
@@ -159,7 +195,10 @@ public class ResQ_TeleOp extends ResQ_Library {
         } else if (driveGear == 1) { //lowest 25% setting
             tel_Bool_Speed = "at 25% speed";
         }
-        telemetry.addData("", "Driving is " + tel_Bool_Reverse + " and " + tel_Bool_Speed);
+        telemetry.addData("", "Driving is " + " and " + tel_Bool_Speed);*/
 
+
+
+        telemetry.addData("Current Power Left", "" + (float)motorLeftTread.getPower());
     }
 }

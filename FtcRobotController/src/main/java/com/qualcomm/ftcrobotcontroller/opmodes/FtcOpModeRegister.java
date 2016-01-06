@@ -31,15 +31,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
-import com.qualcomm.ftcrobotcontroller.opmodes.Minibot.MinibotTeleOp;
-import com.qualcomm.ftcrobotcontroller.opmodes.ftcdefault.K9TeleOp;
-import com.qualcomm.ftcrobotcontroller.opmodes.ftcdefault.NullOp;
-import com.qualcomm.ftcrobotcontroller.opmodes.ftcdefault.PushBotAuto;
-import com.qualcomm.ftcrobotcontroller.opmodes.ftcdefault.PushBotManual;
-import com.qualcomm.ftcrobotcontroller.opmodes.test.ColorTest;
+import com.qualcomm.ftcrobotcontroller.opmodes.test.EncoderTest;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.GyroTest;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.ServoTest;
-import com.qualcomm.ftcrobotcontroller.opmodes.test.UltraTest;
+import com.qualcomm.ftcrobotcontroller.opmodes.test.TeleopAssist;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
 
@@ -65,13 +60,10 @@ public class FtcOpModeRegister implements OpModeRegister {
      * If two or more op modes are registered with the same name, the app will display an error.
      */
     manager.register("TeleOp", ResQ_TeleOp.class);
-    manager.register("Autonomous", FirstMeetAutonomous.class);
-      manager.register("Chuck Testa", ChuckTesta.class);
-    /*manager.register ("Minibot", MinibotTeleOp.class);
-    manager.register("UltraTest", UltraTest.class);
-    manager.register("SensorTest", GyroTest.class);
-    manager.register("ColorTest", ColorTest.class);
-    manager.register("ServoTest", ServoTest.class);*/
-
+    manager.register("Autonomous", ResQ_Autonomous.class);
+    manager.register("ServoTest", ServoTest.class);
+    manager.register("Encoders", EncoderTest.class);
+    manager.register("CameraTest", CameraOp.class);
+    manager.register("GyroTest", GyroTest.class);
   }
 }
