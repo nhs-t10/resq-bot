@@ -433,7 +433,7 @@ public abstract class ResQ_Library extends OpMode {
     }
 
     @Deprecated
-    public float AccelerateAman (float value, String side) {
+    public float AccelerateJack (float value, String side) {
         //Acceleration Code
         /**
          * How it works:
