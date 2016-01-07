@@ -25,10 +25,6 @@ public class TeleopAssist extends ResQ_Library {
 
         //Do the map thing
         initializeMapping();
-
-        //srvoHang1Position = srvoHang_1.getPosition();
-        //srvoHang2Position = srvoHang_2.getPosition();
-        //srvoHang_1.setPosition(1.0);
     }
 
 
@@ -49,7 +45,7 @@ public class TeleopAssist extends ResQ_Library {
         //Drive modifications
         if (gamepad1.left_trigger > 0.8 && !flip90Left) {
             flip90Left = true;
-            flip90LeftDest = (int) getYaw() + 90;
+            flip90LeftDest = add90(getYaw());
         }
         if(flip90Left && getYaw() < flip90LeftDest) {
             drive(0.5f, 0);
@@ -79,60 +75,9 @@ public class TeleopAssist extends ResQ_Library {
         return (int)closestAngle;
     }
 
-    /*
-            Mox's UBER SECRET SPECIAL TEST OPMODE. FIND OUT WATS WRONG!!
-        */
-    public static class ChuckTesta extends OpMode {
-
-        DcMotor m1, m2, m3, m4;
-        int task = 0;
-
-        @Override
-        public void init() {
-            telemetry.addData("Status", "Get ready, it's CHUCK TESTA time.");
-            telemetry.addData("Task", "Now initializing motors. Reason for error? Probably not configged right.");
-            m1 = hardwareMap.dcMotor.get("m1");
-            m2 = hardwareMap.dcMotor.get("m2");
-            m3 = hardwareMap.dcMotor.get("m3");
-            m4 = hardwareMap.dcMotor.get("m4");
-        }
-
-        @Override
-        public void loop() {
-            Double t = this.time;
-            int time = t.intValue();
-            switch (time) {
-                case 1:
-                    telemetry.addData("Status", "Please stand clear. YEE HAW!");
-                    break;
-                case 3:
-                    write("Turning Left", 0, 1, 0, 1);
-                    break;
-                case 6:
-                    write("Turning Right", 1, 0, 1, 0);
-                    break;
-                case 10:
-                    write("done", 0, 0, 0, 0);
-                    break;
-            }
-        }
-        public void write(String desc, float M1, float M2, float M3, float M4){
-            m1.setPower(M1);
-            m2.setPower(M2);
-            m3.setPower(M3);
-            m4.setPower(M4);
-            telemetry.addData("Task", desc);
-        }
-        public void finish(){
-            m1.setPower(0);
-            m2.setPower(0);
-            m3.setPower(0);
-            m4.setPower(0);
-        }
-        public void say(String status, String task, String hardware) {
-            if(status != "") telemetry.addData("Status", status);
-            if(task != "") telemetry.addData("Task", task);
-            if(hardware != "")telemetry.addData("Hardware", hardware);
-        }
+    int add90(double yaw) {
+        int ret = (int) yaw + 90;
+        if(ret >= 360) return 360 - ret;
+        else return ret;
     }
 }

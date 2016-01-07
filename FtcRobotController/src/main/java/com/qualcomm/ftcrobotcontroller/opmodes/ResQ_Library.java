@@ -271,6 +271,12 @@ public abstract class ResQ_Library extends OpMode {
         drive(0.0f, 0.0f);
     }
 
+    public void approach(int direction){
+        float leftPower = 0.2f * direction;
+        float rightPower = 0.2f * direction;
+        drive(leftPower, rightPower);
+    }
+
     public void setDriveGear(int gear) {
         driveGear = normalizeForGear(gear);
     }
