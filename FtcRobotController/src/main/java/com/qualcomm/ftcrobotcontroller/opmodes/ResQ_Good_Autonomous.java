@@ -64,7 +64,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         } else {
             int m = teamWeAreOn == Team.RED ? -1 : 1;
             drive(.3f * m, -.3f * m);
-            //driveTurnDegrees(60); //thx will p
         }
+        //driveTurnDegrees(60); //thx will p
     }
 }
