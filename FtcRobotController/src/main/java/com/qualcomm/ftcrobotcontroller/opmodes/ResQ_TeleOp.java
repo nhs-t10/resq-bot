@@ -79,14 +79,14 @@ public class ResQ_TeleOp extends ResQ_Library {
 
         //****************BLOCK SCORING****************//
 
-        if (gamepad1.a) { //Grabber Servo
+        /*if (gamepad1.a) { //Grabber Servo
             if(isGrabberDown){ //grabber is down, move it back up
                 srvoBlockGrabber.setPosition(0.2);
             } else { //grabber is up, move it back down
                 srvoBlockGrabber.setPosition(0.7);
             }
             isGrabberDown = !isGrabberDown;
-        }
+        }*/
 
         if (Y2 > 0.25) { //arm
             motorEnArm.setTargetPosition(0);

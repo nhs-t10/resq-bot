@@ -28,7 +28,8 @@ public abstract class ResQ_Library extends OpMode {
     Servo srvoScoreClimbers, srvoBeaconPusher;
 
     //Other
-    Servo srvoBlockDropper, srvoBlockGrabber;
+    Servo srvoBlockDropper;
+    Servo srvoLeftGuard, srvoRightGuard;
 
     //Sensors
     AnalogInput sensorUltra_1, sensorUltra_2;
@@ -122,8 +123,7 @@ public abstract class ResQ_Library extends OpMode {
         /*srvoScoreClimbers = hardwareMap.servo.get("s1");
         srvoRightDeflector = hardwareMap.servo.get("s2");
         srvoLeftDeflector = hardwareMap.servo.get("s3");*/
-        srvoBlockGrabber = hardwareMap.servo.get("s4");
-        srvoBlockDropper = hardwareMap.servo.get("s5");
+        srvoBlockDropper = hardwareMap.servo.get("s4");
         //srvoBeaconPusher = hardwareMap.servo.get("s6");
 
 
