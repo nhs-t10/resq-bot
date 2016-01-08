@@ -2,10 +2,6 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 
 //import android.database.CrossProcessCursor;
 
-import com.qualcomm.robotcore.hardware.AnalogInput;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.robocol.Telemetry;
 import com.qualcomm.robotcore.util.Range;
 
 /**
@@ -51,14 +47,16 @@ public class ResQ_TeleOp extends ResQ_Library {
             Re-calibrate to work with motor hardware
             Send those values to your Robot.
          */
-        float X = -ProcessToMotorFromJoy(-gamepad1.left_stick_x); //X is inverted with the negative sign
-        float Y = ProcessToMotorFromJoy(-gamepad1.left_stick_y); //NOT inverted
+        float X1 = -ProcessToMotorFromJoy(-gamepad1.left_stick_x); //X is inverted with the negative sign
+        float Y1 = ProcessToMotorFromJoy(-gamepad1.left_stick_y); //NOT inverted
 
-        float V = (100-Math.abs(X)) * (Y/100) + Y; // R+L
-        float W = (100-Math.abs(Y)) * (X/100) + X; // R-L
+        float Y2 = ProcessToMotorFromJoy(-gamepad2.left_stick_y);
 
-        float right = (V+W)/2;
-        float left = (V-W)/2;
+        float V1 = (100-Math.abs(X1)) * (Y1/100) + Y1; // R+L
+        float W1 = (100-Math.abs(Y1)) * (X1/100) + X1; // R-L
+
+        float right = (V1+W1)/2;
+        float left = (V1-W1)/2;
 
         right = Range.clip(right, -1, 1);
         left = Range.clip(left, -1, 1);
@@ -88,6 +86,13 @@ public class ResQ_TeleOp extends ResQ_Library {
                 srvoBlockGrabber.setPosition(0.7);
             }
             isGrabberDown = !isGrabberDown;
+        }
+
+        if (Y2 > 0.25) { //arm
+            motorEnArm.setTargetPosition(0);
+        }
+        else if (Y2 < -0.25) { //joystick is down
+            motorEnArm.setTargetPosition(-440);
         }
 
         if (gamepad2.x) { //Dropper Left Pos

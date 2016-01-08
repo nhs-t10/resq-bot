@@ -1,10 +1,10 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.exception.RobotCoreException;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CompassSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -22,6 +22,7 @@ public abstract class ResQ_Library extends OpMode {
     DcMotor motorRightTread, motorLeftTread, motorRightSecondTread, motorLeftSecondTread;
     DcMotor motorHangingMech;
     DcMotor motorTapeMech;
+    DcMotor motorEnArm;
 
     //Autonomous
     Servo srvoScoreClimbers, srvoBeaconPusher;
@@ -115,7 +116,8 @@ public abstract class ResQ_Library extends OpMode {
         motorRightSecondTread = hardwareMap.dcMotor.get("m4");
         motorHangingMech = hardwareMap.dcMotor.get("m5");
         motorTapeMech = hardwareMap.dcMotor.get("m6");
-
+        motorEnArm = hardwareMap.dcMotor.get("m7");
+        motorEnArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
         //Servos
         /*srvoScoreClimbers = hardwareMap.servo.get("s1");
         srvoRightDeflector = hardwareMap.servo.get("s2");
