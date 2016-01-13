@@ -52,7 +52,7 @@ public class ResQ_Autonomous extends ResQ_Library {
         initializeMapping();
         //loadSensor(teamWeAreOn);
         driveGear = 3;
-        calibrateColors();
+        //calibrateColors();
         startIMU();
     }
     public void loop() {

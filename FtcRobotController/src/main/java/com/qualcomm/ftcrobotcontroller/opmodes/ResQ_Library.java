@@ -248,12 +248,12 @@ public abstract class ResQ_Library extends OpMode {
          */
         if (degrees > oppositeAngle || (oppositeAngle < 180)? (degrees > initialAngle): (degrees < initialAngle)) {
             //turn negative degrees
-            rightSpeed = 1.0f;
-            leftSpeed = -1.0f;
+            rightSpeed = 0.5f;
+            leftSpeed = -0.5f;
         } else {
             //turn positive degrees
-            rightSpeed = -1.0f;
-            leftSpeed = 1.0f;
+            rightSpeed = -0.5f;
+            leftSpeed = 0.5f;
         }
 
         while(scaleToAngle(degrees - precision) > getYaw() && scaleToAngle(degrees + precision) < getYaw()) {
