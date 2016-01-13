@@ -71,8 +71,7 @@ public abstract class ResQ_Library extends OpMode {
 
 
     //acceleration
-    long rightDelayUntil = 0;
-    long leftDelayUntil = 0;
+    long delayUntil = 0;
     float accelerationTime = 100;
     double accelerationThreshold = 0.1;
 
@@ -367,6 +366,11 @@ public abstract class ResQ_Library extends OpMode {
     }
 
     //****************NUMBER MANIPULATION METHODS****************//
+    public void accelerateForward() {
+        //get average powers for left and right motors (prevents any motor bias)
+        double right = (motorLeftTread.getPower() + motorLeftSecondTread.getPower())/2;
+        double left = (motorRightTread.getPower() + motorRightSecondTread.getPower())/2;
+    }
 
     public float Accelerate (float value, String side) {
         //Acceleration Code
@@ -382,62 +386,35 @@ public abstract class ResQ_Library extends OpMode {
          *
          *  the actual power variable changes, so we'll pass that below the if statement whether or not the time works
          */
+        float motorCurrentPower = 0;
 
-
-        if (side == "right") {
-            float right = value;
-
-            //collects the actual current power to compare
-            float motorRightCurrentPower = (float)motorRightTread.getPower();
-            float rightPowerChange = right - motorRightCurrentPower;
-
-            if (System.currentTimeMillis() > rightDelayUntil) { // We can change it
-                //We're changing it by too much, restrict it
-                if (Math.abs(rightPowerChange) > accelerationThreshold) {
-                    if(value != 0) {
-                        motorRightCurrentPower += accelerationThreshold * value / Math.abs(value);
-                    }else{
-                        motorRightCurrentPower = 0;
-                    }
-                    rightDelayUntil = System.currentTimeMillis() + (long) accelerationTime;
-                } else {
-                    // Small enough change that we can allow it right away
-                    rightDelayUntil = 0;
-                    motorRightCurrentPower = right;
-                }
-            }
-            return motorRightCurrentPower;
-
-        } else if (side == "left") {
-            float left = value;
-            telemetry.addData("initial value", ""+value);
-
-            //collects the actual current power to compare
-            float motorLeftCurrentPower = (float)motorLeftTread.getPower();
-            float leftPowerChange = left - motorLeftCurrentPower;
-
-            if (System.currentTimeMillis() > leftDelayUntil) { // We can change it
-                //We're changing it by too much, restrict it
-                if (Math.abs(leftPowerChange) > accelerationThreshold) {
-                    if(value != 0) {
-                        motorLeftCurrentPower += accelerationThreshold * value / Math.abs(value);
-                        telemetry.addData("change value", "" + accelerationThreshold * value / Math.abs(value));
-                    }else{
-                        motorLeftCurrentPower = 0;
-                    }
-                    leftDelayUntil = System.currentTimeMillis() + (long)accelerationTime;
-                } else {
-                    // Small enough change that we can allow it left away
-                    leftDelayUntil = 0;
-                    motorLeftCurrentPower = left;
-                }
-            }
-            return motorLeftCurrentPower;
-
-        } else {
+        if(side.equals("right")) {
+            motorCurrentPower = (float)motorRightTread.getPower();
+        } else if(side.equals("left")) {
+            motorCurrentPower = (float)motorLeftTread.getPower();
+        }  else {
             telemetry.addData("Error", "Motor values unable to accelerate");
             return value;
         }
+
+        float powerChange = value - motorCurrentPower;
+
+        if (System.currentTimeMillis() > delayUntil) { // We can change it
+                //We're changing it by too much, restrict it
+            if (Math.abs(powerChange) > accelerationThreshold) {
+                if(value != 0) {
+                    motorCurrentPower += accelerationThreshold * value / Math.abs(value);
+                }else{
+                    motorCurrentPower = 0;
+                }
+                delayUntil = System.currentTimeMillis() + (long) accelerationTime;
+            } else {
+                // Small enough change that we can allow it right away
+                delayUntil = 0;
+                motorCurrentPower = value;
+            }
+        }
+        return motorCurrentPower;
     }
 
     @Deprecated
@@ -455,7 +432,7 @@ public abstract class ResQ_Library extends OpMode {
          *
          *  the actual power variable changes, so we'll pass that below the if statement whether or not the time works
          */
-
+        float rightDelayUntil = 0;
 
         if (side == "right") {
             float right = value;

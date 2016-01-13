@@ -47,8 +47,8 @@ public class ResQ_TeleOp extends ResQ_Library {
             Re-calibrate to work with motor hardware
             Send those values to your Robot.
          */
-        float X1 = -ProcessToMotorFromJoy(-gamepad1.left_stick_x); //X is inverted with the negative sign
-        float Y1 = ProcessToMotorFromJoy(-gamepad1.left_stick_y); //NOT inverted
+        float X1 = ProcessToMotorFromJoy(-gamepad1.left_stick_x);
+        float Y1 = ProcessToMotorFromJoy(-gamepad1.left_stick_y);
 
         float Y2 = ProcessToMotorFromJoy(-gamepad2.left_stick_y);
 
