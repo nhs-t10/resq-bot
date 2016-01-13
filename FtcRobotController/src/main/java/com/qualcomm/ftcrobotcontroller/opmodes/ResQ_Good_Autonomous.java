@@ -27,7 +27,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     public void init() {
         initializeMapping();
         loadSensor(teamWeAreOn);
-        calibrateColors();
+        //calibrateColors();
         startIMU();
     }
 
