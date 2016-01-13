@@ -11,6 +11,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     protected boolean foundLine;
     protected boolean robotFirstTurn; //when we get to the line, turn in the general direction of the beacon
     protected boolean turning;
+    protected boolean parked;
 
     protected Team teamWeAreOn; //enum thats represent team
 
@@ -18,6 +19,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         foundLine = false;
         robotFirstTurn = false;
         turning = false;
+        parked = false;
         teamWeAreOn = Team.UNKNOWN;
         driveGear = 3;
     }
@@ -41,7 +43,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     public void loop() {
         if (!robotFirstTurn){
             turnToBeacon(); //is
-        } else {
+        } else if (!parked){
             approachBeacon();
         }
     }
@@ -58,6 +60,8 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         }
         else {
             stopDrive();
+            telemetry.addData("Status", "parked");
+            parked = true;
         }
     }
 
