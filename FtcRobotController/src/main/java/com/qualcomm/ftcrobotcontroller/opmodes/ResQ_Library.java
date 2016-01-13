@@ -28,6 +28,7 @@ public abstract class ResQ_Library extends OpMode {
     Servo srvoScoreClimbers, srvoBeaconPusher;
 
     //Other
+    Servo srvoRightDeflector, srvoLeftDeflector;
     Servo srvoBlockDropper;
     Servo srvoLeftGuard, srvoRightGuard;
 
@@ -118,11 +119,11 @@ public abstract class ResQ_Library extends OpMode {
         motorHangingMech = hardwareMap.dcMotor.get("m5");
         motorTapeMech = hardwareMap.dcMotor.get("m6");
         motorEnArm = hardwareMap.dcMotor.get("m7");
-        motorEnArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+
         //Servos
-        /*srvoScoreClimbers = hardwareMap.servo.get("s1");
+        //srvoScoreClimbers = hardwareMap.servo.get("s1");
         srvoRightDeflector = hardwareMap.servo.get("s2");
-        srvoLeftDeflector = hardwareMap.servo.get("s3");*/
+        srvoLeftDeflector = hardwareMap.servo.get("s3");
         srvoBlockDropper = hardwareMap.servo.get("s4");
         //srvoBeaconPusher = hardwareMap.servo.get("s6");
 
@@ -174,8 +175,8 @@ public abstract class ResQ_Library extends OpMode {
         } //if there's a bug and it's not 1, 2 or 3, default to max drive
 
 
-        right = Accelerate(right, "right");
-        left = Accelerate(left, "left");
+        //right = Accelerate(right, "right");
+        //left = Accelerate(left, "left");
 
 
         //Clips it just in case there's a problem
