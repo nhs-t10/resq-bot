@@ -72,7 +72,6 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
             drive(.3f * m, -.3f * m);
         }*/
         driveTurnDegrees(230); //thx will p
-        sleep(5000);
         robotFirstTurn = true;
     }
 }
