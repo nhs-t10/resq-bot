@@ -26,9 +26,15 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     @Override
     public void init() {
         initializeMapping();
-        loadSensor(teamWeAreOn);
+        //loadSensor(teamWeAreOn);
         //calibrateColors();
         startIMU();
+        telemetry.addData("Init Yaw", getYaw());
+    }
+
+    @Override
+    public void stop() {
+        telemetry.addData("Init Yaw", getYaw());
     }
 
     @Override
@@ -41,7 +47,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     }
 
     protected void approach(int direction, float speed){
-        drive(direction * speed, direction * speed);
+        driveStraight(1.0f);
     }
 
     protected void approachBeacon(){
@@ -56,7 +62,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     }
 
     public void turnToBeacon() { //(turn to beacon)
-        double yaw = getYaw();
+        /*double yaw = getYaw();
         telemetry.addData("yaw", yaw);
         if ((teamWeAreOn == Team.RED && yaw >= 220 && yaw <= 230) || (teamWeAreOn == Team.BLUE && yaw >= 300 && yaw <= 305)) { //make this compass later
             robotFirstTurn = true;
@@ -64,7 +70,9 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         } else {
             int m = teamWeAreOn == Team.RED ? -1 : 1;
             drive(.3f * m, -.3f * m);
-        }
-        //driveTurnDegrees(60); //thx will p
+        }*/
+        driveTurnDegrees(230); //thx will p
+        sleep(5000);
+        robotFirstTurn = true;
     }
 }

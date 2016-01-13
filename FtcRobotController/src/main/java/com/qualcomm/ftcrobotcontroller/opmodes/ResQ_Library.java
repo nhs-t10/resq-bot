@@ -172,8 +172,8 @@ public abstract class ResQ_Library extends OpMode {
         } //if there's a bug and it's not 1, 2 or 3, default to max drive
 
 
-        right = Accelerate(right, "right");
-        left = Accelerate(left, "left");
+        //right = Accelerate(right, "right");
+        //left = Accelerate(left, "left");
 
 
         //Clips it just in case there's a problem
@@ -235,8 +235,6 @@ public abstract class ResQ_Library extends OpMode {
         //the angle across from the initialAngle on a circle
         double oppositeAngle = scaleToAngle(initialAngle + 180);
 
-        telemetry.addData("turning", "Began turning");
-
         float rightSpeed;
         float leftSpeed;
 
@@ -256,14 +254,15 @@ public abstract class ResQ_Library extends OpMode {
             leftSpeed = 0.5f;
         }
 
-        while(scaleToAngle(degrees - precision) > getYaw() && scaleToAngle(degrees + precision) < getYaw()) {
+        telemetry.addData("turning", "Start turning. Current Yaw: " + getYaw());
+        while(!(scaleToAngle(degrees - precision) > getYaw() && scaleToAngle(degrees + precision) < getYaw())) {
             telemetry.addData("turning", "" + scaleToAngle(degrees - precision) + " > " + getYaw());
 			if(startTurn) {
 				drive(rightSpeed, leftSpeed);
 				startTurn = false;
             }
         }
-        telemetry.addData("turning", "Finished turning.");
+        //telemetry.addData("turning", "Finished turning.");
         stopDrive();
     }
 
