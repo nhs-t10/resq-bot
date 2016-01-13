@@ -50,7 +50,7 @@ public class ResQ_Autonomous extends ResQ_Library {
     public void init() {
         //Do the map thing
         initializeMapping();
-        loadSensor(teamWeAreOn);
+        //loadSensor(teamWeAreOn);
         driveGear = 3;
         calibrateColors();
         startIMU();
