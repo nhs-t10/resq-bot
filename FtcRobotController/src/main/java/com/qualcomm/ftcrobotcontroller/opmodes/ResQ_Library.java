@@ -127,12 +127,12 @@ public abstract class ResQ_Library extends OpMode {
 
         //Sensors
         //(color sensors are initialized w/ loadSensor(Team)
-        /*sensorUltra_1 = hardwareMap.analogInput.get("u1");
+        sensorUltra_1 = hardwareMap.analogInput.get("u1");
         try {
             imu = new AdafruitIMU(hardwareMap, "g1", (byte)(AdafruitIMU.BNO055_ADDRESS_A * 2), (byte)AdafruitIMU.OPERATION_MODE_IMU);
         } catch(RobotCoreException rce) {
             telemetry.addData("RobotCoreException", rce.getMessage());
-        }*/
+        }
 
         //Other Mapping
         motorHangingMech = hardwareMap.dcMotor.get("m5");
