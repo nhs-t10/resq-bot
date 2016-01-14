@@ -28,6 +28,7 @@ public abstract class ResQ_Library extends OpMode {
     Servo srvoScoreClimbers, srvoBeaconPusher;
 
     //Other
+    Servo srvoRightDeflector, srvoLeftDeflector;
     Servo srvoBlockDropper;
     Servo srvoLeftGuard, srvoRightGuard;
 
@@ -117,11 +118,11 @@ public abstract class ResQ_Library extends OpMode {
         motorHangingMech = hardwareMap.dcMotor.get("m5");
         motorTapeMech = hardwareMap.dcMotor.get("m6");
         motorEnArm = hardwareMap.dcMotor.get("m7");
-        motorEnArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+
         //Servos
-        /*srvoScoreClimbers = hardwareMap.servo.get("s1");
+        //srvoScoreClimbers = hardwareMap.servo.get("s1");
         srvoRightDeflector = hardwareMap.servo.get("s2");
-        srvoLeftDeflector = hardwareMap.servo.get("s3");*/
+        srvoLeftDeflector = hardwareMap.servo.get("s3");
         srvoBlockDropper = hardwareMap.servo.get("s4");
         //srvoBeaconPusher = hardwareMap.servo.get("s6");
 
@@ -173,8 +174,8 @@ public abstract class ResQ_Library extends OpMode {
         } //if there's a bug and it's not 1, 2 or 3, default to max drive
 
 
-        right = Accelerate(right, "right");
-        left = Accelerate(left, "left");
+        //right = Accelerate(right, "right");
+        //left = Accelerate(left, "left");
 
 
         //Clips it just in case there's a problem
@@ -415,109 +416,6 @@ public abstract class ResQ_Library extends OpMode {
             }
         }
         return motorCurrentPower;
-    }
-
-    @Deprecated
-    public float AccelerateJack (float value, String side) {
-        //Acceleration Code
-        /**
-         * How it works:
-         *  We collect the current power for both sides of motors and deal with them separately
-         *  We find the delta between the desired motor value and the current power
-         *  We use the system's time to time a change amount. If the system's time is more than the delay, it changes
-         *  If the time threshold has not been crossed, the target power is the current power (doesn't change)
-         *
-         *  We compare the change amount to the threshold (currently .1); if the change is bigger, we restrict it
-         *  if the change is lower, we'll let it pass exactly as it is instead of changing by .1
-         *
-         *  the actual power variable changes, so we'll pass that below the if statement whether or not the time works
-         */
-        float rightDelayUntil = 0;
-
-        if (side == "right") {
-            float right = value;
-
-            //collects the actual current power to compare
-            float motorRightCurrentPower = (float) motorRightTread.getPower();
-            float rightPowerChange = right - motorRightCurrentPower;
-
-            if (System.currentTimeMillis() > rightDelayUntil) { // We can change it
-                //We're changing it by too much, restrict it
-                if (Math.abs(rightPowerChange) > accelerationThreshold) {
-                    if (value != 0) {
-                        // Small enough change that we can allow it right away
-                        motorRightCurrentPower = right;
-                    }
-                    // increased delay until so that the acceleration can continually work, setting the time
-                    // to the next acceleration increment
-                    rightDelayUntil = System.currentTimeMillis() + (long) accelerationTime;
-                }
-                return motorRightCurrentPower;
-            }
-        }
-
-        if (side == "left") {
-            float left = value;
-
-            //collects the actual current power to compare
-            float motorLeftCurrentPower = (float) motorLeftTread.getPower();
-            float leftPowerChange = left - motorLeftCurrentPower;
-
-            if (System.currentTimeMillis() > leftDelayUntil) { // We can change it
-                //We're changing it by too much, restrict it
-                if (Math.abs(leftPowerChange) > accelerationThreshold) {
-                    if (value != 0) {
-                        // Small enough change that we can allow it right away
-                        motorLeftCurrentPower = left;
-                    }
-                    // increased delay until so that the acceleration can continually work, setting the time
-                    // to the next acceleration increment
-                    leftDelayUntil = System.currentTimeMillis() + (long) accelerationTime;
-                }
-                return motorLeftCurrentPower;
-
-            }
-        }
-
-        // why is the left different than the right?
-        /*else if (side == "left") {
-            float left = value;
-            telemetry.addData("initial value", ""+value);
-
-            //collects the actual current power to compare
-            float motorLeftCurrentPower = (float)motorLeftTread.getPower();
-            float leftPowerChange = left - motorLeftCurrentPower;
-
-            if (System.currentTimeMillis() > leftDelayUntil) { // We can change it
-                //We're changing it by too much, restrict it
-                if (Math.abs(leftPowerChange) > accelerationThreshold) {
-                    if(value != 0) {
-                        motorLeftCurrentPower += accelerationThreshold * value / Math.abs(value);
-                        motorRightCurrentPower += accelerationThreshold * value / Math.abs(value);
-                    }else{
-                        motorRightCurrentPower = 0;
-                    }
-                    rightDelayUntil = System.currentTimeMillis() + (long) accelerationTime;
-                } else {
-                        telemetry.addData("change value", "" + accelerationThreshold * value / Math.abs(value));
-                    }else{
-                        motorLeftCurrentPower = 0;
-                    }
-                    leftDelayUntil = System.currentTimeMillis() + (long)accelerationTime;
-                } else {
-                    // Small enough change that we can allow it left away
-                    leftDelayUntil = 0;
-                    motorLeftCurrentPower = left;
-                }
-            }
-            return motorLeftCurrentPower;
-
-        } else {
-            telemetry.addData("Error", "Motor values unable to accelerate");
-            return value;
-        }
-        */
-    return 0;
     }
 
     public float ProcessToMotorFromJoy(float input) { //This is used in any case where joystick input is to be converted to a motor

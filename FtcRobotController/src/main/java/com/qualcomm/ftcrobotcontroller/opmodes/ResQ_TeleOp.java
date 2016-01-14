@@ -2,6 +2,7 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 
 //import android.database.CrossProcessCursor;
 
+import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.util.Range;
 
 /**
@@ -22,6 +23,8 @@ public class ResQ_TeleOp extends ResQ_Library {
         //srvoLeftDeflector.setPosition(LDefPos);
         //srvoRightDeflector.setPosition(RDefPos);
         isDeflectorDown = false;
+
+        motorEnArm.setPower(0.10);
     }
 
 
@@ -47,16 +50,15 @@ public class ResQ_TeleOp extends ResQ_Library {
             Re-calibrate to work with motor hardware
             Send those values to your Robot.
          */
-        float X1 = ProcessToMotorFromJoy(-gamepad1.left_stick_x);
-        float Y1 = ProcessToMotorFromJoy(-gamepad1.left_stick_y);
 
-        float Y2 = ProcessToMotorFromJoy(-gamepad2.left_stick_y);
+        float X = -ProcessToMotorFromJoy(-gamepad1.left_stick_x); //X is inverted with the negative sign
+        float Y = ProcessToMotorFromJoy(-gamepad1.left_stick_y); //NOT inverted
 
-        float V1 = (100-Math.abs(X1)) * (Y1/100) + Y1; // R+L
-        float W1 = (100-Math.abs(Y1)) * (X1/100) + X1; // R-L
+        float V = (100-Math.abs(X)) * (Y/100) + Y; // R+L
+        float W = (100-Math.abs(Y)) * (X/100) + X; // R-L
 
-        float right = (V1+W1)/2;
-        float left = (V1-W1)/2;
+        float right = (V+W)/2;
+        float left = (V-W)/2;
 
         right = Range.clip(right, -1, 1);
         left = Range.clip(left, -1, 1);
@@ -79,20 +81,16 @@ public class ResQ_TeleOp extends ResQ_Library {
 
         //****************BLOCK SCORING****************//
 
-        /*if (gamepad1.a) { //Grabber Servo
-            if(isGrabberDown){ //grabber is down, move it back up
-                srvoBlockGrabber.setPosition(0.2);
-            } else { //grabber is up, move it back down
-                srvoBlockGrabber.setPosition(0.7);
-            }
-            isGrabberDown = !isGrabberDown;
-        }*/
+
+        float Y2 = ProcessToMotorFromJoy(-gamepad2.left_stick_y);
 
         if (Y2 > 0.25) { //arm
+            motorEnArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
             motorEnArm.setTargetPosition(0);
         }
         else if (Y2 < -0.25) { //joystick is down
-            motorEnArm.setTargetPosition(-440);
+            motorEnArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+            motorEnArm.setTargetPosition(-460);
         }
 
         if (gamepad2.x) { //Dropper Left Pos
@@ -142,33 +140,6 @@ public class ResQ_TeleOp extends ResQ_Library {
         }
 
 
-        /*if (gamepad1.a) { //Deflector Toggle
-            /*if(isDeflectorDown){ //Is down, bring back up
-                //set position up
-                RDefPos = RDefUpPos;
-                LDefPos = LDefUpPos;
-                RDefPos = Range.clip(RDefPos, 0.0, 1.0);
-                LDefPos = Range.clip(LDefPos, 0.0, 1.0);
-            }
-            else { //Is up, deploy down
-                //set position down
-                RDefPos = RDefDownPos;
-                LDefPos = LDefDownPos;
-                RDefPos = Range.clip(RDefPos, 0.0, 1.0);
-                LDefPos = Range.clip(LDefPos, 0.0, 1.0);
-            }
-            srvoRightDeflector.setPosition(RDefPos);
-            srvoLeftDeflector.setPosition(LDefPos);
-            if(isDeflectorDown){
-                RDefPos += servoDelta;
-                LDefPos += servoDelta;
-            } else {
-                RDefPos -= servoDelta;
-                LDefPos -= servoDelta;
-            }
-            isDeflectorDown = !isDeflectorDown;
-        }*/
-
         if (gamepad1.left_bumper){ //increase servo
             LDefPos -= servoDelta;
             RDefPos += servoDelta;
@@ -180,8 +151,8 @@ public class ResQ_TeleOp extends ResQ_Library {
 
         RDefPos = Range.clip(RDefPos, 0.0, 0.8);
         LDefPos = Range.clip(LDefPos, 0.2, 1.0);
-        //srvoLeftDeflector.setPosition(LDefPos);
-        //srvoRightDeflector.setPosition(RDefPos);
+        srvoLeftDeflector.setPosition(LDefPos);
+        srvoRightDeflector.setPosition(RDefPos);
 
         if (gamepad1.a) {
             //lower the climber drop
