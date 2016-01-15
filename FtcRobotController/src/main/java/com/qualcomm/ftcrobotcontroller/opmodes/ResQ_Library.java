@@ -194,7 +194,7 @@ public abstract class ResQ_Library extends OpMode {
          * values between 0—359 or -180—179.
          */
 
-        double startDir = yawAngle[0];
+        double startDir = getYaw();
         double startTime = System.currentTimeMillis();
         double currentTime = 0.0;
 
@@ -202,8 +202,10 @@ public abstract class ResQ_Library extends OpMode {
         double lSpeed = 1.0f;
 
         while(currentTime - startTime < millis) {
-            rSpeed = (180 + yawAngle[0]) * RIGHT_ROTATION_CONST + ROTATION_OFFSET;
-            lSpeed = (180 - yawAngle[0]) * LEFT_ROTATION_CONST + ROTATION_OFFSET;
+            rSpeed = (startDir + yawAngle[0]) * RIGHT_ROTATION_CONST + ROTATION_OFFSET;
+            lSpeed = (startDir - yawAngle[0]) * LEFT_ROTATION_CONST + ROTATION_OFFSET;
+            //360 + 100 = 40
+            //360 - 100 = 260
 
             //round any values <0 or >1 to 0 or 1.
             rSpeed = Math.max(0, Math.min(1.0, rSpeed));
