@@ -262,7 +262,7 @@ public abstract class ResQ_Library extends OpMode {
 				startTurn = false;
             }
         }
-        //telemetry.addData("turning", "Finished turning.");
+        telemetry.addData("turning", "Finished turning.");
         stopDrive();
     }
 
