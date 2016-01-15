@@ -204,7 +204,7 @@ public abstract class ResQ_Library extends OpMode {
         while(currentTime - startTime < millis) {
             rSpeed = (startDir + yawAngle[0]) * RIGHT_ROTATION_CONST + ROTATION_OFFSET;
             lSpeed = (startDir - yawAngle[0]) * LEFT_ROTATION_CONST + ROTATION_OFFSET;
-            //360 + 100 = 60
+            //360 + 100 = 40
             //360 - 100 = 260
 
             //round any values <0 or >1 to 0 or 1.
