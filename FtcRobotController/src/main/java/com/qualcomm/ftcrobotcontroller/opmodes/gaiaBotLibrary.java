@@ -86,7 +86,7 @@ public abstract class gaiaBotLibrary extends OpMode {
 
     //****************INITIALIZE METHOD****************//
     public void initializeMapping() {
-        //Debug statements to prevent color1 error
+        //Log statements to prevent color1 error
         telemetry.addData("Version", "Sensorless. COLOR ERROR SHOULD NOT SHOW UP!");
         //Driving Mapping
         motorLeftTread = hardwareMap.dcMotor.get("m1");

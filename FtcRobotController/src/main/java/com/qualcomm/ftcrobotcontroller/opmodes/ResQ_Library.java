@@ -107,7 +107,7 @@ public abstract class ResQ_Library extends OpMode {
 
     //****************INITIALIZE METHOD****************//
     public void initializeMapping() {
-        //Debug statements to prevent color errors
+        //Log statements to prevent color errors
         hardwareMap.logDevices();
 
         //Motors

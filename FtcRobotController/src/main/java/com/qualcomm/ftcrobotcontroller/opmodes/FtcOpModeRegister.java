@@ -31,10 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
-import com.qualcomm.ftcrobotcontroller.opmodes.test.EncoderTest;
-import com.qualcomm.ftcrobotcontroller.opmodes.test.GyroTest;
-import com.qualcomm.ftcrobotcontroller.opmodes.test.ServoTest;
-import com.qualcomm.ftcrobotcontroller.opmodes.test.TeleopAssist;
+import com.qualcomm.ftcrobotcontroller.opmodes.resqrobot2.ResQ_Drive;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
 
@@ -61,5 +58,6 @@ public class FtcOpModeRegister implements OpModeRegister {
      */
     manager.register("TeleOp", ResQ_TeleOp.class);
     manager.register("Autonomous", ResQ_Autonomous.class);
+    manager.register("Basic Drive", ResQ_Drive.class);
   }
 }

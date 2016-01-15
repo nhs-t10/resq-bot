@@ -51,7 +51,7 @@ public class ResQ_TeleOp extends ResQ_Library {
             Send those values to your Robot.
          */
 
-        float X = -ProcessToMotorFromJoy(-gamepad1.left_stick_x); //X is inverted with the negative sign
+        float X = ProcessToMotorFromJoy(-gamepad1.left_stick_x); //X is inverted with the negative sign
         float Y = ProcessToMotorFromJoy(-gamepad1.left_stick_y); //NOT inverted
 
         float V = (100-Math.abs(X)) * (Y/100) + Y; // R+L
@@ -60,12 +60,12 @@ public class ResQ_TeleOp extends ResQ_Library {
         float right = (V+W)/2;
         float left = (V-W)/2;
 
-        right = Range.clip(right, -1, 1);
-        left = Range.clip(left, -1, 1);
+        right = Range.clip(right, -0.9f, 0.9f);
+        left = Range.clip(left, -0.9f, 0.9f);
 
         drive(left, right);
 
-        //Drive modifications
+        //Drive `modifications
         if (gamepad1.x) {
             //Track speed 100%
             setDriveGear(3);
