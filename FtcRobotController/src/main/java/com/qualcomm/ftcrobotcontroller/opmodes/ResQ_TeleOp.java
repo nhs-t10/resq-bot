@@ -20,19 +20,13 @@ public class ResQ_TeleOp extends ResQ_Library {
         //Set Deflectors Up
         RDefPos = RDefUpPos;
         LDefPos = LDefUpPos;
-        //srvoLeftDeflector.setPosition(LDefPos);
-        //srvoRightDeflector.setPosition(RDefPos);
         isDeflectorDown = false;
-
-        motorEnArm.setPower(0.10);
     }
 
 
     @Override
     public void loop() {
 
-        /*float right = ProcessToMotorFromJoy(-gamepad1.right_stick_y); //Used with tracks
-        float left = ProcessToMotorFromJoy(-gamepad1.left_stick_y);*/
         /*
          * Gamepad 1:
 		 * Left joystick moves the left track, and the right joystick moves the right track
@@ -80,18 +74,6 @@ public class ResQ_TeleOp extends ResQ_Library {
         }
 
         //****************BLOCK SCORING****************//
-
-
-        float Y2 = ProcessToMotorFromJoy(-gamepad2.left_stick_y);
-
-        if (Y2 > 0.25) { //arm
-            motorEnArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-            motorEnArm.setTargetPosition(0);
-        }
-        else if (Y2 < -0.25) { //joystick is down
-            motorEnArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-            motorEnArm.setTargetPosition(-460);
-        }
 
         if (gamepad2.x) { //Dropper Left Pos
             DropperPosition dropperPos = DropperPosition.LEFT;
@@ -156,14 +138,14 @@ public class ResQ_TeleOp extends ResQ_Library {
 
         if (gamepad1.a) {
             //lower the climber drop
-            //srvoScoreClimbers.setPosition(0.0);
+            srvoScoreClimbers.setPosition(0.0);
         } else {
-            //srvoScoreClimbers.setPosition(1.0);
+            srvoScoreClimbers.setPosition(1.0);
         }
 
 
         //****************TELEMETRY****************/
-        /*String tel_Bool_Speed = "error speed";
+        String tel_Bool_Speed = "error speed";
         if (driveGear == 3) { //highest 100% setting, essentially don't change it
             tel_Bool_Speed = "at 100% speed";
         } else if (driveGear == 2) { //medium 50% setting
@@ -171,10 +153,6 @@ public class ResQ_TeleOp extends ResQ_Library {
         } else if (driveGear == 1) { //lowest 25% setting
             tel_Bool_Speed = "at 25% speed";
         }
-        telemetry.addData("", "Driving is " + " and " + tel_Bool_Speed);*/
-
-
-
-        telemetry.addData("Current Power Left", "" + (float)motorLeftTread.getPower());
+        telemetry.addData("", "Driving is " + " and " + tel_Bool_Speed);
     }
 }

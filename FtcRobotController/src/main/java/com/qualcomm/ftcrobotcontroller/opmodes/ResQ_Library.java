@@ -22,7 +22,6 @@ public abstract class ResQ_Library extends OpMode {
     DcMotor motorRightTread, motorLeftTread, motorRightSecondTread, motorLeftSecondTread;
     DcMotor motorHangingMech;
     DcMotor motorTapeMech;
-    DcMotor motorEnArm;
 
     //Autonomous
     Servo srvoScoreClimbers, srvoBeaconPusher;
@@ -117,7 +116,6 @@ public abstract class ResQ_Library extends OpMode {
         motorRightSecondTread = hardwareMap.dcMotor.get("m4");
         motorHangingMech = hardwareMap.dcMotor.get("m5");
         motorTapeMech = hardwareMap.dcMotor.get("m6");
-        motorEnArm = hardwareMap.dcMotor.get("m7");
 
         //Servos
         //srvoScoreClimbers = hardwareMap.servo.get("s1");
