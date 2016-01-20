@@ -259,6 +259,7 @@ public abstract class ResQ_Library extends OpMode {
         telemetry.addData("turning", "Start turning. Current Yaw: " + getYaw());
         while(!(scaleToAngle(degrees - precision) > getYaw() && scaleToAngle(degrees + precision) < getYaw())) {
             telemetry.addData("turning", "" + scaleToAngle(degrees - precision) + " > " + getYaw());
+            //waitOneFullHardwareCycle();
 			if(startTurn) {
 				drive(rightSpeed, leftSpeed);
 				startTurn = false;
