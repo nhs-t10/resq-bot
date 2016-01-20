@@ -1,6 +1,7 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.exception.RobotCoreException;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CompassSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -127,12 +128,12 @@ public abstract class ResQ_Library extends OpMode {
 
         //Sensors
         //(color sensors are initialized w/ loadSensor(Team)
-        /*sensorUltra_1 = hardwareMap.analogInput.get("u1");
+        sensorUltra_1 = hardwareMap.analogInput.get("u1");
         try {
             imu = new AdafruitIMU(hardwareMap, "g1", (byte)(AdafruitIMU.BNO055_ADDRESS_A * 2), (byte)AdafruitIMU.OPERATION_MODE_IMU);
         } catch(RobotCoreException rce) {
             telemetry.addData("RobotCoreException", rce.getMessage());
-        }*/
+        }
 
         //Other Mapping
         motorHangingMech = hardwareMap.dcMotor.get("m5");
@@ -194,7 +195,7 @@ public abstract class ResQ_Library extends OpMode {
          * values between 0—359 or -180—179.
          */
 
-        double startDir = yawAngle[0];
+        double startDir = getYaw();
         double startTime = System.currentTimeMillis();
         double currentTime = 0.0;
 
@@ -202,8 +203,10 @@ public abstract class ResQ_Library extends OpMode {
         double lSpeed = 1.0f;
 
         while(currentTime - startTime < millis) {
-            rSpeed = (180 + yawAngle[0]) * RIGHT_ROTATION_CONST + ROTATION_OFFSET;
-            lSpeed = (180 - yawAngle[0]) * LEFT_ROTATION_CONST + ROTATION_OFFSET;
+            rSpeed = (startDir + yawAngle[0]) * RIGHT_ROTATION_CONST + ROTATION_OFFSET;
+            lSpeed = (startDir - yawAngle[0]) * LEFT_ROTATION_CONST + ROTATION_OFFSET;
+            //360 + 100 = 40
+            //360 - 100 = 260
 
             //round any values <0 or >1 to 0 or 1.
             rSpeed = Math.max(0, Math.min(1.0, rSpeed));
@@ -235,8 +238,6 @@ public abstract class ResQ_Library extends OpMode {
         //the angle across from the initialAngle on a circle
         double oppositeAngle = scaleToAngle(initialAngle + 180);
 
-        telemetry.addData("turning", "Began turning");
-
         float rightSpeed;
         float leftSpeed;
 
@@ -248,16 +249,18 @@ public abstract class ResQ_Library extends OpMode {
          */
         if (degrees > oppositeAngle || (oppositeAngle < 180)? (degrees > initialAngle): (degrees < initialAngle)) {
             //turn negative degrees
-            rightSpeed = -1.0f;
-            leftSpeed = -1.0f;
+            rightSpeed = 0.5f;
+            leftSpeed = -0.5f;
         } else {
             //turn positive degrees
-            rightSpeed = -1.0f;
-            leftSpeed = 1.0f;
+            rightSpeed = -0.5f;
+            leftSpeed = 0.5f;
         }
 
-        while(scaleToAngle(degrees - precision) > getYaw() && scaleToAngle(degrees + precision) < getYaw()) {
+        telemetry.addData("turning", "Start turning. Current Yaw: " + getYaw());
+        while(!(scaleToAngle(degrees - precision) > getYaw() && scaleToAngle(degrees + precision) < getYaw())) {
             telemetry.addData("turning", "" + scaleToAngle(degrees - precision) + " > " + getYaw());
+            //waitOneFullHardwareCycle();
 			if(startTurn) {
 				drive(rightSpeed, leftSpeed);
 				startTurn = false;

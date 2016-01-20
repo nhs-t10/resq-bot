@@ -11,6 +11,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     protected boolean foundLine;
     protected boolean robotFirstTurn; //when we get to the line, turn in the general direction of the beacon
     protected boolean turning;
+    protected boolean parked;
 
     protected Team teamWeAreOn; //enum thats represent team
 
@@ -18,6 +19,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         foundLine = false;
         robotFirstTurn = false;
         turning = false;
+        parked = false;
         teamWeAreOn = Team.UNKNOWN;
         driveGear = 3;
     }
@@ -26,45 +28,54 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     @Override
     public void init() {
         initializeMapping();
-        loadSensor(teamWeAreOn);
-        calibrateColors();
+        //loadSensor(teamWeAreOn);
+        //calibrateColors();
         startIMU();
+        telemetry.addData("Init Yaw", getYaw());
+    }
+
+    @Override
+    public void stop() {
+        telemetry.addData("Init Yaw", getYaw());
     }
 
     @Override
     public void loop() {
         if (!robotFirstTurn){
             turnToBeacon(); //is
-        } else {
+        } else if (!parked){
             approachBeacon();
         }
     }
 
     protected void approach(int direction, float speed){
-        drive(direction * speed, direction * speed);
+        driveStraight(1.0f);
     }
 
     protected void approachBeacon(){
         double ultraValue = getDistance();
         telemetry.addData("ultra", ultraValue);
-        if(ultraValue > 12){
+        if(ultraValue > 50){
             approach(1, 0.2f);
         }
         else {
             stopDrive();
+            telemetry.addData("Status", "parked");
+            parked = true;
         }
     }
 
     public void turnToBeacon() { //(turn to beacon)
         double yaw = getYaw();
         telemetry.addData("yaw", yaw);
-        if ((teamWeAreOn == Team.RED && yaw >= 220 && yaw <= 230) || (teamWeAreOn == Team.BLUE && yaw >= 300 && yaw <= 305)) { //make this compass later
+        if ((teamWeAreOn == Team.RED && yaw >= 225 && yaw <= 235) || (teamWeAreOn == Team.BLUE && yaw >= 300 && yaw <= 305)) { //make this compass later
             robotFirstTurn = true;
             drive(0.2f,0.2f);
         } else {
             int m = teamWeAreOn == Team.RED ? -1 : 1;
             drive(.3f * m, -.3f * m);
         }
-        //driveTurnDegrees(60); //thx will p
+        //driveTurnDegrees(230); //thx will p
+        //robotFirstTurn = true;
     }
 }
