@@ -81,7 +81,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         double yaw = getYaw();
         telemetry.addData("yaw", yaw);
         if ((teamWeAreOn == Team.RED && yaw >= RED_ANGLE - PRECISION && yaw <= RED_ANGLE + PRECISION) || (teamWeAreOn == Team.BLUE && yaw >= BLUE_ANGLE - PRECISION && yaw <= BLUE_ANGLE + PRECISION)) { //make this compass later
-            updatePhase("Turned toward Beacon", 3);
+            updatePhase("Moving to wall", 3);
             drive(0.2f,0.2f);
         } else {
             int m = teamWeAreOn == Team.RED ? -1 : 1;
