@@ -4,7 +4,7 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
  * Created by Admin on 12/22/2015.
  */
 public abstract class ResQ_Good_Autonomous extends ResQ_Library {
-    protected final double DISTANCE_FROM_WALL = 10.0;
+    protected final double DISTANCE_FROM_WALL = 30.0;
 
     protected double currentTimeCatch;
 
@@ -15,7 +15,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
 
     final int RED_ANGLE = 220;
     final int BLUE_ANGLE = 220;
-    final int PRECISION = 5;
+    final int PRECISION = 2;
 
     protected Team teamWeAreOn; //enum thats represent team
 
@@ -61,7 +61,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     protected void approachBeacon(){
         double ultraValue = getDistance();
         telemetry.addData("ultra", ultraValue);
-        if(ultraValue > 20){
+        if(ultraValue > DISTANCE_FROM_WALL){
             approach(1, 0.2f);
         }
         else {
