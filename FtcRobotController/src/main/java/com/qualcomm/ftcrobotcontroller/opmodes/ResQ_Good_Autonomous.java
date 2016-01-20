@@ -14,7 +14,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     protected boolean parked;
 
     final int RED_ANGLE = 220;
-    final int BLUE_ANGLE = 220;
+    final int BLUE_ANGLE = 140;
     final int PRECISION = 2;
 
     protected Team teamWeAreOn; //enum thats represent team
@@ -36,6 +36,10 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         //calibrateColors();
         startIMU();
         telemetry.addData("Init Yaw", getYaw());
+
+        srvoLeftDeflector.setPosition(0.0);
+        srvoRightDeflector.setPosition(0.0);
+        sleep(1000);
     }
 
     @Override
