@@ -9,37 +9,36 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     protected double currentTimeCatch;
 
     protected boolean foundLine;
-    protected boolean robotFirstTurn; //when we get to the line, turn in the general direction of the beacon
-    protected boolean turning;
-    protected boolean parked;
 
     final int RED_ANGLE = 220;
     final int BLUE_ANGLE = 140;
     final int PRECISION = 2;
 
+    String phase = "unset";
+    int phasen = -1;
+
     protected Team teamWeAreOn; //enum thats represent team
 
     public ResQ_Good_Autonomous() {
         foundLine = false;
-        robotFirstTurn = false;
-        turning = false;
-        parked = false;
         teamWeAreOn = Team.UNKNOWN;
         driveGear = 3;
     }
-
 
     @Override
     public void init() {
         initializeMapping();
         //loadSensor(teamWeAreOn);
         //calibrateColors();
+        updatePhase("Starting IMU", 0);
         startIMU();
         telemetry.addData("Init Yaw", getYaw());
 
+        updatePhase("Lowering Deflectors", 1);
         srvoLeftDeflector.setPosition(0.0);
         srvoRightDeflector.setPosition(0.0);
         sleep(1000);
+        updatePhase("Turning", 2);
     }
 
     @Override
@@ -49,12 +48,16 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
 
     @Override
     public void loop() {
-        if (!robotFirstTurn){
-            turnToBeacon(); //is
-        } else if (!parked){
-            approachBeacon();
-        } else {
-            DropClimber();
+        switch (phasen) {
+            case 2: //turning
+                turnToBeacon();
+                break;
+            case 3: //go to beacon
+                approachBeacon();
+                break;
+            case 4: //drop climbers
+                DropClimber();
+                break;
         }
     }
 
@@ -70,8 +73,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         }
         else {
             stopDrive();
-            telemetry.addData("Status", "parked");
-            parked = true;
+            updatePhase("Reached Wall", 4);
         }
     }
 
@@ -79,13 +81,18 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         double yaw = getYaw();
         telemetry.addData("yaw", yaw);
         if ((teamWeAreOn == Team.RED && yaw >= RED_ANGLE - PRECISION && yaw <= RED_ANGLE + PRECISION) || (teamWeAreOn == Team.BLUE && yaw >= BLUE_ANGLE - PRECISION && yaw <= BLUE_ANGLE + PRECISION)) { //make this compass later
-            robotFirstTurn = true;
+            updatePhase("Turned toward Beacon", 3);
             drive(0.2f,0.2f);
         } else {
             int m = teamWeAreOn == Team.RED ? -1 : 1;
             drive(.3f * m, -.3f * m);
         }
         //driveTurnDegrees(230); //thx will p
-        //robotFirstTurn = true;
+    }
+    public void updatePhase(String p, int n) {
+        phase = p;
+        phasen = n;
+        telemetry.addData("Phase", phase);
+        telemetry.addData("#", phasen);
     }
 }
