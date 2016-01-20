@@ -486,6 +486,12 @@ public abstract class ResQ_Library extends OpMode {
         return gear;
     }
 
+    public void DropClimber () {
+        srvoScoreClimbers.setPosition(0.0);
+        sleep(2000);
+        srvoScoreClimbers.setPosition(1.0);
+    }
+
     //****************MISC METHODS****************//
     public void sleep(int millis) {
         try {

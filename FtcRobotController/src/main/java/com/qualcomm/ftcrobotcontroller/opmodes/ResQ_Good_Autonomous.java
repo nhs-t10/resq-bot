@@ -45,6 +45,8 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
             turnToBeacon(); //is
         } else if (!parked){
             approachBeacon();
+        } else {
+            DropClimber();
         }
     }
 
