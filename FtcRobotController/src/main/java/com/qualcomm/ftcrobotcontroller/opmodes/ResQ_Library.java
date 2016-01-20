@@ -189,6 +189,7 @@ public abstract class ResQ_Library extends OpMode {
         motorLeftSecondTread.setPower(left);
     }
 
+    /*This method should not be working...*/
     public void driveStraight(double millis) {
         /*
          * This algorithm assumes yawAngle[0] returns
@@ -220,20 +221,21 @@ public abstract class ResQ_Library extends OpMode {
 
 
     /**
-     * Turns the robot towards the given degree value via the quickest route.
+     * Turns the robot towards the given degree value via the quickest route. Should be called within a loop.
      * @param degrees degree value for the robot to turn towards.
+     * @return Returns true if turn is complete
      */
-    public void driveTurnDegrees(int degrees) {
-        driveTurnDegrees(degrees, 2);
+    public boolean driveTurnDegrees(int degrees) {
+        return driveTurnDegrees(degrees, 2);
     }
 
     /**
-     * Turns the robot towards the given degree value via the quickest route.
+     * Turns the robot towards the given degree value via the quickest route. Should be called within a loop.
      * @param degrees degree value for the robot to turn towards.
      * @param precision how precise the turning is. (lower values increase the possibilty of error.)
+     * @return Returns true if turn is complete
      */
-    public void driveTurnDegrees(int degrees, int precision) {
-		boolean startTurn = true;
+    public boolean driveTurnDegrees(int degrees, int precision) {
         double initialAngle = getYaw();
         //the angle across from the initialAngle on a circle
         double oppositeAngle = scaleToAngle(initialAngle + 180);
@@ -249,25 +251,22 @@ public abstract class ResQ_Library extends OpMode {
          */
         if (degrees > oppositeAngle || (oppositeAngle < 180)? (degrees > initialAngle): (degrees < initialAngle)) {
             //turn negative degrees
-            rightSpeed = 0.5f;
-            leftSpeed = -0.5f;
+            rightSpeed = -1.0f;
+            leftSpeed = -1.0f;
         } else {
             //turn positive degrees
-            rightSpeed = -0.5f;
-            leftSpeed = 0.5f;
+            rightSpeed = -1.0f;
+            leftSpeed = 1.0f;
         }
 
-        telemetry.addData("turning", "Start turning. Current Yaw: " + getYaw());
-        while(!(scaleToAngle(degrees - precision) > getYaw() && scaleToAngle(degrees + precision) < getYaw())) {
+        if(scaleToAngle(degrees - precision) > getYaw() && scaleToAngle(degrees + precision) < getYaw()) {
             telemetry.addData("turning", "" + scaleToAngle(degrees - precision) + " > " + getYaw());
-            //waitOneFullHardwareCycle();
-			if(startTurn) {
-				drive(rightSpeed, leftSpeed);
-				startTurn = false;
-            }
+            drive(rightSpeed, leftSpeed);
+        } else {
+            return true;
         }
-        telemetry.addData("turning", "Finished turning.");
-        stopDrive();
+
+        return false;
     }
 
     public void stopDrive() {
