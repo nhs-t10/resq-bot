@@ -122,10 +122,10 @@ public class ResQ_TeleOp extends ResQ_Library {
         }
 
 
-        if (gamepad1.left_bumper){ //increase servo
+        if (gamepad1.left_bumper){ //set servo down
             LDefPos -= servoDelta;
             RDefPos += servoDelta;
-        } else if (gamepad1.right_bumper) { //decrease servo
+        } else if (gamepad1.right_bumper) { //set servo up
             LDefPos += servoDelta;
             RDefPos -= servoDelta;
         }
