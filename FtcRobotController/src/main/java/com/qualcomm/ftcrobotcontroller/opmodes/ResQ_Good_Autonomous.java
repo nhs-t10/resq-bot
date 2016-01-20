@@ -13,6 +13,10 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     protected boolean turning;
     protected boolean parked;
 
+    final int RED_ANGLE = 220;
+    final int BLUE_ANGLE = 220;
+    final int PRECISION = 5;
+
     protected Team teamWeAreOn; //enum thats represent team
 
     public ResQ_Good_Autonomous() {
@@ -57,7 +61,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     protected void approachBeacon(){
         double ultraValue = getDistance();
         telemetry.addData("ultra", ultraValue);
-        if(ultraValue > 50){
+        if(ultraValue > 20){
             approach(1, 0.2f);
         }
         else {
@@ -70,7 +74,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     public void turnToBeacon() { //(turn to beacon)
         double yaw = getYaw();
         telemetry.addData("yaw", yaw);
-        if ((teamWeAreOn == Team.RED && yaw >= 225 && yaw <= 235) || (teamWeAreOn == Team.BLUE && yaw >= 300 && yaw <= 305)) { //make this compass later
+        if ((teamWeAreOn == Team.RED && yaw >= RED_ANGLE - PRECISION && yaw <= RED_ANGLE + PRECISION) || (teamWeAreOn == Team.BLUE && yaw >= BLUE_ANGLE - PRECISION && yaw <= BLUE_ANGLE + PRECISION)) { //make this compass later
             robotFirstTurn = true;
             drive(0.2f,0.2f);
         } else {

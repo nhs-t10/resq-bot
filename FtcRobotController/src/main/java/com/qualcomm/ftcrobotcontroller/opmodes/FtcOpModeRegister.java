@@ -58,6 +58,7 @@ public class FtcOpModeRegister implements OpModeRegister {
      */
     manager.register("TeleOp", ResQ_TeleOp.class);
     manager.register("Autonomous Red", ResQ_Autonomous_Red.class);
+    manager.register("Autonomous Blue", ResQ_Autonomous_Blue.class);
     manager.register("Basic Drive", ResQ_Drive.class);
   }
 }
