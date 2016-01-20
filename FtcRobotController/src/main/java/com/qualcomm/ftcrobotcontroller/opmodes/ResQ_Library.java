@@ -119,7 +119,7 @@ public abstract class ResQ_Library extends OpMode {
         motorTapeMech = hardwareMap.dcMotor.get("m6");
 
         //Servos
-        //srvoScoreClimbers = hardwareMap.servo.get("s1");
+        srvoScoreClimbers = hardwareMap.servo.get("s1");
         srvoRightDeflector = hardwareMap.servo.get("s2");
         srvoLeftDeflector = hardwareMap.servo.get("s3");
         srvoBlockDropper = hardwareMap.servo.get("s4");
