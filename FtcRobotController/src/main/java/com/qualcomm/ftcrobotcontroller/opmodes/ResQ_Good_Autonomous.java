@@ -7,17 +7,19 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     protected final double DISTANCE_FROM_WALL = 37.5;
 
     // First set is to turn to correct beacon
-    final int RED_ANGLE_1 = 220;
-    final int BLUE_ANGLE_1 = 140;
+    final int RED_ANGLE_1 = 225;
+    final int BLUE_ANGLE_1 = 135;
     // the second set positions to the beacon exactly. We should turn an additional 30-50 degrees
-    final int RED_ANGLE_2 = 270;
-    final int BLUE_ANGLE_2 = 170;
+    final int RED_ANGLE_2 = 225;
+    final int BLUE_ANGLE_2 = 135;
     // the third set positions to the ramp exactly. We should turn an additional 90 degrees
-    final int RED_ANGLE_3 = 220;
-    final int BLUE_ANGLE_3 = 140;
+    final int RED_ANGLE_3 = 360;
+    final int BLUE_ANGLE_3 = 360;
     final int PRECISION = 2;
 
     boolean turnedToBeaconCorrectly = false; //this is in the parking zone, checking that we're facing the beacon
+    boolean IMURecalibrated = false;
+    boolean IMURecalibratedAgain = false;
 
     protected Team teamWeAreOn; //enum thats represent team
 
@@ -36,7 +38,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         initializeMapping();
         startIMU();
         telemetry.addData("Init Yaw", getYaw());
-        srvoScoreClimbers.setPosition(0.0); //makes sure it doesn't drop it by accident
+        srvoScoreClimbers.setPosition(1.0); //makes sure it doesn't drop it by accident
     }
 
     @Override
@@ -46,6 +48,9 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
 
     @Override
     public void loop() { //Autonomous Logic
+        //double yaw = getYaw();
+        //telemetry.addData("yaw", yaw);
+
         if(currentState == CurrentState.STARTING){ //starting state
             telemetry.addData("Current State: ", "Beginning Match...");
             starting();
@@ -94,7 +99,6 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
 
     public void turnToBeacon() { //turn to beacon
         double yaw = getYaw();
-        telemetry.addData("yaw", yaw);
         //we are aligned, so change state and drive forward.
         if ((teamWeAreOn == Team.RED && yaw >= RED_ANGLE_1 - PRECISION && yaw <= RED_ANGLE_1 + PRECISION)
                 || (teamWeAreOn == Team.BLUE && yaw >= BLUE_ANGLE_1 - PRECISION && yaw <= BLUE_ANGLE_1 + PRECISION)) { //make this compass later
@@ -126,46 +130,54 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         //It's not possible
         //No - it's necessary.
 
-        if (!turnedToBeaconCorrectly){ //Cooper, this is no time for caution.
-            double yaw = getYaw();
-            telemetry.addData("yaw", yaw);
-            //we are aligned, move to next part
-            if ((teamWeAreOn == Team.RED && yaw >= RED_ANGLE_2 - PRECISION && yaw <= RED_ANGLE_2 + PRECISION)
-                    || (teamWeAreOn == Team.BLUE && yaw >= BLUE_ANGLE_2 - PRECISION && yaw <= BLUE_ANGLE_2 + PRECISION)) { //make this compass later
-                turnedToBeaconCorrectly = true;
-            } else { //we are not aligned, so turn in direction we are supposed to
-                int m = teamWeAreOn == Team.RED ? -1 : 1;
-                drive(.1f * m, -.1f * m);
+        if(!IMURecalibrated) {
+            IMURecalibrated = !IMURecalibrated;
+            startIMU();
+        }
+        else {
+            if (!turnedToBeaconCorrectly){ //Cooper, this is no time for caution.
+                double yaw = getYaw();
+                //we are aligned, move to next part
+                if ((teamWeAreOn == Team.RED && yaw >= RED_ANGLE_2 - PRECISION && yaw <= RED_ANGLE_2 + PRECISION)
+                        || (teamWeAreOn == Team.BLUE && yaw >= BLUE_ANGLE_2 - PRECISION && yaw <= BLUE_ANGLE_2 + PRECISION)) { //make this compass later
+                    turnedToBeaconCorrectly = true;
+                } else { //we are not aligned, so turn in direction we are supposed to
+                    int m = teamWeAreOn == Team.RED ? -1 : 1;
+                    drive(.3f * m, -.3f * m);
+                }
+            } else { //Cooper, we are.. lined up! INITIATE SPIN
+                //bring up tread guards, they're useless now
+                srvoLeftDeflector.setPosition(1.0);
+                srvoRightDeflector.setPosition(0.0);
+                sleep(1000); //waits for guards to raise
+                drive(.2f, .2f);
+                sleep(500); //moves forward at 1/5 speed for half a second
+                stopDrive();
+                DropClimber();
+                currentState = CurrentState.SECONDTURN;
             }
-        } else { //Cooper, we are.. lined up! INITIATE SPIN
-            //bring up tread guards, they're useless now
-            srvoLeftDeflector.setPosition(1.0);
-            srvoRightDeflector.setPosition(0.0);
-            sleep(1000); //waits for guards to raise
-            drive(.2f, .2f);
-            sleep(500); //moves forward at 1/5 speed for half a second
-            stopDrive();
-            DropClimber();
-            currentState = CurrentState.SECONDTURN;
         }
     }
 
     public void secondTurn() { //turns 90 degrees to face ramp
+        if(!IMURecalibratedAgain) {
+            IMURecalibratedAgain = !IMURecalibratedAgain;
+            startIMU();
+        }
         double yaw = getYaw();
-        telemetry.addData("yaw", yaw);
         //we are aligned, move to next part
         if ((teamWeAreOn == Team.RED && yaw >= RED_ANGLE_3 - PRECISION && yaw <= RED_ANGLE_3 + PRECISION)
                 || (teamWeAreOn == Team.BLUE && yaw >= BLUE_ANGLE_3 - PRECISION && yaw <= BLUE_ANGLE_3 + PRECISION)) { //make this compass later
             currentState = CurrentState.FINALPARK;
         } else { //we are not aligned, so turn in direction we are supposed to
             int m = teamWeAreOn == Team.RED ? -1 : 1;
-            drive(.1f * m, -.1f * m);
+            drive(.3f * m, -.3f * m);
         }
         //robotFirstTurn = driveTurnDegrees(230); //thx will p
     }
 
     public void finalParkingStage() { //moves forward and rests.
-        drive(.2f, .2f);
+        drive(.3f, .3f);
         sleep(1000); //moves forward at 1/5 speed for a second
         stopDrive();
         currentState = CurrentState.FINALPARK;
