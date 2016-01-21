@@ -9,14 +9,13 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     protected double currentTimeCatch;
 
     protected boolean foundLine;
-    protected boolean robotFirstTurn; //when we get to the line, turn in the general direction of the beacon
-    protected boolean turning;
-    protected boolean parked;
-    protected boolean readyToMove = false;
 
     final int RED_ANGLE = 220;
     final int BLUE_ANGLE = 140;
     final int PRECISION = 2;
+
+    String phase = "unset";
+    int phasen = -1;
 
     protected Team teamWeAreOn; //enum thats represent team
 
@@ -27,13 +26,9 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
 
     public ResQ_Good_Autonomous() {
         foundLine = false;
-        robotFirstTurn = false;
-        turning = false;
-        parked = false;
         teamWeAreOn = Team.UNKNOWN;
         driveGear = 3;
     }
-
 
     @Override
     public void init() {
@@ -75,7 +70,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
             telemetry.addData("Current State: ", "Turning again...");
             secondTurn();
         }
-        else if (currentState == CurrentState.FINALPARK){
+        else if (currentState == CurrentState.FINALPARK) {
             telemetry.addData("Current State: ", "Resting for teleop");
             finalParkingStage();
         }
@@ -139,6 +134,6 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     }
 
     public void finalParkingStage () {
-
+        currentState = CurrentState.FINALPARK;
     }
 }
