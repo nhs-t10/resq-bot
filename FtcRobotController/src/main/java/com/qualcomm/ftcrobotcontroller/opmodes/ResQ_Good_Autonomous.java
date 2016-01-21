@@ -161,6 +161,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
             int m = teamWeAreOn == Team.RED ? -1 : 1;
             drive(.1f * m, -.1f * m);
         }
+        //robotFirstTurn = driveTurnDegrees(230); //thx will p
     }
 
     public void finalParkingStage() { //moves forward and rests.
