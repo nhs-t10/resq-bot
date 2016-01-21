@@ -154,5 +154,6 @@ public class ResQ_TeleOp extends ResQ_Library {
             tel_Bool_Speed = "at 25% speed";
         }
         telemetry.addData("", "Driving is " + " and " + tel_Bool_Speed);
+        telemetry.addData("yaw", getYaw());
     }
 }
