@@ -10,8 +10,8 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     final int RED_ANGLE_1 = 220;
     final int BLUE_ANGLE_1 = 140;
     // the second set positions to the beacon exactly. We should turn an additional 30-50 degrees
-    final int RED_ANGLE_2 = 220;
-    final int BLUE_ANGLE_2 = 140;
+    final int RED_ANGLE_2 = 270;
+    final int BLUE_ANGLE_2 = 170;
     // the third set positions to the ramp exactly. We should turn an additional 90 degrees
     final int RED_ANGLE_3 = 220;
     final int BLUE_ANGLE_3 = 140;
@@ -150,7 +150,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         }
     }
 
-    public void secondTurn () { //turns 90 degrees to face ramp
+    public void secondTurn() { //turns 90 degrees to face ramp
         double yaw = getYaw();
         telemetry.addData("yaw", yaw);
         //we are aligned, move to next part
@@ -163,7 +163,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         }
     }
 
-    public void finalParkingStage () { //moves forward and rests.
+    public void finalParkingStage() { //moves forward and rests.
         drive(.2f, .2f);
         sleep(1000); //moves forward at 1/5 speed for a second
         stopDrive();
