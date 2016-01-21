@@ -4,18 +4,20 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
  * Created by Admin on 12/22/2015.
  */
 public abstract class ResQ_Good_Autonomous extends ResQ_Library {
-    protected final double DISTANCE_FROM_WALL = 30.0;
+    protected final double DISTANCE_FROM_WALL = 37.5;
 
-    protected double currentTimeCatch;
-
-    protected boolean foundLine;
-
-    final int RED_ANGLE = 220;
-    final int BLUE_ANGLE = 140;
+    // First set is to turn to correct beacon
+    final int RED_ANGLE_1 = 220;
+    final int BLUE_ANGLE_1 = 140;
+    // the second set positions to the beacon exactly. We should turn an additional 30-50 degrees
+    final int RED_ANGLE_2 = 220;
+    final int BLUE_ANGLE_2 = 140;
+    // the third set positions to the ramp exactly. We should turn an additional 90 degrees
+    final int RED_ANGLE_3 = 220;
+    final int BLUE_ANGLE_3 = 140;
     final int PRECISION = 2;
 
-    String phase = "unset";
-    int phasen = -1;
+    boolean turnedToBeaconCorrectly = false; //this is in the parking zone, checking that we're facing the beacon
 
     protected Team teamWeAreOn; //enum thats represent team
 
@@ -25,7 +27,6 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     protected CurrentState currentState = CurrentState.STARTING;
 
     public ResQ_Good_Autonomous() {
-        foundLine = false;
         teamWeAreOn = Team.UNKNOWN;
         driveGear = 3;
     }
@@ -33,10 +34,9 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     @Override
     public void init() {
         initializeMapping();
-        //loadSensor(teamWeAreOn);
-        //calibrateColors();
         startIMU();
         telemetry.addData("Init Yaw", getYaw());
+        srvoScoreClimbers.setPosition(0.0); //makes sure it doesn't drop it by accident
     }
 
     @Override
@@ -64,14 +64,14 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         }
         else if (currentState == CurrentState.PARKEDFORDROP){
             telemetry.addData("Current State: ", "Dropping Climbers...");
-            climberDrop();
+            parkingDrop();
         }
         else if (currentState == CurrentState.SECONDTURN){
             telemetry.addData("Current State: ", "Turning again...");
             secondTurn();
         }
         else if (currentState == CurrentState.FINALPARK) {
-            telemetry.addData("Current State: ", "Resting for teleop");
+            telemetry.addData("Current State: ", "We done fam.");
             finalParkingStage();
         }
     }
@@ -82,7 +82,6 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     public void starting () {
         srvoLeftDeflector.setPosition(0.2);
         srvoRightDeflector.setPosition(0.8);
-        sleep(2000);
         currentState = CurrentState.FIRSTTURN;
     }
 
@@ -97,11 +96,11 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         double yaw = getYaw();
         telemetry.addData("yaw", yaw);
         //we are aligned, so change state and drive forward.
-        if ((teamWeAreOn == Team.RED && yaw >= RED_ANGLE - PRECISION && yaw <= RED_ANGLE + PRECISION)
-                || (teamWeAreOn == Team.BLUE && yaw >= BLUE_ANGLE - PRECISION && yaw <= BLUE_ANGLE + PRECISION)) { //make this compass later
+        if ((teamWeAreOn == Team.RED && yaw >= RED_ANGLE_1 - PRECISION && yaw <= RED_ANGLE_1 + PRECISION)
+                || (teamWeAreOn == Team.BLUE && yaw >= BLUE_ANGLE_1 - PRECISION && yaw <= BLUE_ANGLE_1 + PRECISION)) { //make this compass later
             //robotFirstTurn = true; //deprecated logic
             currentState = CurrentState.APPROACHBEACON;
-            drive(0.2f,0.2f);
+            drive(0.2f, 0.2f);
         } else { //we are not aligned, so turn in direction we are supposed to
             int m = teamWeAreOn == Team.RED ? -1 : 1;
             drive(.3f * m, -.3f * m);
@@ -109,31 +108,65 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         //driveTurnDegrees(230); //Replacement function when it works
     }
 
-    protected void approachBeacon(){
+    protected void approachBeacon(){ // approaches the beacon until the ultrasonic detects the wall
         double ultraValue = getDistance();
         telemetry.addData("ultra", ultraValue);
         if(ultraValue > DISTANCE_FROM_WALL){
-            approach(1, 0.2f);
+            driveStraight(1.0);
         }
         else {
             stopDrive();
             currentState = CurrentState.PARKEDFORDROP;
         }
     }
-    protected void approach(int direction, float speed){
-        driveStraight(1.0f);
+
+    public void parkingDrop () { //positions the robot to face beacon then drops climbers
+        //later, we'll use ultrasonics to triangulate the positions correctly.
+
+        //It's not possible
+        //No - it's necessary.
+
+        if (!turnedToBeaconCorrectly){ //Cooper, this is no time for caution.
+            double yaw = getYaw();
+            telemetry.addData("yaw", yaw);
+            //we are aligned, move to next part
+            if ((teamWeAreOn == Team.RED && yaw >= RED_ANGLE_2 - PRECISION && yaw <= RED_ANGLE_2 + PRECISION)
+                    || (teamWeAreOn == Team.BLUE && yaw >= BLUE_ANGLE_2 - PRECISION && yaw <= BLUE_ANGLE_2 + PRECISION)) { //make this compass later
+                turnedToBeaconCorrectly = true;
+            } else { //we are not aligned, so turn in direction we are supposed to
+                int m = teamWeAreOn == Team.RED ? -1 : 1;
+                drive(.1f * m, -.1f * m);
+            }
+        } else { //Cooper, we are.. lined up! INITIATE SPIN
+            //bring up tread guards, they're useless now
+            srvoLeftDeflector.setPosition(1.0);
+            srvoRightDeflector.setPosition(0.0);
+            sleep(1000); //waits for guards to raise
+            drive(.2f, .2f);
+            sleep(500); //moves forward at 1/5 speed for half a second
+            stopDrive();
+            DropClimber();
+            currentState = CurrentState.SECONDTURN;
+        }
     }
 
-    public void climberDrop () {
-        DropClimber();
-        currentState = CurrentState.SECONDTURN;
+    public void secondTurn () { //turns 90 degrees to face ramp
+        double yaw = getYaw();
+        telemetry.addData("yaw", yaw);
+        //we are aligned, move to next part
+        if ((teamWeAreOn == Team.RED && yaw >= RED_ANGLE_3 - PRECISION && yaw <= RED_ANGLE_3 + PRECISION)
+                || (teamWeAreOn == Team.BLUE && yaw >= BLUE_ANGLE_3 - PRECISION && yaw <= BLUE_ANGLE_3 + PRECISION)) { //make this compass later
+            currentState = CurrentState.FINALPARK;
+        } else { //we are not aligned, so turn in direction we are supposed to
+            int m = teamWeAreOn == Team.RED ? -1 : 1;
+            drive(.1f * m, -.1f * m);
+        }
     }
 
-    public void secondTurn () {
-        currentState = CurrentState.FINALPARK;
-    }
-
-    public void finalParkingStage () {
+    public void finalParkingStage () { //moves forward and rests.
+        drive(.2f, .2f);
+        sleep(1000); //moves forward at 1/5 speed for a second
+        stopDrive();
         currentState = CurrentState.FINALPARK;
     }
 }
