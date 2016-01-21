@@ -18,6 +18,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     final int PRECISION = 2;
 
     boolean turnedToBeaconCorrectly = false; //this is in the parking zone, checking that we're facing the beacon
+    boolean IMURecalibrating = false;
     boolean IMURecalibrated = false;
     boolean IMURecalibratedAgain = false;
 
@@ -130,9 +131,10 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         //It's not possible
         //No - it's necessary.
 
-        if(!IMURecalibrated) {
-            IMURecalibrated = !IMURecalibrated;
+        if(!IMURecalibrating || !IMURecalibrated) {
+            IMURecalibrating = true;
             startIMU();
+            IMURecalibrated = true;
         }
         else {
             if (!turnedToBeaconCorrectly){ //Cooper, this is no time for caution.
