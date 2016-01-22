@@ -88,11 +88,11 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     public void starting () {
         srvoLeftDeflector.setPosition(0.2);
         srvoRightDeflector.setPosition(0.8);
-        currentState = CurrentState.GETINTOTURNPOSITION;
+        currentState = CurrentState.FIRSTTURN;
     }
 
     public void getIntoTurnPosition() {
-        drive(0.5f, 0.5f);
+        drive(-0.5f, -0.5f);
         sleep(2000);
         stopDrive();
         currentState = CurrentState.FIRSTTURN;
