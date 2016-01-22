@@ -101,7 +101,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     public void turnToBeacon() { //turn to beacon
         double yaw = getYaw();
         //we are aligned, so change state and drive forward.
-        /*if ((teamWeAreOn == Team.RED && yaw >= RED_ANGLE_1 - PRECISION && yaw <= RED_ANGLE_1 + PRECISION)
+        if ((teamWeAreOn == Team.RED && yaw >= RED_ANGLE_1 - PRECISION && yaw <= RED_ANGLE_1 + PRECISION)
                 || (teamWeAreOn == Team.BLUE && yaw >= BLUE_ANGLE_1 - PRECISION && yaw <= BLUE_ANGLE_1 + PRECISION)) { //make this compass later
             //robotFirstTurn = true; //deprecated logic
             currentState = CurrentState.APPROACHBEACON;
@@ -109,8 +109,8 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         } else { //we are not aligned, so turn in direction we are supposed to
             int m = teamWeAreOn == Team.RED ? -1 : 1;
             drive(.3f * m, -.3f * m);
-        }*/
-        currentState = driveTurnDegrees(RED_ANGLE_1)?  CurrentState.APPROACHBEACON : CurrentState.FIRSTTURN;
+        }
+        //currentState = driveTurnDegrees(RED_ANGLE_1)?  CurrentState.APPROACHBEACON : CurrentState.FIRSTTURN;
     }
 
     protected void approachBeacon(){ // approaches the beacon until the ultrasonic detects the wall
