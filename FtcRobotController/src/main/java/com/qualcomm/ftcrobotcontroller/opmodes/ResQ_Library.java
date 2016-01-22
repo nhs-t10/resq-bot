@@ -260,6 +260,8 @@ public abstract class ResQ_Library extends OpMode {
             leftSpeed = 1.0f;
         }
 
+        foundQuickestRoute = true;
+
         //180 > 220 - 2 = 218 && 180 < 220 + 2 = 222
         //if(var1 > 5 && var1 < 7
         if(getYaw() > scaleToAngle(degrees - precision) && getYaw() < scaleToAngle(degrees + precision)) {
