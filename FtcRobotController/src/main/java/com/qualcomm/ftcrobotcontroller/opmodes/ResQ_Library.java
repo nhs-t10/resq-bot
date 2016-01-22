@@ -190,34 +190,34 @@ public abstract class ResQ_Library extends OpMode {
     }
 
     /*This method should not be working...*/
-    public void driveStraight(double millis) {
-        /*
-         * This algorithm assumes yawAngle[0] returns
-         * values between 0—359 or -180—179.
-         */
+        public void driveStraight(double millis) {
+            /*
+             * This algorithm assumes yawAngle[0] returns
+             * values between 0—359 or -180—179.
+             */
 
-        double startDir = getYaw();
-        double startTime = System.currentTimeMillis();
-        double currentTime = 0.0;
+            double startDir = getYaw();
+            double startTime = System.currentTimeMillis();
+            double currentTime = 0.0;
 
-        double rSpeed = 1.0f;
-        double lSpeed = 1.0f;
+            double rSpeed = 1.0f;
+            double lSpeed = 1.0f;
 
-        while(currentTime - startTime < millis) {
-            rSpeed = (startDir + yawAngle[0]) * RIGHT_ROTATION_CONST + ROTATION_OFFSET;
-            lSpeed = (startDir - yawAngle[0]) * LEFT_ROTATION_CONST + ROTATION_OFFSET;
-            //360 + 100 = 40
-            //360 - 100 = 260
+            while(currentTime - startTime < millis) {
+                rSpeed = (startDir + yawAngle[0]) * RIGHT_ROTATION_CONST + ROTATION_OFFSET;
+                lSpeed = (startDir - yawAngle[0]) * LEFT_ROTATION_CONST + ROTATION_OFFSET;
+                //360 + 100 = 40
+                //360 - 100 = 260
 
-            //round any values <0 or >1 to 0 or 1.
-            rSpeed = Math.max(0, Math.min(1.0, rSpeed));
-            lSpeed = Math.max(0, Math.min(1.0, lSpeed));
+                //round any values <0 or >1 to 0 or 1.
+                rSpeed = Math.max(0, Math.min(1.0, rSpeed));
+                lSpeed = Math.max(0, Math.min(1.0, lSpeed));
 
-            drive((float) lSpeed, (float) rSpeed);
-            currentTime = System.currentTimeMillis();
-            sleep(10);
+                drive((float) lSpeed, (float) rSpeed);
+                currentTime = System.currentTimeMillis();
+                sleep(10);
+            }
         }
-    }
 
 
     /**
