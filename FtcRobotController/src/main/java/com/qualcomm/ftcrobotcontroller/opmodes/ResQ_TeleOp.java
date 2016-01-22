@@ -15,6 +15,7 @@ public class ResQ_TeleOp extends ResQ_Library {
     public void init() {
         //Do the map thing
         initializeMapping();
+        startIMU();
         telemetry.addData("Version", "Sensorless. COLOR ERROR SHOULD NOT SHOW UP!");
 
         //Set Deflectors Up
@@ -26,6 +27,7 @@ public class ResQ_TeleOp extends ResQ_Library {
 
     @Override
     public void loop() {
+        telemetry.addData("yaw", getYaw());
         /*
          * Gamepad 1:
 		 * Left joystick moves the left track, and the right joystick moves the right track
@@ -153,5 +155,6 @@ public class ResQ_TeleOp extends ResQ_Library {
             tel_Bool_Speed = "at 25% speed";
         }
         telemetry.addData("", "Driving is " + " and " + tel_Bool_Speed);
+
     }
 }
