@@ -7,11 +7,11 @@ import com.qualcomm.ftcrobotcontroller.opmodes.ResQ_Library;
  */
 public class DegreesTest extends ResQ_Library {
     private  boolean turn;
-    private final int GOAL = 225;
+    private final int GOAL = 220;
 
     @Override
     public void init() {
-        turn = false;
+        turn = true;
         initializeMapping();
         startIMU();
     }
@@ -20,7 +20,7 @@ public class DegreesTest extends ResQ_Library {
         telemetry.addData("Current Yaw", getYaw());
         telemetry.addData("Goal", GOAL);
         if(turn) {
-            turn = driveTurnDegrees(GOAL);
+            turn = !driveTurnDegrees(GOAL);
         }
     }
 }

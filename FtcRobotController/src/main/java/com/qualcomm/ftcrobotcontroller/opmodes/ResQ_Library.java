@@ -220,6 +220,10 @@ public abstract class ResQ_Library extends OpMode {
     }
 
 
+    private boolean foundQuickestRoute = false;
+    float rightSpeed;
+    float leftSpeed;
+
     /**
      * Turns the robot towards the given degree value via the quickest route. Should be called within a loop.
      * @param degrees degree value for the robot to turn towards.
@@ -240,26 +244,23 @@ public abstract class ResQ_Library extends OpMode {
         //the angle across from the initialAngle on a circle
         double oppositeAngle = scaleToAngle(initialAngle + 180);
 
-        float rightSpeed;
-        float leftSpeed;
-
         /*
          * Here is some pseudo code to try and help explain why the robot knows the quickest route to turn.
          * -----------------------------------------------------------------------------------------------------
          * if(we need to go passed the opposite angle, true || is the opposite angle below 180? If yes, true for
          * all degree values above the initial Angle. : If no, true for all degree values below the inital angle.
          */
-        if (degrees > oppositeAngle || (oppositeAngle < 180)? (degrees > initialAngle): (degrees < initialAngle)) {
+        if (!foundQuickestRoute && (degrees > oppositeAngle || (oppositeAngle < 180)? (degrees > initialAngle): (degrees < initialAngle))) {
             //turn negative degrees
             rightSpeed = 1.0f;
             leftSpeed = -1.0f;
-        } else {
+        } else if(!foundQuickestRoute){
             //turn positive degrees
             rightSpeed = -1.0f;
             leftSpeed = 1.0f;
         }
 
-        //220 - 2 = 218 < 180 && 220 + 2 = 222 > 180
+        //180 > 220 - 2 = 218 && 180 < 220 + 2 = 222
         //if(var1 > 5 && var1 < 7
         if(getYaw() > scaleToAngle(degrees - precision) && getYaw() < scaleToAngle(degrees + precision)) {
             return true;
