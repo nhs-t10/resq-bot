@@ -137,13 +137,16 @@ public class ResQ_TeleOp extends ResQ_Library {
         srvoLeftDeflector.setPosition(LDefPos);
         srvoRightDeflector.setPosition(RDefPos);
 
-        if (gamepad1.a) {
+        /*if (gamepad1.a) {
             //lower the climber drop
             srvoScoreClimbers.setPosition(0.0);
         } else {
             srvoScoreClimbers.setPosition(1.0);
+        }*/
+        if (gamepad1.a) {
+            //lower the climber drop
+            startIMU();
         }
-
 
         //****************TELEMETRY****************/
         String tel_Bool_Speed = "error speed";
