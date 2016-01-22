@@ -259,11 +259,13 @@ public abstract class ResQ_Library extends OpMode {
             leftSpeed = 1.0f;
         }
 
-        if(scaleToAngle(degrees - precision) > getYaw() && scaleToAngle(degrees + precision) < getYaw()) {
-            telemetry.addData("turning", "" + scaleToAngle(degrees - precision) + " > " + getYaw());
-            drive(rightSpeed, leftSpeed);
-        } else {
+        //220 - 2 = 218 < 180 && 220 + 2 = 222 > 180
+        //if(var1 > 5 && var1 < 7
+        if(getYaw() > scaleToAngle(degrees - precision) && getYaw() < scaleToAngle(degrees + precision)) {
             return true;
+        } else {
+            telemetry.addData("Turning", "" + scaleToAngle(degrees - precision) + " > " + getYaw());
+            drive(rightSpeed, leftSpeed);
         }
 
         return false;
@@ -435,7 +437,7 @@ public abstract class ResQ_Library extends OpMode {
      * Converts any number to an angle value between 0 - 359.
      */
     public double scaleToAngle(double val) {
-        double scaledVal = Math.abs(val);
+        double scaledVal = Math.abs(val) + 360;
         while(scaledVal >= 360) {
             scaledVal-=360;
         }

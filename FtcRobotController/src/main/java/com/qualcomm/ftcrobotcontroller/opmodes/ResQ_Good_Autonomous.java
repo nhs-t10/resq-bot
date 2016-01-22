@@ -82,21 +82,21 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     public void starting () {
         srvoLeftDeflector.setPosition(0.2);
         srvoRightDeflector.setPosition(0.8);
-        currentState = CurrentState.FIRSTTURN;
+        currentState = CurrentState.GETINTOTURNPOSITION;
     }
 
     public void getIntoTurnPosition() {
         drive(0.5f, 0.5f);
         sleep(2000);
         stopDrive();
-        currentState = CurrentState.GETINTOTURNPOSITION;
+        currentState = CurrentState.FIRSTTURN;
     }
 
     public void turnToBeacon() { //turn to beacon
         double yaw = getYaw();
         telemetry.addData("yaw", yaw);
         //we are aligned, so change state and drive forward.
-        if ((teamWeAreOn == Team.RED && yaw >= RED_ANGLE_1 - PRECISION && yaw <= RED_ANGLE_1 + PRECISION)
+        /*if ((teamWeAreOn == Team.RED && yaw >= RED_ANGLE_1 - PRECISION && yaw <= RED_ANGLE_1 + PRECISION)
                 || (teamWeAreOn == Team.BLUE && yaw >= BLUE_ANGLE_1 - PRECISION && yaw <= BLUE_ANGLE_1 + PRECISION)) { //make this compass later
             //robotFirstTurn = true; //deprecated logic
             currentState = CurrentState.APPROACHBEACON;
@@ -104,8 +104,8 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         } else { //we are not aligned, so turn in direction we are supposed to
             int m = teamWeAreOn == Team.RED ? -1 : 1;
             drive(.3f * m, -.3f * m);
-        }
-        //driveTurnDegrees(230); //Replacement function when it works
+        }*/
+        currentState = driveTurnDegrees(RED_ANGLE_1)?  CurrentState.APPROACHBEACON : CurrentState.FIRSTTURN;
     }
 
     protected void approachBeacon(){ // approaches the beacon until the ultrasonic detects the wall
@@ -161,7 +161,6 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
             int m = teamWeAreOn == Team.RED ? -1 : 1;
             drive(.1f * m, -.1f * m);
         }
-        //robotFirstTurn = driveTurnDegrees(230); //thx will p
     }
 
     public void finalParkingStage () { //moves forward and rests.
