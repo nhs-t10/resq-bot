@@ -10,7 +10,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     final int RED_ANGLE_1 = 225;
     final int BLUE_ANGLE_1 = 135;
     // the second set positions to the beacon exactly. We should turn an additional 30-50 degrees
-    final int RED_ANGLE_2 = 215;
+    final int RED_ANGLE_2 = 270;
     final int BLUE_ANGLE_2 = 145;
     // the third set positions to the ramp exactly. We should turn an additional 90 degrees
     final int RED_ANGLE_3 = 360;
@@ -142,11 +142,11 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     public void getParkedCorrectly () {
         double yaw = getYaw();
         telemetry.addData("yaw", yaw);
-        if(!IMURecalibrating || !IMURecalibrated) {
+        /*if(!IMURecalibrating || !IMURecalibrated) {
             IMURecalibrating = true;
             startIMU();
             IMURecalibrated = true;
-        }
+        }*/
 
         //double yaw = getYaw();
         //we are aligned, move to next part
