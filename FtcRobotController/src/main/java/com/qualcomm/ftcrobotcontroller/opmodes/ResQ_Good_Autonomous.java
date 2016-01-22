@@ -18,6 +18,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     final int PRECISION = 2;
 
     boolean turnedToBeaconCorrectly = false; //this is in the parking zone, checking that we're facing the beacon
+    boolean IMURecalibrating = false;
     boolean IMURecalibrated = false;
     boolean IMURecalibratedAgain = false;
 
@@ -52,6 +53,9 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     public void loop() { //Autonomous Logic
         //double yaw = getYaw();
         //telemetry.addData("yaw", yaw);
+        if(!IMURecalibrating || !IMURecalibrated) {
+            telemetry.addData("Calibration", "False");
+        }
 
         if(currentState == CurrentState.STARTING){ //starting state
             telemetry.addData("Current State: ", "Beginning Match...");
@@ -97,10 +101,10 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     }
 
     public void getIntoTurnPosition() {
-        drive(0.5f, 0.5f);
+        drive(-0.5f, -0.5f);
         sleep(2000);
         stopDrive();
-        currentState = CurrentState.GETINTOTURNPOSITION;
+        currentState = CurrentState.FIRSTTURN;
     }
 
     public void turnToBeacon() { //turn to beacon
@@ -115,7 +119,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
             int m = teamWeAreOn == Team.RED ? -1 : 1;
             drive(.3f * m, -.3f * m);
         }
-        //driveTurnDegrees(230); //Replacement function when it works
+        //currentState = driveTurnDegrees(RED_ANGLE_1)?  CurrentState.APPROACHBEACON : CurrentState.FIRSTTURN;
     }
 
     protected void approachBeacon(){ // approaches the beacon until the ultrasonic detects the wall
@@ -126,7 +130,8 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         double ultraValue = getDistance();
         telemetry.addData("ultra", ultraValue);
         if(ultraValue > DISTANCE_FROM_WALL){
-            driveStraight(1.0);
+            //driveStraight(1.0);
+            drive(1.0f, 1.0f);
         }
         else {
             stopDrive();
@@ -137,16 +142,15 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     public void getParkedCorrectly () {
         double yaw = getYaw();
         telemetry.addData("yaw", yaw);
-        if(!IMURecalibrated) {
-            IMURecalibrated = !IMURecalibrated;
+        if(!IMURecalibrating || !IMURecalibrated) {
+            IMURecalibrating = true;
             startIMU();
-            testVar++;
-            telemetry.addData("testvar", testVar);
+            IMURecalibrated = true;
         }
 
         //double yaw = getYaw();
         //we are aligned, move to next part
-        if ((teamWeAreOn == Team.RED && yaw >= RED_ANGLE_2 - PRECISION && yaw <= RED_ANGLE_2 + PRECISION)
+        if ((teamWeAreOn == Team.RED && yaw >= RED_ANGLE_2 - 10 && yaw <= RED_ANGLE_2 + 10)
                 || (teamWeAreOn == Team.BLUE && yaw >= BLUE_ANGLE_2 - PRECISION && yaw <= BLUE_ANGLE_2 + PRECISION)) { //make this compass later
             turnedToBeaconCorrectly = true;
         } else { //we are not aligned, so turn in direction we are supposed to
@@ -177,9 +181,10 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     }
 
     public void secondTurn() { //turns 90 degrees to face ramp
-        if(!IMURecalibratedAgain) {
-            IMURecalibratedAgain = !IMURecalibratedAgain;
+        if(!IMURecalibrating || !IMURecalibrated) {
+            IMURecalibrating = true;
             startIMU();
+            IMURecalibrated = true;
         }
         double yaw = getYaw();
         //we are aligned, move to next part
@@ -190,7 +195,6 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
             int m = teamWeAreOn == Team.RED ? -1 : 1;
             drive(.3f * m, -.3f * m);
         }
-        //robotFirstTurn = driveTurnDegrees(230); //thx will p
     }
 
     public void finalParkingStage() { //moves forward and rests.
