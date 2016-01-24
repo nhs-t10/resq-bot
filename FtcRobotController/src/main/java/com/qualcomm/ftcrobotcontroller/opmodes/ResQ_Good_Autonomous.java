@@ -22,7 +22,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     boolean IMURecalibrated = false;
     boolean IMURecalibratedAgain = false;
 
-    protected Team teamWeAreOn; //enum thats represent team
+    protected Team teamWeAreOn; //enum that represent team
     protected boolean wait5 = false;
 
     public int testVar = 0;
@@ -147,6 +147,8 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         if ((teamWeAreOn == Team.RED && yaw >= RED_ANGLE_2 - PRECISION && yaw <= RED_ANGLE_2 + PRECISION)
                 || (teamWeAreOn == Team.BLUE && yaw >= BLUE_ANGLE_2 - PRECISION && yaw <= BLUE_ANGLE_2 + PRECISION)) { //make this compass later
             turnedToBeaconCorrectly = true;
+            stopDrive();
+            telemetry.addData("end angle", yaw);
             currentState = currentState.PARKEDFORDROP;
         } else { //we are not aligned, so turn in direction we are supposed to
             telemetry.addData("yawInBlock", yaw);
@@ -188,7 +190,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
             int m = teamWeAreOn == Team.RED ? 1 : -1;
             drive(.3f * m, -.3f * m);
         }
-    }
+    } 
 
     public void finalParkingStage() { //moves forward and rests.
         drive(.3f, .3f);
