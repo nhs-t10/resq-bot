@@ -4,9 +4,9 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
  * Created by Admin on 12/22/2015.
  */
 public abstract class ResQ_Good_Autonomous extends ResQ_Library {
-    protected final double DISTANCE_FROM_WALL = 37.5;
-
-    // First set is to turn to correct beacon
+    protected final double RED_WALL = 37.5;
+    protected final double BLUE_WALL = 37.5;
+    // First set is to turn to correct  beacon
     final int RED_ANGLE_1 = 225;
     final int BLUE_ANGLE_1 = 135;
     // the second set positions to the beacon exactly. We should turn an additional 30-50 degrees
@@ -24,11 +24,12 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
 
     protected Team teamWeAreOn; //enum that represent team
     protected boolean wait5 = false;
+    double yaw360;
 
     public int testVar = 0;
 
     public enum CurrentState{
-        STARTING, GETINTOTURNPOSITION, FIRSTTURN, APPROACHBEACON, GETPARKEDCORRECTLY, PARKEDFORDROP, SECONDTURN, FINALPARK, UNKNOWN
+        STARTING, GETINTOTURNPOSITION, FIRSTTURN, APPROACHBEACON, GETPARKEDCORRECTLY, DOA360FAM, FINALAPPROACH, PARKEDFORDROP, SECONDTURN, FINALPARK, UNKNOWN
     }
     protected CurrentState currentState = CurrentState.STARTING;
 
@@ -80,6 +81,14 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
             telemetry.addData("Current State: ", "Turning to beacon");
             getParkedCorrectly(); //turns to beacon
         }
+        else if (currentState == CurrentState.DOA360FAM){
+            telemetry.addData("Current State: ", "do a 360 fam");
+            doA360Fam();
+        }
+        else if (currentState == CurrentState.FINALAPPROACH){
+            telemetry.addData("Current State: ", "Moving forward");
+            finalApproach();
+        }
         else if (currentState == CurrentState.PARKEDFORDROP){
             telemetry.addData("Current State: ", "Dropping Climbers...");
             parkingDrop();
@@ -128,7 +137,8 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     protected void approachBeacon(){ // approaches the beacon until the ultrasonic detects the wall
         double ultraValue = getDistance();
         telemetry.addData("ultra", ultraValue);
-        if(ultraValue > DISTANCE_FROM_WALL){
+        double distance = (teamWeAreOn == Team.RED ? RED_WALL : BLUE_WALL);
+        if(ultraValue > distance) {
             float fltUltValue = (float) ultraValue;
             //float speed = ((ultraValue < 50.0) ? fltUltValue / 50.0f : 1.0f);
             float speed = 1.0f;
@@ -137,6 +147,9 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         }
         else {
             stopDrive();
+            //bring up tread guards, they're useless now
+            srvoLeftDeflector.setPosition(1.0);
+            srvoRightDeflector.setPosition(0.0);
             currentState = CurrentState.GETPARKEDCORRECTLY;
         }
     }
@@ -149,35 +162,54 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
             turnedToBeaconCorrectly = true;
             stopDrive();
             telemetry.addData("end angle", yaw);
-            currentState = currentState.PARKEDFORDROP;
+            yaw360 = getYaw();
+            currentState = CurrentState.DOA360FAM;
         } else { //we are not aligned, so turn in direction we are supposed to
             telemetry.addData("yawInBlock", yaw);
-            int m = teamWeAreOn == Team.RED ? 1 : -1;
+            int m = teamWeAreOn == Team.RED ? -1 : 1;
             drive(.3f * m, -.3f * m);
         }
     }
 
-    public void matchUpWithBeacon () {
-        drive(.2f, .2f);
-        sleep(500); //moves forward at 1/5 speed for half a second
-        stopDrive();
+    public void doA360Fam () {
+        double yaw = getYaw();
+        if (yaw >= yaw360 - PRECISION*3 && yaw <= yaw360 - PRECISION){ //weirder calculation to ensure no overlaps from current yaw
+            stopDrive();
+            telemetry.addData("end angle", yaw);
+            currentState = CurrentState.FINALAPPROACH;
+        } else { //we are not aligned, so turn in direction we are supposed to
+            telemetry.addData("yawInBlock", yaw);
+            drive(.3f, -.3f);
+        }
     }
+
+    protected void finalApproach(){ // approaches the beacon until the ultrasonic detects the wall
+        double ultraValue = getDistance();
+        telemetry.addData("ultra", ultraValue);
+        if(ultraValue > 12) {
+            float fltUltValue = (float) ultraValue;
+            //float speed = ((ultraValue < 50.0) ? fltUltValue / 50.0f : 1.0f);
+            float speed = 0.5f;
+            //driveStraight(1.0);
+            drive(speed, speed);
+        }
+        else {
+            stopDrive();
+            currentState = CurrentState.PARKEDFORDROP;
+        }
+    }
+
 
     public void parkingDrop () { //positions the robot to face beacon then drops climbers
         //later, we'll use ultrasonics to triangulate the positions correctly.
-
-        //It's not possible
-        //No - it's necessary.
-
-        //bring up tread guards, they're useless now
-        srvoLeftDeflector.setPosition(1.0);
-        srvoRightDeflector.setPosition(0.0);
-        sleep(1000); //waits for guards to raise
+        drive(.5f, .5f);
+        sleep(500); //moves forward at 1/5 speed for half a second
+        stopDrive();
 
         DropClimber();
 
         sleep(1000); //waits for climbers to dropbp
-        currentState = CurrentState.SECONDTURN;
+        currentState = CurrentState.UNKNOWN;
     }
 
     public void secondTurn() { //turns 90 degrees to face ramp
@@ -190,7 +222,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
             int m = teamWeAreOn == Team.RED ? 1 : -1;
             drive(.3f * m, -.3f * m);
         }
-    } 
+    }
 
     public void finalParkingStage() { //moves forward and rests.
         drive(.3f, .3f);
