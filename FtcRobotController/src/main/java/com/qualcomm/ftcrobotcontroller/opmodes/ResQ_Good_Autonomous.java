@@ -11,7 +11,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     final int BLUE_ANGLE_1 = 135;
     // the second set positions to the beacon exactly. We should turn an additional 30-50 degrees
     final int RED_ANGLE_2 = 270;
-    final int BLUE_ANGLE_2 = 145;
+    final int BLUE_ANGLE_2 = 90 ;
     // the third set positions to the ramp exactly. We should turn an additional 90 degrees
     final int RED_ANGLE_3 = 360;
     final int BLUE_ANGLE_3 = 360;
@@ -44,6 +44,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         telemetry.addData("Init Yaw", getYaw());
         if(wait5) waitFive();
         srvoScoreClimbers.setPosition(1.0); //makes sure it doesn't drop it by accident
+        srvoBlockDropper.setPosition(0.6);
     }
 
     @Override
@@ -53,8 +54,8 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
 
     @Override
     public void loop() { //Autonomous Logic
-        //double yaw = getYaw();
-        //telemetry.addData("yaw", yaw);
+        double yaw = getYaw();
+        telemetry.addData("yaw", yaw);
         if(!IMURecalibrating || !IMURecalibrated) {
             telemetry.addData("Calibration", "False");
         }
@@ -125,15 +126,14 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     }
 
     protected void approachBeacon(){ // approaches the beacon until the ultrasonic detects the wall
-        double yaw = getYaw();
-        telemetry.addData("yaw", yaw);
 
 
         double ultraValue = getDistance();
         telemetry.addData("ultra", ultraValue);
         if(ultraValue > DISTANCE_FROM_WALL){
             float fltUltValue = (float) ultraValue;
-            float speed = ((ultraValue < 50.0) ? fltUltValue / 50.0f : 1.0f);
+            //float speed = ((ultraValue < 50.0) ? fltUltValue / 50.0f : 1.0f);
+            float speed = 1.0f;
             //driveStraight(1.0);
             drive(speed, speed);
         }
@@ -144,15 +144,8 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     }
 
     public void getParkedCorrectly () {
-        double yaw = getYaw();
-        telemetry.addData("yaw", yaw);
-        if(!IMURecalibrating && !IMURecalibrated) {
-            IMURecalibrating = true;
-            startIMU();
-            IMURecalibrated = true;
-        }
 
-        //double yaw = getYaw();
+        double yaw = getYaw();
         //we are aligned, move to next part
         if ((teamWeAreOn == Team.RED && yaw >= RED_ANGLE_2 - PRECISION && yaw <= RED_ANGLE_2 + PRECISION)
                 || (teamWeAreOn == Team.BLUE && yaw >= BLUE_ANGLE_2 - PRECISION && yaw <= BLUE_ANGLE_2 + PRECISION)) { //make this compass later
@@ -160,7 +153,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
             currentState = currentState.PARKEDFORDROP;
         } else { //we are not aligned, so turn in direction we are supposed to
             telemetry.addData("yawInBlock", yaw);
-            int m = teamWeAreOn == Team.RED ? -1 : 1;
+            int m = teamWeAreOn == Team.RED ? 1 : -1;
             drive(.3f * m, -.3f * m);
         }
     }
@@ -183,15 +176,12 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         sleep(1000); //waits for guards to raise
 
         DropClimber();
+
+        sleep(1000); //waits for climbers to dropbp
         currentState = CurrentState.SECONDTURN;
     }
 
     public void secondTurn() { //turns 90 degrees to face ramp
-        /*if(!IMURecalibrating || !IMURecalibrated) {
-            IMURecalibrating = true;
-            startIMU();
-            IMURecalibrated = true;
-        }*/
         double yaw = getYaw();
         //we are aligned, move to next part
         if ((teamWeAreOn == Team.RED && yaw >= RED_ANGLE_3 - PRECISION && yaw <= RED_ANGLE_3 + PRECISION)
