@@ -224,6 +224,8 @@ public abstract class ResQ_Library extends OpMode {
     float rightSpeed;
     float leftSpeed;
 
+    double val = 180;
+
     /**
      * Turns the robot towards the given degree value via the quickest route. Should be called within a loop.
      * @param degrees degree value for the robot to turn towards.
@@ -244,6 +246,7 @@ public abstract class ResQ_Library extends OpMode {
         //the angle across from the initialAngle on a circle
         double oppositeAngle = scaleToAngle(initialAngle + 180);
 
+        val += (getYaw() - 180);
         /*
          * Here is some pseudo code to try and help explain why the robot knows the quickest route to turn.
          * -----------------------------------------------------------------------------------------------------
@@ -264,10 +267,10 @@ public abstract class ResQ_Library extends OpMode {
 
         //180 > 220 - 2 = 218 && 180 < 220 + 2 = 222
         //if(var1 > 5 && var1 < 7
-        if(getYaw() > scaleToAngle(degrees - precision) && getYaw() < scaleToAngle(degrees + precision)) {
+        if(val > scaleToAngle(degrees - precision) && val < scaleToAngle(degrees + precision)) {
+            stopDrive();
             return true;
         } else {
-            telemetry.addData("Turning", "" + scaleToAngle(degrees - precision) + " > " + getYaw());
             drive(rightSpeed, leftSpeed);
         }
 
@@ -298,6 +301,9 @@ public abstract class ResQ_Library extends OpMode {
         return sensorUltra_1.getValue();
     }
 
+    /*
+     * Callibrates the IMU
+     */
     public void startIMU() {
         imu.startIMU();
     }

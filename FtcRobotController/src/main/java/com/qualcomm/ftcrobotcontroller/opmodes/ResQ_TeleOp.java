@@ -74,20 +74,22 @@ public class ResQ_TeleOp extends ResQ_Library {
             setDriveGear(1);
         }
 
+        if(gamepad1.left_bumper) {
+            //driveTurnDegrees(90);
+        }
+
         //****************BLOCK SCORING****************//
 
         if (gamepad2.x) { //Dropper Left Pos
             DropperPosition dropperPos = DropperPosition.LEFT;
-            srvoBlockDropper.setPosition(0.75);
+            srvoBlockDropper.setPosition(0.9);
         } else if (gamepad2.y) { //Dropper Center
             DropperPosition dropperPos = DropperPosition.CENTER;
             srvoBlockDropper.setPosition(0.6);
         } else if (gamepad2.b) { //Dropper Right Pos
             DropperPosition dropperPos = DropperPosition.RIGHT;
-            srvoBlockDropper.setPosition(0.5);
+            srvoBlockDropper.setPosition(0.35);
         }
-
-
 
         //****************OTHER****************//
 
@@ -137,15 +139,11 @@ public class ResQ_TeleOp extends ResQ_Library {
         srvoLeftDeflector.setPosition(LDefPos);
         srvoRightDeflector.setPosition(RDefPos);
 
-        /*if (gamepad1.a) {
-            //lower the climber drop
-            srvoScoreClimbers.setPosition(0.0);
-        } else {
-            srvoScoreClimbers.setPosition(1.0);
-        }*/
         if (gamepad1.a) {
             //lower the climber drop
-            startIMU();
+            srvoScoreClimbers.setPosition(0.0f);
+        } else {
+            srvoScoreClimbers.setPosition(1.0f);
         }
 
         //****************TELEMETRY****************/
