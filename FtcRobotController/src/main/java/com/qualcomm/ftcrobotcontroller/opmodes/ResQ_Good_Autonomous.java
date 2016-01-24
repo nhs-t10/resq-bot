@@ -126,8 +126,6 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     }
 
     protected void approachBeacon(){ // approaches the beacon until the ultrasonic detects the wall
-
-
         double ultraValue = getDistance();
         telemetry.addData("ultra", ultraValue);
         if(ultraValue > DISTANCE_FROM_WALL){
@@ -144,7 +142,6 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     }
 
     public void getParkedCorrectly () {
-
         double yaw = getYaw();
         //we are aligned, move to next part
         if ((teamWeAreOn == Team.RED && yaw >= RED_ANGLE_2 - PRECISION && yaw <= RED_ANGLE_2 + PRECISION)
@@ -188,7 +185,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
                 || (teamWeAreOn == Team.BLUE && yaw >= BLUE_ANGLE_3 - PRECISION && yaw <= BLUE_ANGLE_3 + PRECISION)) { //make this compass later
             currentState = CurrentState.FINALPARK;
         } else { //we are not aligned, so turn in direction we are supposed to
-            int m = teamWeAreOn == Team.RED ? -1 : 1;
+            int m = teamWeAreOn == Team.RED ? 1 : -1;
             drive(.3f * m, -.3f * m);
         }
     }
