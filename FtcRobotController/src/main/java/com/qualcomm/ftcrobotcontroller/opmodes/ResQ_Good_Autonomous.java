@@ -142,11 +142,11 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     public void getParkedCorrectly () {
         double yaw = getYaw();
         telemetry.addData("yaw", yaw);
-        /*if(!IMURecalibrating || !IMURecalibrated) {
+        if(!IMURecalibrating && !IMURecalibrated) {
             IMURecalibrating = true;
             startIMU();
             IMURecalibrated = true;
-        }*/
+        }
 
         //double yaw = getYaw();
         //we are aligned, move to next part
