@@ -186,7 +186,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     protected void finalApproach(){ // approaches the beacon until the ultrasonic detects the wall
         double ultraValue = getDistance();
         telemetry.addData("ultra", ultraValue);
-        if(ultraValue > 12) {
+        if(ultraValue > 15) {
             float fltUltValue = (float) ultraValue;
             //float speed = ((ultraValue < 50.0) ? fltUltValue / 50.0f : 1.0f);
             float speed = 0.5f;
