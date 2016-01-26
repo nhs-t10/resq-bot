@@ -243,10 +243,10 @@ public abstract class ResQ_Library extends OpMode {
      */
     public boolean driveTurnDegrees(int degrees, int precision) {
         double initialAngle = getYaw();
+        float driveSpeed = 0.5f;
         //the angle across from the initialAngle on a circle
         double oppositeAngle = scaleToAngle(initialAngle + 180);
 
-        val += (getYaw() - 180);
         /*
          * Here is some pseudo code to try and help explain why the robot knows the quickest route to turn.
          * -----------------------------------------------------------------------------------------------------
@@ -255,25 +255,25 @@ public abstract class ResQ_Library extends OpMode {
          */
         if (!foundQuickestRoute && (degrees > oppositeAngle || (oppositeAngle < 180)? (degrees > initialAngle): (degrees < initialAngle))) {
             //turn negative degrees
-            rightSpeed = 1.0f;
-            leftSpeed = -1.0f;
+            rightSpeed = driveSpeed;
+            leftSpeed = -driveSpeed;
         } else if(!foundQuickestRoute){
             //turn positive degrees
-            rightSpeed = -1.0f;
-            leftSpeed = 1.0f;
+            rightSpeed = -driveSpeed;
+            leftSpeed = driveSpeed;
         }
 
         foundQuickestRoute = true;
 
         //180 > 220 - 2 = 218 && 180 < 220 + 2 = 222
-        //if(var1 > 5 && var1 < 7
-        if(val > scaleToAngle(degrees - precision) && val < scaleToAngle(degrees + precision)) {
+        //if(val > 80 && val < 100) {
+        if(getYaw() > scaleToAngle(degrees - precision) && getYaw() < scaleToAngle(degrees + precision)) {
             stopDrive();
             return true;
-        } else {
-            drive(rightSpeed, leftSpeed);
         }
 
+        drive(rightSpeed, leftSpeed);
+        val += (getYaw() - 180);
         return false;
     }
 
