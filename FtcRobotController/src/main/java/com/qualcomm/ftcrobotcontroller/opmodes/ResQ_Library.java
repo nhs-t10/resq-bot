@@ -269,11 +269,11 @@ public abstract class ResQ_Library extends OpMode {
         //if(val > 80 && val < 100) {
         if(getYaw() > scaleToAngle(degrees - precision) && getYaw() < scaleToAngle(degrees + precision)) {
             stopDrive();
+            foundQuickestRoute = false;
             return true;
         }
 
         drive(rightSpeed, leftSpeed);
-        val += (getYaw() - 180);
         return false;
     }
 
