@@ -2,6 +2,7 @@ package com.qualcomm.ftcrobotcontroller.opmodes.test;
 
 import com.qualcomm.ftcrobotcontroller.opmodes.ResQ_Library;
 import com.qualcomm.robotcore.util.Range;
+import java.util.Observable;
 
 /**
  * Created by Admin on 1/22/2016.
@@ -9,16 +10,20 @@ import com.qualcomm.robotcore.util.Range;
 public class DegreesTest extends ResQ_Library {
     private  boolean turn;
     private int goal;
+    private double  curr;
 
     @Override
     public void init() {
         turn = true;
-        goal = 220;
+        goal = 180;
+        curr = 180;
+
         initializeMapping();
         startIMU();
     }
 
     public void loop() {
+        curr = getYaw();
         telemetry.addData("Goal", goal + "°");
         if(turn) {
             float Y = ProcessToMotorFromJoy(-gamepad1.left_stick_y);
@@ -38,9 +43,8 @@ public class DegreesTest extends ResQ_Library {
             goal = (int) Range.clip(goal, 0.0f, 359.0f);
             sleep(10);
         } else {
-            telemetry.addData("Current Yaw", getYaw() + "°");
-            startIMU();
-            turn = driveTurnDegrees(goal);
+            telemetry.addData("Current Yaw", curr + "°");
+            turn = driveTurnDegrees(goal, 10);
         }
     }
 }
