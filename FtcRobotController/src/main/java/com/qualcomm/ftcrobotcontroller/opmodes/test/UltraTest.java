@@ -1,5 +1,6 @@
 package com.qualcomm.ftcrobotcontroller.opmodes.test;
 
+import com.qualcomm.ftcrobotcontroller.opmodes.ResQ_Library;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;

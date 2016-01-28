@@ -190,35 +190,41 @@ public abstract class ResQ_Library extends OpMode {
     }
 
     /*This method should not be working...*/
-    public void driveStraight(double millis) {
-        /*
-         * This algorithm assumes yawAngle[0] returns
-         * values between 0—359 or -180—179.
-         */
+        public void driveStraight(double millis) {
+            /*
+             * This algorithm assumes yawAngle[0] returns
+             * values between 0—359 or -180—179.
+             */
 
-        double startDir = getYaw();
-        double startTime = System.currentTimeMillis();
-        double currentTime = 0.0;
+            double startDir = getYaw();
+            double startTime = System.currentTimeMillis();
+            double currentTime = 0.0;
 
-        double rSpeed = 1.0f;
-        double lSpeed = 1.0f;
+            double rSpeed = 1.0f;
+            double lSpeed = 1.0f;
 
-        while(currentTime - startTime < millis) {
-            rSpeed = (startDir + yawAngle[0]) * RIGHT_ROTATION_CONST + ROTATION_OFFSET;
-            lSpeed = (startDir - yawAngle[0]) * LEFT_ROTATION_CONST + ROTATION_OFFSET;
-            //360 + 100 = 40
-            //360 - 100 = 260
+            while(currentTime - startTime < millis) {
+                rSpeed = (startDir + yawAngle[0]) * RIGHT_ROTATION_CONST + ROTATION_OFFSET;
+                lSpeed = (startDir - yawAngle[0]) * LEFT_ROTATION_CONST + ROTATION_OFFSET;
+                //360 + 100 = 40
+                //360 - 100 = 260
 
-            //round any values <0 or >1 to 0 or 1.
-            rSpeed = Math.max(0, Math.min(1.0, rSpeed));
-            lSpeed = Math.max(0, Math.min(1.0, lSpeed));
+                //round any values <0 or >1 to 0 or 1.
+                rSpeed = Math.max(0, Math.min(1.0, rSpeed));
+                lSpeed = Math.max(0, Math.min(1.0, lSpeed));
 
-            drive((float) lSpeed, (float) rSpeed);
-            currentTime = System.currentTimeMillis();
-            sleep(10);
+                drive((float) lSpeed, (float) rSpeed);
+                currentTime = System.currentTimeMillis();
+                sleep(10);
+            }
         }
-    }
 
+
+    private boolean foundQuickestRoute = false;
+    float rightSpeed;
+    float leftSpeed;
+
+    double val = 180;
 
     /**
      * Turns the robot towards the given degree value via the quickest route. Should be called within a loop.
@@ -237,11 +243,9 @@ public abstract class ResQ_Library extends OpMode {
      */
     public boolean driveTurnDegrees(int degrees, int precision) {
         double initialAngle = getYaw();
+        float driveSpeed = 0.5f;
         //the angle across from the initialAngle on a circle
         double oppositeAngle = scaleToAngle(initialAngle + 180);
-
-        float rightSpeed;
-        float leftSpeed;
 
         /*
          * Here is some pseudo code to try and help explain why the robot knows the quickest route to turn.
@@ -249,23 +253,27 @@ public abstract class ResQ_Library extends OpMode {
          * if(we need to go passed the opposite angle, true || is the opposite angle below 180? If yes, true for
          * all degree values above the initial Angle. : If no, true for all degree values below the inital angle.
          */
-        if (degrees > oppositeAngle || (oppositeAngle < 180)? (degrees > initialAngle): (degrees < initialAngle)) {
+        if (!foundQuickestRoute && (degrees > oppositeAngle || (oppositeAngle < 180)? (degrees > initialAngle): (degrees < initialAngle))) {
             //turn negative degrees
-            rightSpeed = -1.0f;
-            leftSpeed = -1.0f;
-        } else {
+            rightSpeed = driveSpeed;
+            leftSpeed = -driveSpeed;
+        } else if(!foundQuickestRoute){
             //turn positive degrees
-            rightSpeed = -1.0f;
-            leftSpeed = 1.0f;
+            rightSpeed = -driveSpeed;
+            leftSpeed = driveSpeed;
         }
 
-        if(scaleToAngle(degrees - precision) > getYaw() && scaleToAngle(degrees + precision) < getYaw()) {
-            telemetry.addData("turning", "" + scaleToAngle(degrees - precision) + " > " + getYaw());
-            drive(rightSpeed, leftSpeed);
-        } else {
+        foundQuickestRoute = true;
+
+        //180 > 220 - 2 = 218 && 180 < 220 + 2 = 222
+        //if(val > 80 && val < 100) {
+        if(getYaw() > scaleToAngle(degrees - precision) && getYaw() < scaleToAngle(degrees + precision)) {
+            stopDrive();
+            foundQuickestRoute = false;
             return true;
         }
 
+        drive(rightSpeed, leftSpeed);
         return false;
     }
 
@@ -293,6 +301,9 @@ public abstract class ResQ_Library extends OpMode {
         return sensorUltra_1.getValue();
     }
 
+    /*
+     * Callibrates the IMU
+     */
     public void startIMU() {
         imu.startIMU();
     }
@@ -435,7 +446,7 @@ public abstract class ResQ_Library extends OpMode {
      * Converts any number to an angle value between 0 - 359.
      */
     public double scaleToAngle(double val) {
-        double scaledVal = Math.abs(val);
+        double scaledVal = Math.abs(val) + 360;
         while(scaledVal >= 360) {
             scaledVal-=360;
         }

@@ -85,7 +85,7 @@ public class ResQ_Autonomous extends ResQ_Library {
         } else { //markisagod
 			/*if (!turning) turning = true;
 			else {
-				angleGoal = sensorGyro.rawX() + 70;
+				angleiohyujhyfguuuGoal = sensorGyro.rawX() + 70;
 			}*/
 
 			int m = teamWeAreOn == Team.RED ? -1 : 1;

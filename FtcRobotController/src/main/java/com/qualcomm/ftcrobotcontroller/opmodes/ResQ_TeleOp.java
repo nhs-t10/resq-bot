@@ -15,6 +15,7 @@ public class ResQ_TeleOp extends ResQ_Library {
     public void init() {
         //Do the map thing
         initializeMapping();
+        startIMU();
         telemetry.addData("Version", "Sensorless. COLOR ERROR SHOULD NOT SHOW UP!");
 
         //Set Deflectors Up
@@ -26,7 +27,7 @@ public class ResQ_TeleOp extends ResQ_Library {
 
     @Override
     public void loop() {
-
+        telemetry.addData("yaw", getYaw());
         /*
          * Gamepad 1:
 		 * Left joystick moves the left track, and the right joystick moves the right track
@@ -73,20 +74,22 @@ public class ResQ_TeleOp extends ResQ_Library {
             setDriveGear(1);
         }
 
+        if(gamepad1.left_bumper) {
+            //driveTurnDegrees(90);
+        }
+
         //****************BLOCK SCORING****************//
 
         if (gamepad2.x) { //Dropper Left Pos
             DropperPosition dropperPos = DropperPosition.LEFT;
-            srvoBlockDropper.setPosition(0.75);
+            srvoBlockDropper.setPosition(0.9);
         } else if (gamepad2.y) { //Dropper Center
             DropperPosition dropperPos = DropperPosition.CENTER;
             srvoBlockDropper.setPosition(0.6);
         } else if (gamepad2.b) { //Dropper Right Pos
             DropperPosition dropperPos = DropperPosition.RIGHT;
-            srvoBlockDropper.setPosition(0.5);
+            srvoBlockDropper.setPosition(0.35);
         }
-
-
 
         //****************OTHER****************//
 
@@ -138,11 +141,10 @@ public class ResQ_TeleOp extends ResQ_Library {
 
         if (gamepad1.a) {
             //lower the climber drop
-            srvoScoreClimbers.setPosition(0.0);
+            srvoScoreClimbers.setPosition(0.0f);
         } else {
-            srvoScoreClimbers.setPosition(1.0);
+            srvoScoreClimbers.setPosition(1.0f);
         }
-
 
         //****************TELEMETRY****************/
         String tel_Bool_Speed = "error speed";
@@ -154,6 +156,6 @@ public class ResQ_TeleOp extends ResQ_Library {
             tel_Bool_Speed = "at 25% speed";
         }
         telemetry.addData("", "Driving is " + " and " + tel_Bool_Speed);
-        telemetry.addData("yaw", getYaw());
+
     }
 }

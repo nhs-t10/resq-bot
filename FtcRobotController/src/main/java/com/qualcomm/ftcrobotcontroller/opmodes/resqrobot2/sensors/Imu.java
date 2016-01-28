@@ -32,6 +32,10 @@ public class Imu {
         return name;
     }
 
+    public void recallibrate() {
+        imu.startIMU();
+    }
+
     private void getAngles() {
         imu.getIMUGyroAngles(rollAngle, pitchAngle, yawAngle);
     }
