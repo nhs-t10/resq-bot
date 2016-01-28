@@ -20,24 +20,24 @@ public abstract class ResQ_Library extends OpMode {
     //****************HARDWARE MAPPING DEFINITIONS****************//
 
     //For Driving Only
-    DcMotor motorRightTread, motorLeftTread, motorRightSecondTread, motorLeftSecondTread;
-    DcMotor motorHangingMech;
-    DcMotor motorTapeMech;
+    public DcMotor motorRightTread, motorLeftTread, motorRightSecondTread, motorLeftSecondTread;
+    public DcMotor motorHangingMech;
+    public DcMotor motorTapeMech;
 
     //Autonomous
-    Servo srvoScoreClimbers, srvoBeaconPusher;
+    public Servo srvoScoreClimbers, srvoBeaconPusher;
 
     //Other
-    Servo srvoRightDeflector, srvoLeftDeflector;
-    Servo srvoBlockDropper;
-    Servo srvoLeftGuard, srvoRightGuard;
+    public Servo srvoRightDeflector, srvoLeftDeflector;
+    public Servo srvoBlockDropper;
+    public Servo srvoLeftGuard, srvoRightGuard;
 
     //Sensors
-    AnalogInput sensorUltra_1, sensorUltra_2;
-    ColorSensor sensorRGB_1, sensorRGB_2;
-    AdafruitIMU imu;
+    public AnalogInput sensorUltra_1, sensorUltra_2;
+    public ColorSensor sensorRGB_1, sensorRGB_2;
+    public AdafruitIMU imu;
 
-    CompassSensor compassSensor;
+    public CompassSensor compassSensor;
 
     int offsetRed_1, offsetGreen_1, offsetBlue_1, offsetRed_2, offsetBlue_2, offsetGreen_2;
 
@@ -86,10 +86,6 @@ public abstract class ResQ_Library extends OpMode {
     double DeflectorServoUpPos = 0.1;
     double DeflectorServoDownPos = 0.1;
 
-    public enum Team {
-        RED, BLUE, UNKNOWN
-    }
-
     public enum DropperPosition {
         LEFT, RIGHT, CENTER
     }
@@ -99,7 +95,7 @@ public abstract class ResQ_Library extends OpMode {
     }
 
     DropperPosition dropperPos = DropperPosition.CENTER;
-    Color teamWeAreOn = Color.NONE; //enum thats represent team
+    Color colorDecided = Color.NONE; //enum thats represent team
 
     public ResQ_Library() {
 
@@ -151,11 +147,11 @@ public abstract class ResQ_Library extends OpMode {
         return compassSensor.getDirection();
     }
 
-    public void loadSensor(Team t) {
+    /*public void loadSensor(Team t) {
         String myteam = t == Team.RED ? "colorR" : "colorL";
         //sensorRGB_1 = hardwareMap.colorSensor.get(myteam);
         //sensorRGB_2 = hardwareMap.colorSensor.get(myteam);
-    }
+    }*/
 
     public void drive(float left, float right) {
         // Drives
