@@ -274,7 +274,6 @@ public abstract class ResQ_Library extends OpMode {
         }
 
         drive(rightSpeed, leftSpeed);
-        //val += (getYaw() - 180);
         return false;
     }
 
