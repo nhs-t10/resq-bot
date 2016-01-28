@@ -36,15 +36,15 @@ public class DegreesTest extends ResQ_Library {
             }
 
             if (gamepad1.left_stick_button) {
-                startIMU();
+                //startIMU();
                 sleep(500);
                 turn = false;
             }
 
-            goal = (int) Range.clip(goal, 0.0f, 359.0f);
+            goal = (int) Range.clip(goal, 0.0f, 359.9f);
             sleep(10);
         } else {
-            turn = driveTurnDegrees(goal, 10);
+            turn = driveTurnDegrees(goal, 7);
         }
     }
 }

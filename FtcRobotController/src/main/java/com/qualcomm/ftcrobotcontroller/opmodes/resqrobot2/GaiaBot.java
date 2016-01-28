@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.util.Range;
 /**
  * Created by Admin on 1/24/2016.
  */
+
 public class GaiaBot extends ResQLibrary2 {
 
     @Override

@@ -20,24 +20,24 @@ public abstract class ResQ_Library extends OpMode {
     //****************HARDWARE MAPPING DEFINITIONS****************//
 
     //For Driving Only
-    DcMotor motorRightTread, motorLeftTread, motorRightSecondTread, motorLeftSecondTread;
-    DcMotor motorHangingMech;
-    DcMotor motorTapeMech;
+    public DcMotor motorRightTread, motorLeftTread, motorRightSecondTread, motorLeftSecondTread;
+    public DcMotor motorHangingMech;
+    public DcMotor motorTapeMech;
 
     //Autonomous
-    Servo srvoScoreClimbers, srvoBeaconPusher;
+    public Servo srvoScoreClimbers, srvoBeaconPusher;
 
     //Other
-    Servo srvoRightDeflector, srvoLeftDeflector;
-    Servo srvoBlockDropper;
-    Servo srvoLeftGuard, srvoRightGuard;
+    public Servo srvoRightDeflector, srvoLeftDeflector;
+    public Servo srvoBlockDropper;
+    public Servo srvoLeftGuard, srvoRightGuard;
 
     //Sensors
-    AnalogInput sensorUltra_1, sensorUltra_2;
-    ColorSensor sensorRGB_1, sensorRGB_2;
-    AdafruitIMU imu;
+    public AnalogInput sensorUltra_1, sensorUltra_2;
+    public ColorSensor sensorRGB_1, sensorRGB_2;
+    public AdafruitIMU imu;
 
-    CompassSensor compassSensor;
+    public CompassSensor compassSensor;
 
     int offsetRed_1, offsetGreen_1, offsetBlue_1, offsetRed_2, offsetBlue_2, offsetGreen_2;
 
@@ -86,10 +86,6 @@ public abstract class ResQ_Library extends OpMode {
     double DeflectorServoUpPos = 0.1;
     double DeflectorServoDownPos = 0.1;
 
-    public enum Team {
-        RED, BLUE, UNKNOWN
-    }
-
     public enum DropperPosition {
         LEFT, RIGHT, CENTER
     }
@@ -99,7 +95,7 @@ public abstract class ResQ_Library extends OpMode {
     }
 
     DropperPosition dropperPos = DropperPosition.CENTER;
-    Color teamWeAreOn = Color.NONE; //enum thats represent team
+    Color colorDecided = Color.NONE; //enum thats represent team
 
     public ResQ_Library() {
 
@@ -151,11 +147,11 @@ public abstract class ResQ_Library extends OpMode {
         return compassSensor.getDirection();
     }
 
-    public void loadSensor(Team t) {
+    /*public void loadSensor(Team t) {
         String myteam = t == Team.RED ? "colorR" : "colorL";
         //sensorRGB_1 = hardwareMap.colorSensor.get(myteam);
         //sensorRGB_2 = hardwareMap.colorSensor.get(myteam);
-    }
+    }*/
 
     public void drive(float left, float right) {
         // Drives
@@ -190,35 +186,35 @@ public abstract class ResQ_Library extends OpMode {
     }
 
     /*This method should not be working...*/
-        public void driveStraight(double millis) {
-            /*
-             * This algorithm assumes yawAngle[0] returns
-             * values between 0—359 or -180—179.
-             */
+    @Deprecated
+    public void driveStraight(double millis) {
+        /*
+        * This algorithm assumes yawAngle[0] returns
+        * values between 0—359 or -180—179.
+        */
 
-            double startDir = getYaw();
-            double startTime = System.currentTimeMillis();
-            double currentTime = 0.0;
+        double startDir = getYaw();
+        double startTime = System.currentTimeMillis();
+        double currentTime = 0.0;
 
-            double rSpeed = 1.0f;
-            double lSpeed = 1.0f;
+        double rSpeed = 1.0f;
+        double lSpeed = 1.0f;
 
-            while(currentTime - startTime < millis) {
-                rSpeed = (startDir + yawAngle[0]) * RIGHT_ROTATION_CONST + ROTATION_OFFSET;
-                lSpeed = (startDir - yawAngle[0]) * LEFT_ROTATION_CONST + ROTATION_OFFSET;
-                //360 + 100 = 40
-                //360 - 100 = 260
+        while(currentTime - startTime < millis) {
+            rSpeed = (startDir + yawAngle[0]) * RIGHT_ROTATION_CONST + ROTATION_OFFSET;
+            lSpeed = (startDir - yawAngle[0]) * LEFT_ROTATION_CONST + ROTATION_OFFSET;
+            //360 + 100 = 40
+            //360 - 100 = 260
 
-                //round any values <0 or >1 to 0 or 1.
-                rSpeed = Math.max(0, Math.min(1.0, rSpeed));
-                lSpeed = Math.max(0, Math.min(1.0, lSpeed));
+            //round any values <0 or >1 to 0 or 1.
+            rSpeed = Math.max(0, Math.min(1.0, rSpeed));
+            lSpeed = Math.max(0, Math.min(1.0, lSpeed));
 
-                drive((float) lSpeed, (float) rSpeed);
-                currentTime = System.currentTimeMillis();
-                sleep(10);
-            }
+            drive((float) lSpeed, (float) rSpeed);
+            currentTime = System.currentTimeMillis();
+            sleep(10);
         }
-
+    }
 
     private boolean foundQuickestRoute = false;
     float rightSpeed;
@@ -232,7 +228,7 @@ public abstract class ResQ_Library extends OpMode {
      * @return Returns true if turn is complete
      */
     public boolean driveTurnDegrees(int degrees) {
-        return driveTurnDegrees(degrees, 2);
+        return driveTurnDegrees(degrees, 5);
     }
 
     /**
@@ -255,12 +251,12 @@ public abstract class ResQ_Library extends OpMode {
          */
         if (!foundQuickestRoute && (degrees > oppositeAngle || (oppositeAngle < 180)? (degrees > initialAngle): (degrees < initialAngle))) {
             //turn negative degrees
-            rightSpeed = driveSpeed;
-            leftSpeed = -driveSpeed;
-        } else if(!foundQuickestRoute){
-            //turn positive degrees
             rightSpeed = -driveSpeed;
             leftSpeed = driveSpeed;
+        } else if(!foundQuickestRoute){
+            //turn positive degrees
+            rightSpeed = driveSpeed;
+            leftSpeed = -driveSpeed;
         }
 
         foundQuickestRoute = true;

@@ -51,7 +51,6 @@ public abstract class ResQLibrary2 extends OpMode {
 
     //Reading from compass sensor
 
-
     public void drive(float left, float right) {
         //Clips it just in case there's a problem
         right = (float)Range.clip(right, -1.0, 1.0);
