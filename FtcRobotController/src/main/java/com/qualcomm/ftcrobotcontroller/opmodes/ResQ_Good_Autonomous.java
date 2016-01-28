@@ -1,8 +1,13 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+
 /**
  * Created by Admin on 12/22/2015.
  */
+/*
+*   ANGLES: 230
+*
+* */
 public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     protected final double DISTANCE_FROM_WALL = 37.5;
 
