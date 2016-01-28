@@ -11,7 +11,7 @@ public class ColorTest extends ResQ_Library {
     ColorSensor sensorRGB;
     boolean calibrated = false;
     boolean teamed = false;
-    Team currentTeam;
+    //Team currentTeam;
     int redOffset;
     int blueOffset;
     int greenOffset;
