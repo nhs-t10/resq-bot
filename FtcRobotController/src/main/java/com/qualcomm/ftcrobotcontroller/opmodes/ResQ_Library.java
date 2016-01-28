@@ -255,12 +255,12 @@ public abstract class ResQ_Library extends OpMode {
          */
         if (!foundQuickestRoute && (degrees > oppositeAngle || (oppositeAngle < 180)? (degrees > initialAngle): (degrees < initialAngle))) {
             //turn negative degrees
-            rightSpeed = driveSpeed;
-            leftSpeed = -driveSpeed;
-        } else if(!foundQuickestRoute){
-            //turn positive degrees
             rightSpeed = -driveSpeed;
             leftSpeed = driveSpeed;
+        } else if(!foundQuickestRoute){
+            //turn positive degrees
+            rightSpeed = driveSpeed;
+            leftSpeed = -driveSpeed;
         }
 
         foundQuickestRoute = true;
