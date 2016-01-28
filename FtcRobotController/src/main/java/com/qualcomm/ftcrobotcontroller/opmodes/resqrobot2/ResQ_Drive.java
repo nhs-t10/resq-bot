@@ -3,17 +3,24 @@ package com.qualcomm.ftcrobotcontroller.opmodes.resqrobot2;
 import com.qualcomm.ftcrobotcontroller.opmodes.resqrobot2.debug.Log;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.ftcrobotcontroller.opmodes.resqrobot2.sensors.*;
 
 /**
  * Created by William Patsios on 1/15/2016.
  */
 public class ResQ_Drive extends ResQLibrary2 {
+    Imu i;
+    UltraSonic u;
+
     @Override
     public void init() {
         initializeMapping();
         Log l = new Log();
         l.writeLine("Hello World!");
+        i = new Imu("gyro", hardwareMap);
+        u = new UltraSonic("ultra", hardwareMap);
     }
 
     public void start() {

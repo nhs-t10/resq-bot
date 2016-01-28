@@ -25,6 +25,7 @@ public class DegreesTest extends ResQ_Library {
     public void loop() {
         curr = getYaw();
         telemetry.addData("Goal", goal + "°");
+        telemetry.addData("Current Yaw", curr + "°");
         if(turn) {
             float Y = ProcessToMotorFromJoy(-gamepad1.left_stick_y);
 
@@ -40,10 +41,9 @@ public class DegreesTest extends ResQ_Library {
                 turn = false;
             }
 
-            goal = (int) Range.clip(goal, 0.0f, 359.0f);
+            goal = (int) Range.clip(goal, 0.0f, 359.9f);
             sleep(10);
         } else {
-            telemetry.addData("Current Yaw", curr + "°");
             turn = driveTurnDegrees(goal, 10);
         }
     }
