@@ -23,12 +23,21 @@ public class UltraTest extends OpMode {
         cdim = hardwareMap.deviceInterfaceModule.get("dim");
         cdim.setDigitalChannelMode(PULSE, DigitalChannelController.Mode.OUTPUT);
         cdim.setDigitalChannelState(PULSE, true); //pulse
-
+        sleep(20);
+        cdim.setDigitalChannelState(PULSE, false); //pulse
     }
 
     @Override
     public void loop() {
         telemetry.addData("Distance 1", u1.getValue());
         telemetry.addData("Distance 2", u2.getValue());
+    }
+
+    public void sleep(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (Exception err) {
+            telemetry.addData("ERROR", "");
+        }
     }
 }
