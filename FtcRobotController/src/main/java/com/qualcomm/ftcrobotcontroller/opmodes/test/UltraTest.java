@@ -4,6 +4,7 @@ import com.qualcomm.ftcrobotcontroller.opmodes.ResQ_Library;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DigitalChannelController;
 
 /**
@@ -11,6 +12,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannelController;
  */
 public class UltraTest extends OpMode {
     AnalogInput u1, u2;
+    DigitalChannel puls;
     DeviceInterfaceModule cdim;
     static final int PULSE = 0;
 
@@ -19,12 +21,16 @@ public class UltraTest extends OpMode {
     public void init() {
         u1 = hardwareMap.analogInput.get("u1");
         u2 = hardwareMap.analogInput.get("u2");
+        puls = hardwareMap.digitalChannel.get("pulse");
 
-        cdim = hardwareMap.deviceInterfaceModule.get("dim");
+        /*cdim = hardwareMap.deviceInterfaceModule.get("dim");
         cdim.setDigitalChannelMode(PULSE, DigitalChannelController.Mode.OUTPUT);
         cdim.setDigitalChannelState(PULSE, true); //pulse
         sleep(20);
-        cdim.setDigitalChannelState(PULSE, false); //pulse
+        cdim.setDigitalChannelState(PULSE, false); //pulse*/
+        puls.setState(true);
+        sleep(20);
+        puls.setState(false);
     }
 
     @Override
