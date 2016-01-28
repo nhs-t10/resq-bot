@@ -27,6 +27,9 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     boolean IMURecalibrated = false;
     boolean IMURecalibratedAgain = false;
 
+    public enum Team {
+        RED, BLUE, UNKNOWN
+    }
     protected Team teamWeAreOn; //enum that represent team
     protected boolean wait5 = false;
     double yaw360;
