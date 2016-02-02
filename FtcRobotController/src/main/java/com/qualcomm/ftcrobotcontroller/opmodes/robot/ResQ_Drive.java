@@ -1,24 +1,16 @@
 package com.qualcomm.ftcrobotcontroller.opmodes.robot;
 
-import com.qualcomm.ftcrobotcontroller.opmodes.robot.debug.Log;
 import com.qualcomm.ftcrobotcontroller.opmodes.robot.lang.RobotMath;
 import com.qualcomm.robotcore.util.Range;
-import com.qualcomm.ftcrobotcontroller.opmodes.robot.hardware.sensors.*;
 
 /**
  * Created by William Patsios on 1/15/2016.
  */
 public class ResQ_Drive extends T10Opmode {
-    Imu i;
-    UltraSonic u;
 
     @Override
     public void init() {
         initializeMapping();
-        Log l = new Log();
-        l.writeLine("Hello World!");
-        i = new Imu("gyro");
-        u = new UltraSonic("ultra");
     }
 
     public void start() {
@@ -26,7 +18,8 @@ public class ResQ_Drive extends T10Opmode {
     }
 
     public void loop() {
-        singleStickDrive();
+        //singleStickDrive();
+        motorLeftTread.setPower(1.0d);
 
         //Winch
         /*if (gamepad2.right_bumper) {

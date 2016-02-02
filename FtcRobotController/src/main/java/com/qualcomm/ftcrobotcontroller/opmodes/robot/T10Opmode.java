@@ -1,10 +1,13 @@
 package com.qualcomm.ftcrobotcontroller.opmodes.robot;
 
 import com.qualcomm.ftcrobotcontroller.opmodes.robot.hardware.Config;
+import com.qualcomm.ftcrobotcontroller.opmodes.robot.hardware.motors.Motor;
+import com.qualcomm.ftcrobotcontroller.opmodes.robot.hardware.motors.Servo;
+import com.qualcomm.ftcrobotcontroller.opmodes.robot.hardware.sensors.Imu;
+import com.qualcomm.ftcrobotcontroller.opmodes.robot.hardware.sensors.UltraSonic;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 /**
@@ -13,44 +16,46 @@ import com.qualcomm.robotcore.util.Range;
  */
 public abstract class T10Opmode extends OpMode {
     //****************HARDWARE MAPPING DEFINITIONS****************//
+    protected DcMotor motorRightTread, motorLeftTread, motorRightSecondTread, motorLeftSecondTread;
+    protected DcMotor motorHangingMech;
+    protected DcMotor motorTapeMech;
+    protected DcMotor motorEnArm;
 
-    //For Driving Only
-    DcMotor motorRightTread, motorLeftTread, motorRightSecondTread, motorLeftSecondTread;
-    DcMotor motorHangingMech;
-    DcMotor motorTapeMech;
-    DcMotor motorEnArm;
+    protected Servo srvoRightDeflector, srvoLeftDeflector;
+    protected Servo srvoScoreClimbers;
+    protected Servo srvoBlockDropper;
 
-    //Other
-    Servo srvoRightDeflector, srvoLeftDeflector;
-    Servo srvoBlockDropper;
+    protected Imu sensorImu;
+    protected UltraSonic sensorUltra1;
 
     public T10Opmode() {
+        hardwareMap.logDevices();
         Config.setHardwareMap(hardwareMap);
     }
 
     //****************INITIALIZE METHOD****************//
     public void initializeMapping() {
-        hardwareMap.logDevices();
-
-        //Drive motors
-        motorLeftTread = hardwareMap.dcMotor.get("m1");
-        motorRightTread = hardwareMap.dcMotor.get("m2");
-        motorLeftSecondTread = hardwareMap.dcMotor.get("m3");
-        motorRightSecondTread = hardwareMap.dcMotor.get("m4");
+        //Drive
+        motorLeftTread = new Motor("m1");
+        motorRightTread = new Motor("m2", DcMotor.Direction.REVERSE);
+        motorLeftSecondTread = new Motor("m3");
+        motorRightSecondTread = new Motor("m4", DcMotor.Direction.REVERSE);
         //Hang
-        motorHangingMech = hardwareMap.dcMotor.get("m5");
-        motorTapeMech = hardwareMap.dcMotor.get("m6");
+        motorHangingMech = new Motor("m5");
+        motorTapeMech = new Motor("m6");
         //Block Manipulation
-        motorEnArm = hardwareMap.dcMotor.get("m7");
-
-        //set modes of the motors
+        motorEnArm = new Motor("m7");
         motorEnArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-        motorRightTread.setDirection(DcMotor.Direction.REVERSE);
-        motorRightSecondTread.setDirection(DcMotor.Direction.REVERSE);
+
+        srvoScoreClimbers = new Servo("s1");
+        srvoRightDeflector = new Servo("s2");
+        srvoLeftDeflector = new Servo("s3");
+        srvoBlockDropper = new Servo("s4");
+
+        sensorImu = new Imu("g1");
+        sensorUltra1 = new UltraSonic("u1");
     }
     //****************DRIVE METHODS****************//
-
-    //Reading from compass sensor
 
     public void drive(float left, float right) {
         //Clips it just in case there's a problem
@@ -68,8 +73,6 @@ public abstract class T10Opmode extends OpMode {
     public void stopDrive() {
         drive(0.0f, 0.0f);
     }
-
-    //****************NUMBER MANIPULATION METHODS****************//
 
     //****************MISC METHODS****************//
     public void sleep(int millis) {
