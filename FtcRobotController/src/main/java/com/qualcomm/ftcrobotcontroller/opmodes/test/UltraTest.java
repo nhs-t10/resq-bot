@@ -29,7 +29,7 @@ public class UltraTest extends OpMode {
         sleep(20);
         cdim.setDigitalChannelState(PULSE, false); //pulse*/
         puls.setState(true);
-        sleep(10);
+        sleep(100);
         puls.setState(false);
     }
 
