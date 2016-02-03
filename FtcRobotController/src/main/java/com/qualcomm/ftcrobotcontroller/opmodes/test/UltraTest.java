@@ -22,14 +22,9 @@ public class UltraTest extends OpMode {
         u1 = hardwareMap.analogInput.get("u1");
         u2 = hardwareMap.analogInput.get("u2");
         puls = hardwareMap.digitalChannel.get("pulse");
-
-        /*cdim = hardwareMap.deviceInterfaceModule.get("dim");
-        cdim.setDigitalChannelMode(PULSE, DigitalChannelController.Mode.OUTPUT);
-        cdim.setDigitalChannelState(PULSE, true); //pulse
-        sleep(20);
-        cdim.setDigitalChannelState(PULSE, false); //pulse*/
+        sleep(1000);
         puls.setState(true);
-        sleep(10);
+        sleep(30);
         puls.setState(false);
     }
 
