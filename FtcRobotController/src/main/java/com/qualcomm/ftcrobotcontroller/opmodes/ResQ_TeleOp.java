@@ -153,7 +153,8 @@ public class ResQ_TeleOp extends ResQ_Library {
             turned = false;
         }
         if(rampTurning && !turned) {
-            turned = driveTurnDegrees(270);
+            turned = driveTurnDegrees(300);
+            telemetry.addData("turning", turned);
             if(turned) rampTurning = false;
         }
 
