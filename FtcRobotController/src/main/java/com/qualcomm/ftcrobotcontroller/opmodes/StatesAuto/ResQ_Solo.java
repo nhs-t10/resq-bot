@@ -30,6 +30,7 @@ public class ResQ_Solo extends Autonomous_Library {
     public void loop() { //Autonomous Logic
         double yaw = getYaw();
         telemetry.addData("yaw", yaw);
+        telemetry.addData("distance", getDistance());
         switch(currentState) {
             //
             case STARTING:
@@ -40,7 +41,7 @@ public class ResQ_Solo extends Autonomous_Library {
                 firstTurn();
                 break;
             case APPROACHBEACON:
-                telemetry.addData("Debug","Approaching beacon...should be moving");
+                telemetry.addData("Debug", "Approaching beacon...should be moving");
                 approachBeacon();
                 break;
             default:
@@ -52,11 +53,11 @@ public class ResQ_Solo extends Autonomous_Library {
     protected void starting () {
         srvoLeftDeflector.setPosition(0.2);
         srvoRightDeflector.setPosition(0.8);
+        currentState = CurrentState.FIRSTTURN;
     }
 
     protected void firstTurn() {
         boolean result = driveTurnDegrees(RED_ANGLE_FIRST, 7);
-        telemetry.addData("Deg Deg", result);
         if(result) {
             currentState = CurrentState.APPROACHBEACON;
         }
