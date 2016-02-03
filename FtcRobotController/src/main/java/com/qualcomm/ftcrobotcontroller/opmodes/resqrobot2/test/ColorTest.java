@@ -14,6 +14,7 @@ public class ColorTest extends OpMode {
     @Override
     public void init() {
         c = new Color("color", hardwareMap);
+        telemetry.addData("offred", c.off());
     }
 
     @Override
