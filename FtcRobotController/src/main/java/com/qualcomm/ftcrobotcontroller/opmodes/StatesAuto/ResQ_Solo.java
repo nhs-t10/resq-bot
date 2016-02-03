@@ -52,6 +52,7 @@ public class ResQ_Solo extends Autonomous_Library {
     protected void starting () {
         srvoLeftDeflector.setPosition(0.2);
         srvoRightDeflector.setPosition(0.8);
+        currentState = CurrentState.FIRSTTURN;
     }
 
     protected void firstTurn() {

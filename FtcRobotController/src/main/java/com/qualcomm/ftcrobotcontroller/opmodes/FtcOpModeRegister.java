@@ -31,6 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+import com.qualcomm.ftcrobotcontroller.opmodes.StatesAuto.MoveForwardAuto;
 import com.qualcomm.ftcrobotcontroller.opmodes.StatesAuto.ResQ_Solo;
 import com.qualcomm.ftcrobotcontroller.opmodes.resqrobot2.ResQ_Drive;
 import com.qualcomm.ftcrobotcontroller.opmodes.resqrobot2.test.ColorTest;
@@ -69,7 +70,8 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register("Autonomous Blue", ResQ_Autonomous_Blue.class);
     manager.register("Yaw Test", GyroTest.class);
     manager.register("Ultra Test", UltraTest.class);
-      manager.register("Color Test", ColorTest.class);
+    manager.register("Color Test", ColorTest.class);
     manager.register("Turn Degrees Test", DegreesTest.class);
+    manager.register("Move Forward", MoveForwardAuto.class);
   }
 }
