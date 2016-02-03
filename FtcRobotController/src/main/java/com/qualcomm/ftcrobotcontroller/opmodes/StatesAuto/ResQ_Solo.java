@@ -58,7 +58,7 @@ public class ResQ_Solo extends Autonomous_Library {
     }
 
     protected void firstTurn() {
-        boolean result = driveTurnDegrees(RED_ANGLE_FIRST, 5);
+        boolean result = driveTurnDegrees(RED_ANGLE_FIRST, 7);
         telemetry.addData("Deg Deg", result);
         if(result) {
             currentState = CurrentState.APPROACHBEACON;
@@ -67,8 +67,10 @@ public class ResQ_Solo extends Autonomous_Library {
 
     protected void approachBeacon(){ // approaches the beacon until the ultrasonic detects the wall
         drive(1.0f, 1.0f);
-        sleep(5000);
-        stopDrive();
+        if(getDistance() == 37.5) {
+            stopDrive();
+            currentState = CurrentState.DONE;
+        }
     }
 
 }
