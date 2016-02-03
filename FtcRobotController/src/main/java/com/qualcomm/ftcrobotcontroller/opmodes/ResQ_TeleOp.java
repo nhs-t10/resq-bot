@@ -150,12 +150,10 @@ public class ResQ_TeleOp extends ResQ_Library {
         //**Assist**
         if(gamepad2.a) {
             rampTurning = true;
-            turned = false;
         }
-        if(rampTurning && !turned) {
-            turned = driveTurnDegrees(300, 2);
+        if(rampTurning) {
             telemetry.addData("turning", turned);
-            if(turned) rampTurning = false;
+            rampTurning = !driveTurnDegrees(300, 2);;
         }
 
         //****************TELEMETRY****************/
