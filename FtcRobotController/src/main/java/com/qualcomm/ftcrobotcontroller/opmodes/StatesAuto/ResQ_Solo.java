@@ -1,6 +1,5 @@
 package com.qualcomm.ftcrobotcontroller.opmodes.StatesAuto;
 
-import com.qualcomm.ftcrobotcontroller.opmodes.ResQ_Library;
 
 /**
  * Created by Aman on 1/28/2016.
@@ -35,7 +34,6 @@ public class ResQ_Solo extends Autonomous_Library {
             //
             case STARTING:
                 starting();
-                currentState = CurrentState.FIRSTTURN;
                 break;
             case FIRSTTURN:
                 telemetry.addData("Debug","Turning w/ driveTurnDegrees");
@@ -44,7 +42,6 @@ public class ResQ_Solo extends Autonomous_Library {
             case APPROACHBEACON:
                 telemetry.addData("Debug","Approaching beacon...should be moving");
                 approachBeacon();
-                currentState = CurrentState.DONE;
                 break;
             default:
                 telemetry.addData("Debug", "Done! :(");

@@ -21,7 +21,9 @@ public class Color {
         sleep(3000);
         calibrate();
     }
-
+    public int off() {
+        return offsetRed;
+    }
     public int red() {
         //return Math.abs(color.red() - offsetRed);
         return color.red();
