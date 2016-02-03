@@ -149,12 +149,8 @@ public class ResQ_TeleOp extends ResQ_Library {
 
         //**Assist**
         if(gamepad2.a) {
-            while(!turned) {
-                turned = driveTurnDegrees(300, 2);
-                sleep(10);
-            }
-            //rampTurning = true;
-            //turned = false;
+            rampTurning = true;
+            turned = false;
         }
         if(rampTurning && !turned) {
             turned = driveTurnDegrees(300, 2);
