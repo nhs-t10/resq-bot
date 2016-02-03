@@ -18,11 +18,13 @@ public class Color {
     public Color(String name, HardwareMap h) {
         color = h.colorSensor.get(name);
         this.name = name;
+        sleep(3000);
         calibrate();
     }
 
     public int red() {
-        return Math.abs(color.red() - offsetRed);
+        //return Math.abs(color.red() - offsetRed);
+        return color.red();
     }
     public int green() {
         return Math.abs(color.green() - offsetGreen);
@@ -39,6 +41,13 @@ public class Color {
 
     public String getName() {
         return name;
+    }
+
+    private void sleep(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (Exception err) {
+        }
     }
 
 }
