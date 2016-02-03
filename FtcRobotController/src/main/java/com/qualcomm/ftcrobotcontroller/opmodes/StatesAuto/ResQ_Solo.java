@@ -38,13 +38,16 @@ public class ResQ_Solo extends Autonomous_Library {
                 currentState = CurrentState.FIRSTTURN;
                 break;
             case FIRSTTURN:
-                currentState = firstTurn()? CurrentState.APPROACHBEACON : CurrentState.FIRSTTURN;
+                telemetry.addData("Debug","Turning w/ driveTurnDegrees");
+                firstTurn();
                 break;
             case APPROACHBEACON:
+                telemetry.addData("Debug","Approaching beacon...should be moving");
                 approachBeacon();
                 currentState = CurrentState.DONE;
                 break;
             default:
+                telemetry.addData("Debug", "Done! :(");
                 stopDrive();
         }
     }
@@ -54,8 +57,12 @@ public class ResQ_Solo extends Autonomous_Library {
         srvoRightDeflector.setPosition(0.8);
     }
 
-    protected boolean firstTurn() {
-        return driveTurnDegrees(RED_ANGLE_FIRST, 5);
+    protected void firstTurn() {
+        boolean result = driveTurnDegrees(RED_ANGLE_FIRST, 5);
+        telemetry.addData("Deg Deg", result);
+        if(result) {
+            currentState = CurrentState.APPROACHBEACON;
+        }
     }
 
     protected void approachBeacon(){ // approaches the beacon until the ultrasonic detects the wall
