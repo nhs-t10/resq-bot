@@ -10,7 +10,8 @@ import com.qualcomm.robotcore.util.Range;
  */
 public class ResQ_TeleOp extends ResQ_Library {
 
-
+    boolean turned = false;
+    boolean rampTurning = false;
     @Override
     public void init() {
         //Do the map thing
@@ -144,6 +145,16 @@ public class ResQ_TeleOp extends ResQ_Library {
             srvoScoreClimbers.setPosition(0.0f);
         } else {
             srvoScoreClimbers.setPosition(1.0f);
+        }
+
+        //**Assist**
+        if(gamepad2.a) {
+            rampTurning = true;
+            turned = false;
+        }
+        if(rampTurning && !turned) {
+            turned = driveTurnDegrees(270);
+            if(turned) rampTurning = false;
         }
 
         //****************TELEMETRY****************/
