@@ -31,6 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+import com.qualcomm.ftcrobotcontroller.opmodes.StatesAuto.ResQ_Solo;
 import com.qualcomm.ftcrobotcontroller.opmodes.resqrobot2.ResQ_Drive;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.DegreesTest;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.GyroTest;
@@ -60,9 +61,10 @@ public class FtcOpModeRegister implements OpModeRegister {
      * If two or more op modes are registered with the same name, the app will display an error.
      */
     manager.register("TeleOp", ResQ_TeleOp.class);
-    manager.register("Solo Autonomous", ResQ_Autonomous_Red.class);
-    manager.register("Parking Autonomous", ResQ_Autonomous_Blue.class);
-    manager.register("Parking Autonomous", ResQ_Autonomous_Blue.class);
-
+    manager.register("Autonomous Red", ResQ_Autonomous_Red.class);
+    manager.register("Autonomous Blue", ResQ_Autonomous_Blue.class);
+    manager.register("Yaw Test", GyroTest.class);
+    manager.register("Ultra Test", UltraTest.class);
+    manager.register("Turn Degrees Test", DegreesTest.class);
   }
 }

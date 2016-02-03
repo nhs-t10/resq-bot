@@ -312,25 +312,23 @@ public abstract class ResQ_Library extends OpMode {
         return 180 + yawAngle[0];
     }
 
-    public void moveToClosestObject() {
+    public boolean moveToClosestObject() {
         double ultraRight, ultraLeft;
         double rightSpeed, leftSpeed;
 
-        while (true) {
-            ultraRight = sensorUltra_1.getValue(); //set these values to sensor readout
-            ultraLeft = sensorUltra_2.getValue();
+        ultraRight = sensorUltra_1.getValue(); //set these values to sensor readout
+        ultraLeft = sensorUltra_2.getValue();
 
-            rightSpeed = SPEED_CONST * (ultraRight - RIGHT_TARGET_DISTANCE) + -RIGHT_STEERING_CONST * (ultraLeft - ultraRight); //speedl = kpd * (dl - tl) + kps * (dl - dr)
-            leftSpeed = SPEED_CONST * (ultraLeft - LEFT_TARGET_DISTANCE) + -LEFT_STEERING_CONST * (ultraRight - ultraLeft);
+        rightSpeed = SPEED_CONST * (ultraRight - RIGHT_TARGET_DISTANCE) + -RIGHT_STEERING_CONST * (ultraLeft - ultraRight); //speedl = kpd * (dl - tl) + kps * (dl - dr)
+        leftSpeed = SPEED_CONST * (ultraLeft - LEFT_TARGET_DISTANCE) + -LEFT_STEERING_CONST * (ultraRight - ultraLeft);
 
-            drive((float) rightSpeed, (float) leftSpeed);
+        drive((float) rightSpeed, (float) leftSpeed);
 
-            if (Math.abs(ultraRight - RIGHT_TARGET_DISTANCE) + Math.abs(ultraLeft - LEFT_TARGET_DISTANCE) < STOP_CONST) {
-                break;
-            }
-
-            //wait(100);
+        if (Math.abs(ultraRight - RIGHT_TARGET_DISTANCE) + Math.abs(ultraLeft - LEFT_TARGET_DISTANCE) < STOP_CONST) {
+            return true;
         }
+
+        return false;
     }
 
     public void calibrateColors() {
