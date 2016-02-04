@@ -151,7 +151,7 @@ public class ResQ_TeleOp extends ResQ_Library {
         //**Assist**
         if(gamepad2.a) {
             rampTurning = true;
-            destYaw = ((getYaw() + 29) / 30) * 30;
+            destYaw = ((getYaw() + 89) / 90) * 90;
         }
         if(rampTurning) {
             telemetry.addData("turning", turned);
