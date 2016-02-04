@@ -12,6 +12,7 @@ public class ResQ_TeleOp extends ResQ_Library {
 
     boolean turned = false;
     boolean rampTurning = false;
+    double destYaw;
     @Override
     public void init() {
         //Do the map thing
@@ -150,10 +151,11 @@ public class ResQ_TeleOp extends ResQ_Library {
         //**Assist**
         if(gamepad2.a) {
             rampTurning = true;
+            destYaw = ((getYaw() + 29) / 30) * 30;
         }
         if(rampTurning) {
             telemetry.addData("turning", turned);
-            rampTurning = !driveTurnDegrees(300, 2);;
+            rampTurning = !driveTurnDegrees((int)destYaw, 2);;
         }
 
         //****************TELEMETRY****************/
