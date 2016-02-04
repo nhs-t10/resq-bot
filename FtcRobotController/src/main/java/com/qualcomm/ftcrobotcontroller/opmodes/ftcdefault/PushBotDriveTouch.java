@@ -1,4 +1,4 @@
-package com.qualcomm.ftcrobotcontroller.opmodes.ftcdefault;
+package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 
 /**
  * Created by Jordan Burklund on 7/30/2015.
- * An example linear op mode where the pushbot 
- * will run its motors unless a touch sensor 
+ * An example linear op mode where the pushbot
+ * will run its motors unless a touch sensor
  * is pressed.
  */
 public class PushBotDriveTouch extends LinearOpMode {

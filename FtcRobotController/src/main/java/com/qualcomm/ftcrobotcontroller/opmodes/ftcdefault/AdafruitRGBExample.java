@@ -29,7 +29,7 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
-package com.qualcomm.ftcrobotcontroller.opmodes.ftcdefault;
+package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -58,7 +58,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannelController;
  *
  * The op mode assumes that the Core Device Interface Module
  * is configured with a name of "dim" and that the Adafruit color sensor
- * is configured as an I2C device with a name of "lady".
+ * is configured as an I2C device with a name of "color".
  *
  * It also assumes that the LED pin of the RGB sensor
  * is connected to the signal pin of digital port #5 (zero indexed)
@@ -92,7 +92,7 @@ public class AdafruitRGBExample extends LinearOpMode {
     cdim.setDigitalChannelMode(LED_CHANNEL, DigitalChannelController.Mode.OUTPUT);
 
     // get a reference to our ColorSensor object.
-    sensorRGB = hardwareMap.colorSensor.get("lady");
+    sensorRGB = hardwareMap.colorSensor.get("color");
 
     // bEnabled represents the state of the LED.
     boolean bEnabled = true;

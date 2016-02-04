@@ -1,4 +1,7 @@
-package com.qualcomm.ftcrobotcontroller.opmodes;
+//----------------------------------------------
+//Commented out due to mysterious syntax errors!
+//----------------------------------------------
+/*package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import com.qualcomm.ftcrobotcontroller.CameraPreview;
 import com.qualcomm.ftcrobotcontroller.FtcRobotControllerActivity;
@@ -17,7 +20,7 @@ import android.util.Log;
  * TeleOp Mode
  * <p>
  *Enables control of the robot via the gamepad
- */
+ *
 public class CameraOp extends OpMode {
     private Camera camera;
     public CameraPreview preview;
@@ -60,7 +63,7 @@ public class CameraOp extends OpMode {
     /*
      * Code to run when the op mode is first enabled goes here
      * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#start()
-     */
+     *
     @Override
     public void init() {
         camera = ((FtcRobotControllerActivity)hardwareMap.appContext).camera;
@@ -75,7 +78,7 @@ public class CameraOp extends OpMode {
     /*
      * This method will be called repeatedly in a loop
      * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#loop()
-     */
+     *
     public int highestColor(int red, int green, int blue) {
         int[] color = {red,green,blue};
         int value = 0;
@@ -119,4 +122,4 @@ public class CameraOp extends OpMode {
         telemetry.addData("Looped","Looped " + Integer.toString(looped) + " times");
         Log.d("DEBUG:",data);
     }
-}
+}*/

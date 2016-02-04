@@ -29,7 +29,7 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
-package com.qualcomm.ftcrobotcontroller.opmodes.ftcdefault;
+package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -94,8 +94,8 @@ public class NxtTeleOp extends OpMode {
 
     // set the mode
     // Nxt devices start up in "write" mode by default, so no need to switch device modes here.
-    motorLeft.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-    motorRight.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+    motorLeft.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+    motorRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
 
     wristPosition = 0.6;
     clawPosition = 0.5;
@@ -108,7 +108,7 @@ public class NxtTeleOp extends OpMode {
   @Override
   public void loop() {
 
-    // The op mode should only use "write" methods (setPower, setChannelMode, etc) while in
+    // The op mode should only use "write" methods (setPower, setMode, etc) while in
     // WRITE_ONLY mode or SWITCHING_TO_WRITE_MODE
     if (allowedToWrite()) {
     /*
@@ -120,13 +120,13 @@ public class NxtTeleOp extends OpMode {
 
       if (gamepad1.dpad_left) {
         // Nxt devices start up in "write" mode by default, so no need to switch modes here.
-        motorLeft.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-        motorRight.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        motorLeft.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        motorRight.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
       }
       if (gamepad1.dpad_right) {
         // Nxt devices start up in "write" mode by default, so no need to switch modes here.
-        motorLeft.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-        motorRight.setChannelMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        motorLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        motorRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
       }
 
       // throttle:  left_stick_y ranges from -1 to 1, where -1 is full up,  and 1 is full down
@@ -233,7 +233,7 @@ public class NxtTeleOp extends OpMode {
       telemetry.addData("Text", "free flow text");
       telemetry.addData("left motor", motorLeft.getPower());
       telemetry.addData("right motor", motorRight.getPower());
-      telemetry.addData("RunMode: ", motorLeft.getChannelMode().toString());
+      telemetry.addData("RunMode: ", motorLeft.getMode().toString());
 
       // Only needed on Nxt devices, but not on USB devices
       wheelController.setMotorControllerDeviceMode(DcMotorController.DeviceMode.WRITE_ONLY);
