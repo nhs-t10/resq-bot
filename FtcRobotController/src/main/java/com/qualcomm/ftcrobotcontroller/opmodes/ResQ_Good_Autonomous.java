@@ -9,7 +9,7 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 *
 * */
 public abstract class ResQ_Good_Autonomous extends ResQ_Library {
-    protected final double RED_WALL = 37.5;
+    protected final double RED_WALL = 40;
     protected final double BLUE_WALL = 37.5;
     // First set is to turn to correct  beacon
     final int RED_ANGLE_1 = 225;
@@ -35,6 +35,8 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     double yaw360;
 
     public int testVar = 0;
+
+    public boolean AreWeNearRamp;
 
     public enum CurrentState{
         STARTING, GETINTOTURNPOSITION, FIRSTTURN, APPROACHBEACON, GETPARKEDCORRECTLY, DOA360FAM, FINALAPPROACH, PARKEDFORDROP, SECONDTURN, FINALPARK, UNKNOWN
@@ -171,7 +173,8 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
             stopDrive();
             telemetry.addData("end angle", yaw);
             yaw360 = getYaw();
-            currentState = CurrentState.DOA360FAM;
+            //currentState = CurrentState.DOA360FAM;
+            currentState = CurrentState.FINALAPPROACH;
         } else { //we are not aligned, so turn in direction we are supposed to
             telemetry.addData("yawInBlock", yaw);
             int m = teamWeAreOn == Team.RED ? -1 : 1;
@@ -194,7 +197,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     protected void finalApproach(){ // approaches the beacon until the ultrasonic detects the wall
         double ultraValue = getDistance();
         telemetry.addData("ultra", ultraValue);
-        if(ultraValue > 15) {
+        if(ultraValue > 12) {
             float fltUltValue = (float) ultraValue;
             //float speed = ((ultraValue < 50.0) ? fltUltValue / 50.0f : 1.0f);
             float speed = 0.5f;
@@ -211,7 +214,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     public void parkingDrop () { //positions the robot to face beacon then drops climbers
         //later, we'll use ultrasonics to triangulate the positions correctly.
         drive(.5f, .5f);
-        sleep(500); //moves forward at 1/5 speed for half a second
+        sleep(1500); //moves forward at 1/5 speed for half a second
         stopDrive();
 
         DropClimber();
