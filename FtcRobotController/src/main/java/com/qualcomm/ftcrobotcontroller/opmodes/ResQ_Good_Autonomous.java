@@ -9,7 +9,7 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 *
 * */
 public abstract class ResQ_Good_Autonomous extends ResQ_Library {
-    protected final double RED_WALL = 40;
+    protected final double RED_WALL = 50;
     protected final double BLUE_WALL = 37.5;
     // First set is to turn to correct  beacon
     final int RED_ANGLE_1 = 225;
@@ -87,7 +87,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         }
         else if (currentState == CurrentState.APPROACHBEACON){
             telemetry.addData("Current State: ", "Approaching beacon...");
-            approachBeacon(2); //rushes towards the beacon
+            approachBeacon(5.0d);  //rushes towards the beacon
         }
         else if (currentState == CurrentState.GETPARKEDCORRECTLY){
             telemetry.addData("Current State: ", "Turning to beacon");
@@ -146,31 +146,29 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         //currentState = driveTurnDegrees(RED_ANGLE_1)?  CurrentState.APPROACHBEACON : CurrentState.FIRSTTURN;
     }
 
-    protected void approachBeacon(int sec){ // approaches the beacon until the ultrasonic detects the wall
+    protected void approachBeacon(double sec){ // approaches the beacon until the ultrasonic detects the wall
         double ultraValue = getDistance();
         telemetry.addData("ultra", ultraValue);
+
+        double distance = (teamWeAreOn == Team.RED ? RED_WALL : BLUE_WALL);
+
+        float speed = 0.5f;
+        drive(speed, speed);
 
         if(firstCall) {
             startTime = getRuntime();
             firstCall = false;
         }
 
-        if(getRuntime() - startTime > sec) {
-            double distance = (teamWeAreOn == Team.RED ? RED_WALL : BLUE_WALL);
-            if (ultraValue > distance) {
-                float fltUltValue = (float) ultraValue;
-                //float speed = ((ultraValue < 50.0) ? fltUltValue / 50.0f : 1.0f);
-                float speed = 1.0f;
-                //driveStraight(1.0);
-                drive(speed, speed);
-            } else {
-                stopDrive();
-                //bring up tread guards, they're useless now
-                srvoLeftDeflector.setPosition(1.0);
-                srvoRightDeflector.setPosition(0.0);
-                currentState = CurrentState.GETPARKEDCORRECTLY;
-                startTime = getRuntime();
-            }
+        if(getRuntime() - startTime > sec && ultraValue < distance) {
+            stopDrive();
+            //bring up tread guards, they're useless now
+            srvoLeftDeflector.setPosition(1.0);
+            srvoRightDeflector.setPosition(0.0);
+            currentState = CurrentState.GETPARKEDCORRECTLY;
+            startTime = getRuntime();
+        } else if(getDistance() <= 13) {
+            stopDrive();
         }
     }
 
