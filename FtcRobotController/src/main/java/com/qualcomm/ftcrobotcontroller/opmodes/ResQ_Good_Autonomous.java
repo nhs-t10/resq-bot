@@ -25,7 +25,6 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     boolean turnedToBeaconCorrectly = false; //this is in the parking zone, checking that we're facing the beacon
     boolean IMURecalibrating = false;
     boolean IMURecalibrated = false;
-    boolean IMURecalibratedAgain = false;
 
     public enum Team {
         RED, BLUE, UNKNOWN
@@ -33,6 +32,9 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     protected Team teamWeAreOn; //enum that represent team
     protected boolean wait5 = false;
     double yaw360;
+
+    double startTime;
+    boolean firstCall = true;
 
     public int testVar = 0;
 
@@ -83,7 +85,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         }
         else if (currentState == CurrentState.APPROACHBEACON){
             telemetry.addData("Current State: ", "Approaching beacon...");
-            approachBeacon(); //rushes towards the beacon
+            approachBeacon(2); //rushes towards the beacon
         }
         else if (currentState == CurrentState.GETPARKEDCORRECTLY){
             telemetry.addData("Current State: ", "Turning to beacon");
@@ -142,23 +144,31 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         //currentState = driveTurnDegrees(RED_ANGLE_1)?  CurrentState.APPROACHBEACON : CurrentState.FIRSTTURN;
     }
 
-    protected void approachBeacon(){ // approaches the beacon until the ultrasonic detects the wall
+    protected void approachBeacon(int sec){ // approaches the beacon until the ultrasonic detects the wall
         double ultraValue = getDistance();
         telemetry.addData("ultra", ultraValue);
-        double distance = (teamWeAreOn == Team.RED ? RED_WALL : BLUE_WALL);
-        if(ultraValue > distance) {
-            float fltUltValue = (float) ultraValue;
-            //float speed = ((ultraValue < 50.0) ? fltUltValue / 50.0f : 1.0f);
-            float speed = 1.0f;
-            //driveStraight(1.0);
-            drive(speed, speed);
+
+        if(firstCall) {
+            startTime = getRuntime();
+            firstCall = false;
         }
-        else {
-            stopDrive();
-            //bring up tread guards, they're useless now
-            srvoLeftDeflector.setPosition(1.0);
-            srvoRightDeflector.setPosition(0.0);
-            currentState = CurrentState.GETPARKEDCORRECTLY;
+
+        if(getRuntime() - startTime > sec) {
+            double distance = (teamWeAreOn == Team.RED ? RED_WALL : BLUE_WALL);
+            if (ultraValue > distance) {
+                float fltUltValue = (float) ultraValue;
+                //float speed = ((ultraValue < 50.0) ? fltUltValue / 50.0f : 1.0f);
+                float speed = 1.0f;
+                //driveStraight(1.0);
+                drive(speed, speed);
+            } else {
+                stopDrive();
+                //bring up tread guards, they're useless now
+                srvoLeftDeflector.setPosition(1.0);
+                srvoRightDeflector.setPosition(0.0);
+                currentState = CurrentState.GETPARKEDCORRECTLY;
+                startTime = getRuntime();
+            }
         }
     }
 

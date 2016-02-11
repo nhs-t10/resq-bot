@@ -96,9 +96,4 @@ public class ResQ_Solo extends Autonomous_Library {
         stopDrive();
         currentState = CurrentState.DONE;
     }
-
-    private int filteredDistance() {
-
-        return 0;
-    }
 }

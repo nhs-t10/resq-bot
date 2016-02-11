@@ -501,7 +501,7 @@ public abstract class ResQ_Library extends OpMode {
         try {
             Thread.sleep(millis);
         } catch (Exception err) {
-            telemetry.addData("ERROR", "");
+            telemetry.addData("ERROR", "It's TIME to stop.");
         }
     }
 }
