@@ -54,7 +54,7 @@ public class ResQ_Solo extends Autonomous_Library {
                 finalPark();
                 break;
             default:
-                telemetry.addData("Debug", "Done! :(");
+                telemetry.addData("Debug", "Done! :)");
                 stopDrive();
         }
     }
