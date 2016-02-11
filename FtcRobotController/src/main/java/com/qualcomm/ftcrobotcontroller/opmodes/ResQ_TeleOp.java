@@ -30,6 +30,7 @@ public class ResQ_TeleOp extends ResQ_Library {
     @Override
     public void loop() {
         telemetry.addData("yaw", getYaw());
+        telemetry.addData("distance", getDistance());
         /*
          * Gamepad 1:
 		 * Left joystick moves the left track, and the right joystick moves the right track

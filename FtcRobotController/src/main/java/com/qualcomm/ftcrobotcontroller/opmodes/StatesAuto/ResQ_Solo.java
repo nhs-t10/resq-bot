@@ -18,7 +18,7 @@ public class ResQ_Solo extends Autonomous_Library {
     protected CurrentState currentState = CurrentState.STARTING;
 
     public enum CurrentState{
-        STARTING, FIRSTTURN, APPROACHBEACON, GETPARKEDCORRECTLY, DOA360FAM, FINALAPPROACH, PARKEDFORDROP, SECONDTURN, FINALPARK, DONE
+        STARTING, FIRSTTURN, APPROACHBEACON, DROPCLIMBERS, FINALPARK, DONE
     }
 
     @Override
@@ -34,15 +34,24 @@ public class ResQ_Solo extends Autonomous_Library {
         switch(currentState) {
             //
             case STARTING:
+                telemetry.addData("Debug", "Starting");
                 starting();
                 break;
             case FIRSTTURN:
-                telemetry.addData("Debug","Turning w/ driveTurnDegrees");
+                telemetry.addData("Debug", "First Turn");
                 firstTurn();
                 break;
             case APPROACHBEACON:
-                telemetry.addData("Debug", "Approaching beacon...should be moving");
+                telemetry.addData("Debug", "Approach");
                 approachBeacon();
+                break;
+            case DROPCLIMBERS:
+                telemetry.addData("Debug", "Drop");
+                dropClimbers();
+                break;
+            case FINALPARK:
+                telemetry.addData("Debug", "Final");
+                finalPark();
                 break;
             default:
                 telemetry.addData("Debug", "Done! :(");
@@ -51,8 +60,8 @@ public class ResQ_Solo extends Autonomous_Library {
     }
 
     protected void starting () {
-        srvoLeftDeflector.setPosition(0.2);
-        srvoRightDeflector.setPosition(0.8);
+        srvoScoreClimbers.setPosition(1.0); //makes sure it doesn't drop it by accident
+        srvoBlockDropper.setPosition(0.6);
         currentState = CurrentState.FIRSTTURN;
     }
 
@@ -65,10 +74,31 @@ public class ResQ_Solo extends Autonomous_Library {
 
     protected void approachBeacon(){ // approaches the beacon until the ultrasonic detects the wall
         drive(1.0f, 1.0f);
-        if(getDistance() == 37.5) {
+        if(getDistance() < 45) {
             stopDrive();
-            currentState = CurrentState.DONE;
+            currentState = CurrentState.DROPCLIMBERS;
         }
     }
 
+    protected void dropClimbers() {
+        //current angle for testing: 10
+        boolean result = driveTurnDegrees(180, 7);
+        if(result) {
+            stopDrive();
+            DropClimber();
+            currentState = CurrentState.FINALPARK;
+        }
+    }
+
+    protected void finalPark() {
+        drive(-1.0f, -1.0f);
+        sleep(1000);
+        stopDrive();
+        currentState = CurrentState.DONE;
+    }
+
+    private int filteredDistance() {
+
+        return 0;
+    }
 }

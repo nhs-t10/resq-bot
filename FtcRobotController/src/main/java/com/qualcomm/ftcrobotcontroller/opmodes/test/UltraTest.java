@@ -11,27 +11,27 @@ import com.qualcomm.robotcore.hardware.DigitalChannelController;
  * Created by Admin on 11/3/2015.
  */
 public class UltraTest extends OpMode {
-    AnalogInput u1, u2;
-    DigitalChannel puls;
-    DeviceInterfaceModule cdim;
+    AnalogInput u1;//, u2;
+    //DigitalChannel puls;
+    //DeviceInterfaceModule cdim;
     static final int PULSE = 0;
 
 
     @Override
     public void init() {
         u1 = hardwareMap.analogInput.get("u1");
-        u2 = hardwareMap.analogInput.get("u2");
+        /*u2 = hardwareMap.analogInput.get("u2");
         puls = hardwareMap.digitalChannel.get("pulse");
         sleep(1000);
         puls.setState(true);
         sleep(30);
-        puls.setState(false);
+        puls.setState(false);*/
     }
 
     @Override
     public void loop() {
         telemetry.addData("Distance 1", u1.getValue());
-        telemetry.addData("Distance 2", u2.getValue());
+        //telemetry.addData("Distance 2", u2.getValue());
     }
 
     public void sleep(int millis) {
