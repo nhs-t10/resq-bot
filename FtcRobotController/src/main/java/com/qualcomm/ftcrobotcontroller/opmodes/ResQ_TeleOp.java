@@ -83,7 +83,7 @@ public class ResQ_TeleOp extends ResQ_Library {
 
         //****************BLOCK SCORING****************//
 
-        if (gamepad2.x) { //Dropper Left Pos
+        /*if (gamepad2.x) { //Dropper Left Pos
             DropperPosition dropperPos = DropperPosition.LEFT;
             srvoBlockDropper.setPosition(0.9);
         } else if (gamepad2.y) { //Dropper Center
@@ -92,7 +92,7 @@ public class ResQ_TeleOp extends ResQ_Library {
         } else if (gamepad2.b) { //Dropper Right Pos
             DropperPosition dropperPos = DropperPosition.RIGHT;
             srvoBlockDropper.setPosition(0.35);
-        }
+        }*/
 
         //****************OTHER****************//
 
@@ -139,7 +139,7 @@ public class ResQ_TeleOp extends ResQ_Library {
 
         RDefPos = Range.clip(RDefPos, 0.0, 0.8);
         LDefPos = Range.clip(LDefPos, 0.2, 1.0);
-        
+
         if (gamepad1.a) {
             //lower the climber drop
             srvoScoreClimbers.setPosition(0.0f);

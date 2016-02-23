@@ -162,9 +162,6 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
 
         if(getRuntime() - startTime > sec && ultraValue < distance) {
             stopDrive();
-            //bring up tread guards, they're useless now
-            srvoLeftDeflector.setPosition(1.0);
-            srvoRightDeflector.setPosition(0.0);
             currentState = CurrentState.GETPARKEDCORRECTLY;
             startTime = getRuntime();
         } else if(getDistance() <= 13) {
