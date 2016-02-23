@@ -23,14 +23,10 @@ public abstract class ResQ_Library extends OpMode {
     public DcMotor motorRightTread, motorLeftTread, motorRightSecondTread, motorLeftSecondTread;
     public DcMotor motorHangingMech;
     public DcMotor motorTapeMech;
+    public DcMotor motorBlockArm;
 
     //Autonomous
     public Servo srvoScoreClimbers, srvoBeaconPusher;
-
-    //Other
-    public Servo srvoRightDeflector, srvoLeftDeflector;
-    public Servo srvoBlockDropper;
-    public Servo srvoLeftGuard, srvoRightGuard;
 
     //Sensors
     public AnalogInput sensorUltra_1, sensorUltra_2;
@@ -113,14 +109,10 @@ public abstract class ResQ_Library extends OpMode {
         motorRightSecondTread = hardwareMap.dcMotor.get("m4");
         motorHangingMech = hardwareMap.dcMotor.get("m5");
         motorTapeMech = hardwareMap.dcMotor.get("m6");
+        motorBlockArm = hardwareMap.dcMotor.get("m7");
 
         //Servos
         srvoScoreClimbers = hardwareMap.servo.get("s1");
-        srvoRightDeflector = hardwareMap.servo.get("s2");
-        srvoLeftDeflector = hardwareMap.servo.get("s3");
-        srvoBlockDropper = hardwareMap.servo.get("s4");
-        //srvoBeaconPusher = hardwareMap.servo.get("s6");
-
 
         //Sensors
         //(color sensors are initialized w/ loadSensor(Team)

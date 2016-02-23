@@ -55,9 +55,9 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         initializeMapping();
         startIMU();
         telemetry.addData("Init Yaw", getYaw());
-        if(wait5) waitFive();
+        /*if(wait5) waitFive();
         srvoScoreClimbers.setPosition(1.0); //makes sure it doesn't drop it by accident
-        srvoBlockDropper.setPosition(0.6);
+        srvoBlockDropper.setPosition(0.6);*/
     }
 
     @Override
@@ -119,8 +119,8 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     ////////////////////////////////////////Autonomous Functions in Order////////////////////////////////////////
 
     public void starting () {
-        srvoLeftDeflector.setPosition(0.2);
-        srvoRightDeflector.setPosition(0.8);
+        /*srvoLeftDeflector.setPosition(0.2);
+        srvoRightDeflector.setPosition(0.8);*/
         currentState = CurrentState.FIRSTTURN;
     }
 
@@ -169,6 +169,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
             startTime = getRuntime();
         } else if(getDistance() <= 13) {
             stopDrive();
+
         }
     }
 

@@ -139,9 +139,7 @@ public class ResQ_TeleOp extends ResQ_Library {
 
         RDefPos = Range.clip(RDefPos, 0.0, 0.8);
         LDefPos = Range.clip(LDefPos, 0.2, 1.0);
-        srvoLeftDeflector.setPosition(LDefPos);
-        srvoRightDeflector.setPosition(RDefPos);
-
+        
         if (gamepad1.a) {
             //lower the climber drop
             srvoScoreClimbers.setPosition(0.0f);
