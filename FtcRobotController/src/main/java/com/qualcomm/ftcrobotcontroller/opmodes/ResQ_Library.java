@@ -71,7 +71,13 @@ public abstract class ResQ_Library extends OpMode {
     long delayUntil = 0;
     float accelerationTime = 100;
     double accelerationThreshold = 0.1;
-
+    //moxceleration
+    final static double accActivate = 0.1;
+    float accCeil = 0;
+    float accFloor = 0;
+    float accCoefficient = 0;
+    final static float accRate = 0.01f;
+    float accTime;
 
     //Booleans
     boolean isDeflectorDown = false;
@@ -364,6 +370,21 @@ public abstract class ResQ_Library extends OpMode {
     }
 
     //****************NUMBER MANIPULATION METHODS****************//
+    public float moxCelerate(float value) {
+        accFloor = value;
+        float acced = 0;
+        if(accCeil == 0) accCeil = accFloor;
+        if(Math.abs(accCeil - accFloor) > accActivate) { //must accelerate
+            acced = accCeil - accFloor * accCoefficient;
+            accCoefficient += accRate;
+        }
+        else if (Math.abs(accCeil - accFloor) < accActivate){ //keep ceilinging
+            accCeil = accFloor;
+            accCoefficient = 0;
+            acced = accCeil;
+        }
+        return acced;
+    }
     public void accelerateForward() {
         //get average powers for left and right motors (prevents any motor bias)
         double right = (motorLeftTread.getPower() + motorLeftSecondTread.getPower())/2;

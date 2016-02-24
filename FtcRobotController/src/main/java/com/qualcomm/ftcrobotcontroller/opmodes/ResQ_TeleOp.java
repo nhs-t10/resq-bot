@@ -61,6 +61,9 @@ public class ResQ_TeleOp extends ResQ_Library {
         right = Range.clip(right, -0.9f, 0.9f);
         left = Range.clip(left, -0.9f, 0.9f);
 
+        right = moxCelerate(right);
+        left = moxCelerate(left);
+
         drive(left, right);
 
         //Drive `modifications
