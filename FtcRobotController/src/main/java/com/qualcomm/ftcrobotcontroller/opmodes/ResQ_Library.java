@@ -374,7 +374,7 @@ public abstract class ResQ_Library extends OpMode {
         float powerChange = value - motorCurrentPower;
 
         if (System.currentTimeMillis() > delayUntil) { // We can change it
-                //We're changing it by too much, restrict it
+            //We're changing it by too much, restrict it
             if (Math.abs(powerChange) > accelerationThreshold) {
                 if(value != 0) {
                     motorCurrentPower += accelerationThreshold * value / Math.abs(value);
@@ -419,7 +419,7 @@ public abstract class ResQ_Library extends OpMode {
      * This method scales the joystick input so for low joystick values, the
      * scaled value is less than linear.  This is to make it easier to drive
      * the robot more precisely at slower speeds.
-	 */
+     */
     public double scaleInput(double dVal) {
      /*
       * This method scales the joystick input so for low joystick values, the
