@@ -1,6 +1,8 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
 
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 /**
  * Created by Admin on 12/22/2015.
  */
@@ -33,6 +35,8 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     protected boolean wait5 = false;
     double yaw360;
 
+    //used for timer
+    double runTime;
     double startTime;
     boolean firstCall = true;
 
@@ -55,9 +59,9 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         initializeMapping();
         startIMU();
         telemetry.addData("Init Yaw", getYaw());
-        if(wait5) waitFive();
+        /*if(wait5) waitFive();
         srvoScoreClimbers.setPosition(1.0); //makes sure it doesn't drop it by accident
-        srvoBlockDropper.setPosition(0.6);
+        srvoBlockDropper.setPosition(0.6);*/
     }
 
     @Override
@@ -119,8 +123,8 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     ////////////////////////////////////////Autonomous Functions in Order////////////////////////////////////////
 
     public void starting () {
-        srvoLeftDeflector.setPosition(0.2);
-        srvoRightDeflector.setPosition(0.8);
+        /*srvoLeftDeflector.setPosition(0.2);
+        srvoRightDeflector.setPosition(0.8);*/
         currentState = CurrentState.FIRSTTURN;
     }
 
@@ -146,6 +150,9 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         //currentState = driveTurnDegrees(RED_ANGLE_1)?  CurrentState.APPROACHBEACON : CurrentState.FIRSTTURN;
     }
 
+    private ElapsedTime timer = new ElapsedTime();
+    private boolean timerStarted = false;
+
     protected void approachBeacon(double sec){ // approaches the beacon until the ultrasonic detects the wall
         double ultraValue = getDistance();
         telemetry.addData("ultra", ultraValue);
@@ -156,19 +163,34 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
         drive(speed, speed);
 
         if(firstCall) {
+            runTime = getRuntime();
             startTime = getRuntime();
             firstCall = false;
         }
 
-        if(getRuntime() - startTime > sec && ultraValue < distance) {
+        //check to see if enough time has passed and if we are at the wall
+        if(runTime - startTime > sec && ultraValue < distance) {
             stopDrive();
-            //bring up tread guards, they're useless now
-            srvoLeftDeflector.setPosition(1.0);
-            srvoRightDeflector.setPosition(0.0);
             currentState = CurrentState.GETPARKEDCORRECTLY;
             startTime = getRuntime();
-        } else if(getDistance() <= 13) {
+        }
+
+        //stop robot and pause timer if something too close.
+        if(getDistance() <= 13) {
             stopDrive();
+            startTimer();
+        } else if(timerStarted) {
+            startTime += timer.time();
+            timerStarted = false;
+        } else {
+            runTime = getRuntime();
+        }
+    }
+
+    private void startTimer() {
+        if(!timerStarted) {
+            timer.reset();
+            timerStarted = true;
         }
     }
 

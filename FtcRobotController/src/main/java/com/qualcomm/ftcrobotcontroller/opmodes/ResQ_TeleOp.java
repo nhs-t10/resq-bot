@@ -10,20 +10,16 @@ import com.qualcomm.robotcore.util.Range;
  */
 public class ResQ_TeleOp extends ResQ_Library {
 
-    boolean turned = false;
-    boolean rampTurning = false;
-    double destYaw;
+    boolean isIntakeDown = false;
+    boolean isIntakeSpinning = false;
+
     @Override
     public void init() {
         //Do the map thing
         initializeMapping();
         startIMU();
         telemetry.addData("Version", "Sensorless. COLOR ERROR SHOULD NOT SHOW UP!");
-
-        //Set Deflectors Up
-        RDefPos = RDefUpPos;
-        LDefPos = LDefUpPos;
-        isDeflectorDown = false;
+        motorBlockArm.setPower(0.25);
     }
 
 
@@ -63,36 +59,55 @@ public class ResQ_TeleOp extends ResQ_Library {
 
         drive(left, right);
 
-        //Drive `modifications
-        if (gamepad1.x) {
-            //Track speed 100%
-            setDriveGear(3);
-        }
-        if (gamepad1.y) {
-            //Track speed 50%
-            setDriveGear(2);
-        }
-        if (gamepad1.b) {
-            //Track speed 25%
-            setDriveGear(1);
-        }
-
-        if(gamepad1.left_bumper) {
-            //driveTurnDegrees(90);
-        }
 
         //****************BLOCK SCORING****************//
 
-        if (gamepad2.x) { //Dropper Left Pos
-            DropperPosition dropperPos = DropperPosition.LEFT;
-            srvoBlockDropper.setPosition(0.9);
-        } else if (gamepad2.y) { //Dropper Center
-            DropperPosition dropperPos = DropperPosition.CENTER;
-            srvoBlockDropper.setPosition(0.6);
-        } else if (gamepad2.b) { //Dropper Right Pos
-            DropperPosition dropperPos = DropperPosition.RIGHT;
-            srvoBlockDropper.setPosition(0.35);
+        /**gamepad 1:
+         * left trigger = while held, spin intake inwards priority DONE
+         * right trigger = while held, spin blocks out DONE
+         * button x: move bucket to 0 then unpower
+         * button y: move bucket to 200
+         * button b: move bucket to 550 (score)
+         *
+         * gamepad 2:
+         * button x: set intake to bottom scoring pos 10 - .04
+         * button y: set intake to lifted pos 40 - .16
+         * button b: set intake to parking pos 200 - .78
+         */
+
+        //Gamepad 1 Functions
+        if(gamepad1.left_trigger >= 0.5f){ //Toggles intake spin movement
+            motorIntakeSpin.setPower(1.0);
+        } else if (gamepad1.right_trigger >= 0.5f) {
+            motorIntakeSpin.setPower(-1.0);
+        } else {
+            motorIntakeSpin.setPower(0.0);
         }
+
+        if(gamepad1.x) { //moves arm to bottom then powers it off.
+            motorBlockArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+            motorBlockArm.setTargetPosition(0);
+        }
+        if(gamepad1.y) { //moves arm to above ramp pos
+            motorBlockArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+            motorBlockArm.setTargetPosition(200);
+        }
+        if(gamepad1.b) { //moves arm to score pos
+            motorBlockArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+            motorBlockArm.setTargetPosition(550);
+        }
+
+        //Gamepad 2 Functions
+        if (gamepad2.x) { //moves servo to bottom scoring pos
+            srvoIntakeManager.setPosition(0.04);
+        }
+        if (gamepad2.y) { //moves servo to bottom scoring pos
+            srvoIntakeManager.setPosition(0.16);
+        }
+        if (gamepad2.b) { //moves servo to bottom scoring pos
+            srvoIntakeManager.setPosition(0.78);
+        }
+
 
         //****************OTHER****************//
 
@@ -127,48 +142,14 @@ public class ResQ_TeleOp extends ResQ_Library {
             motorTapeMech.setPower(0);
         }
 
-
-        if (gamepad1.left_bumper){ //set servo down
-            LDefPos -= servoDelta;
-            RDefPos += servoDelta;
-        } else if (gamepad1.right_bumper) { //set servo up
-            LDefPos += servoDelta;
-            RDefPos -= servoDelta;
-        }
-
-
-        RDefPos = Range.clip(RDefPos, 0.0, 0.8);
-        LDefPos = Range.clip(LDefPos, 0.2, 1.0);
-        srvoLeftDeflector.setPosition(LDefPos);
-        srvoRightDeflector.setPosition(RDefPos);
-
-        if (gamepad1.a) {
-            //lower the climber drop
-            srvoScoreClimbers.setPosition(0.0f);
+        //Teleop Climber Drop
+        if (gamepad2.a) {
+            srvoScoreClimberRight.setPosition(1.0f);
+            srvoScoreClimberLeft.setPosition(1.0f);
         } else {
-            srvoScoreClimbers.setPosition(1.0f);
+            srvoScoreClimberRight.setPosition(0.0f);
+            srvoScoreClimberLeft.setPosition(0.0f);
         }
-
-        //**Assist**
-        if(gamepad2.a) {
-            rampTurning = true;
-            destYaw = ((getYaw() + 89) / 90) * 90;
-        }
-        if(rampTurning) {
-            telemetry.addData("turning", turned);
-            rampTurning = !driveTurnDegrees((int)destYaw, 2);;
-        }
-
-        //****************TELEMETRY****************/
-        String tel_Bool_Speed = "error speed";
-        if (driveGear == 3) { //highest 100% setting, essentially don't change it
-            tel_Bool_Speed = "at 100% speed";
-        } else if (driveGear == 2) { //medium 50% setting
-            tel_Bool_Speed = "at 50% speed";
-        } else if (driveGear == 1) { //lowest 25% setting
-            tel_Bool_Speed = "at 25% speed";
-        }
-        telemetry.addData("", "Driving is " + " and " + tel_Bool_Speed);
 
     }
 }

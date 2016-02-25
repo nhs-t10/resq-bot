@@ -60,8 +60,8 @@ public class ResQ_Solo extends Autonomous_Library {
     }
 
     protected void starting () {
-        srvoScoreClimbers.setPosition(1.0); //makes sure it doesn't drop it by accident
-        srvoBlockDropper.setPosition(0.6);
+        srvoScoreClimberRight.setPosition(1.0); //makes sure it doesn't drop it by accident
+        srvoScoreClimberLeft.setPosition(1.0); //makes sure it doesn't drop it by accident
         currentState = CurrentState.FIRSTTURN;
     }
 

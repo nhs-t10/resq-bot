@@ -23,14 +23,11 @@ public abstract class ResQ_Library extends OpMode {
     public DcMotor motorRightTread, motorLeftTread, motorRightSecondTread, motorLeftSecondTread;
     public DcMotor motorHangingMech;
     public DcMotor motorTapeMech;
+    public DcMotor motorBlockArm;
+    public DcMotor motorIntakeSpin;
 
     //Autonomous
-    public Servo srvoScoreClimbers, srvoBeaconPusher;
-
-    //Other
-    public Servo srvoRightDeflector, srvoLeftDeflector;
-    public Servo srvoBlockDropper;
-    public Servo srvoLeftGuard, srvoRightGuard;
+    public Servo srvoScoreClimberRight, srvoScoreClimberLeft, srvoIntakeManager, srvoZiplineDrop;
 
     //Sensors
     public AnalogInput sensorUltra_1, sensorUltra_2;
@@ -59,42 +56,19 @@ public abstract class ResQ_Library extends OpMode {
     //Constants that determine how strong the robot's speed and turning should be
     final static double SPEED_CONST = 0.005, LEFT_STEERING_CONST = 0.85, RIGHT_STEERING_CONST = 0.8;
 
-    //Deflector Positions
-    final static double LDefDownPos = 0.3;
-    final static double LDefUpPos = 1.0;
-    final static double RDefDownPos = 0.7;
-    final static double RDefUpPos = 0.0;
-
-    double RDefPos;
-    double LDefPos;
-
-    double servoDelta = 0.1;
-
 
     //acceleration
     long delayUntil = 0;
     float accelerationTime = 100;
     double accelerationThreshold = 0.1;
 
-
-    //Booleans
-    boolean isDeflectorDown = false;
-    boolean isGrabberDown = false;
-
     //Other
     int driveGear = 3; //3 is 100%, 2 is 50%, 1 is 25%
-    double DeflectorServoUpPos = 0.1;
-    double DeflectorServoDownPos = 0.1;
-
-    public enum DropperPosition {
-        LEFT, RIGHT, CENTER
-    }
 
     public enum Color {
         RED, BLUE, GREEN, WHITE, NONE
     }
 
-    DropperPosition dropperPos = DropperPosition.CENTER;
     Color colorDecided = Color.NONE; //enum thats represent team
 
     public ResQ_Library() {
@@ -113,14 +87,14 @@ public abstract class ResQ_Library extends OpMode {
         motorRightSecondTread = hardwareMap.dcMotor.get("m4");
         motorHangingMech = hardwareMap.dcMotor.get("m5");
         motorTapeMech = hardwareMap.dcMotor.get("m6");
+        motorBlockArm = hardwareMap.dcMotor.get("m7");
+        motorIntakeSpin = hardwareMap.dcMotor.get("m8");
 
         //Servos
-        srvoScoreClimbers = hardwareMap.servo.get("s1");
-        srvoRightDeflector = hardwareMap.servo.get("s2");
-        srvoLeftDeflector = hardwareMap.servo.get("s3");
-        srvoBlockDropper = hardwareMap.servo.get("s4");
-        //srvoBeaconPusher = hardwareMap.servo.get("s6");
-
+        srvoScoreClimberRight = hardwareMap.servo.get("s1");
+        srvoScoreClimberLeft = hardwareMap.servo.get("s2");
+        srvoIntakeManager = hardwareMap.servo.get("s3");
+        srvoZiplineDrop = hardwareMap.servo.get("s4");
 
         //Sensors
         //(color sensors are initialized w/ loadSensor(Team)
@@ -130,10 +104,6 @@ public abstract class ResQ_Library extends OpMode {
         } catch(RobotCoreException rce) {
             telemetry.addData("RobotCoreException", rce.getMessage());
         }
-
-        //Other Mapping
-        motorHangingMech = hardwareMap.dcMotor.get("m5");
-        motorTapeMech = hardwareMap.dcMotor.get("m6");
 
         //set the direction of the motors
         motorRightTread.setDirection(DcMotor.Direction.REVERSE);
@@ -172,11 +142,9 @@ public abstract class ResQ_Library extends OpMode {
         //right = Accelerate(right, "right");
         //left = Accelerate(left, "left");
 
-
         //Clips it just in case there's a problem
         right = (float)Range.clip(right, -1.0, 1.0);
         left = (float)Range.clip(left, -1.0, 1.0);
-
 
         //Sets the actual power
         motorRightTread.setPower(right);
@@ -491,9 +459,11 @@ public abstract class ResQ_Library extends OpMode {
     }
 
     public void DropClimber () {
-        srvoScoreClimbers.setPosition(1.0);
+        srvoScoreClimberRight.setPosition(1.0f);
+        srvoScoreClimberLeft.setPosition(1.0f);
         sleep(2000);
-        srvoScoreClimbers.setPosition(0.0);
+        srvoScoreClimberRight.setPosition(0.0f);
+        srvoScoreClimberLeft.setPosition(0.0f);
     }
 
     //****************MISC METHODS****************//
