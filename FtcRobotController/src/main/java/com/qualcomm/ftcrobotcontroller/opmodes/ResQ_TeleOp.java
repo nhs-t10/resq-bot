@@ -57,7 +57,8 @@ public class ResQ_TeleOp extends ResQ_Library {
         right = Range.clip(right, -0.9f, 0.9f);
         left = Range.clip(left, -0.9f, 0.9f);
 
-        drive(left, right);
+        // we're reversing it because we are redefining the front of the robot without actually changing anything hardware.
+        drive(-left, -right);
 
 
         //****************BLOCK SCORING****************//
