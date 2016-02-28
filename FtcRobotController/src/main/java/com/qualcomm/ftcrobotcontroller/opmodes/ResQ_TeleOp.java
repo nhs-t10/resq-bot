@@ -10,9 +10,6 @@ import com.qualcomm.robotcore.util.Range;
  */
 public class ResQ_TeleOp extends ResQ_Library {
 
-    boolean isIntakeDown = false;
-    boolean isIntakeSpinning = false;
-
     @Override
     public void init() {
         //Do the map thing
@@ -20,6 +17,8 @@ public class ResQ_TeleOp extends ResQ_Library {
         startIMU();
         telemetry.addData("Version", "Sensorless. COLOR ERROR SHOULD NOT SHOW UP!");
         motorBlockArm.setPower(0.25);
+        motorBlockArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+        motorBlockArm.setTargetPosition(0);
     }
 
 
@@ -45,8 +44,8 @@ public class ResQ_TeleOp extends ResQ_Library {
             Send those values to your Robot.
          */
 
-        float X = ProcessToMotorFromJoy(-gamepad1.left_stick_x); //X is inverted with the negative sign
-        float Y = ProcessToMotorFromJoy(-gamepad1.left_stick_y); //NOT inverted
+        float X = ProcessToMotorFromJoy(gamepad1.left_stick_x); //X is inverted with the negative sign
+        float Y = ProcessToMotorFromJoy(gamepad1.left_stick_y); //NOT inverted
 
         float V = (100-Math.abs(X)) * (Y/100) + Y; // R+L
         float W = (100-Math.abs(Y)) * (X/100) + X; // R-L
@@ -86,16 +85,21 @@ public class ResQ_TeleOp extends ResQ_Library {
         }
 
         if(gamepad1.x) { //moves arm to bottom then powers it off.
+            motorBlockArm.setPower(0.10);
             motorBlockArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
             motorBlockArm.setTargetPosition(0);
         }
         if(gamepad1.y) { //moves arm to above ramp pos
+            motorBlockArm.setPower(0.10);
             motorBlockArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-            motorBlockArm.setTargetPosition(200);
+            motorBlockArm.setTargetPosition(150);
         }
         if(gamepad1.b) { //moves arm to score pos
+            motorBlockArm.setPower(0.10);
             motorBlockArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-            motorBlockArm.setTargetPosition(550);
+            /*motorBlockArm.setTargetPosition(475);
+            sleep(250);*/
+            motorBlockArm.setTargetPosition(525);
         }
 
         //Gamepad 2 Functions
@@ -103,7 +107,7 @@ public class ResQ_TeleOp extends ResQ_Library {
             srvoIntakeManager.setPosition(0.04);
         }
         if (gamepad2.y) { //moves servo to bottom scoring pos
-            srvoIntakeManager.setPosition(0.16);
+            srvoIntakeManager.setPosition(0.25);
         }
         if (gamepad2.b) { //moves servo to bottom scoring pos
             srvoIntakeManager.setPosition(0.78);
@@ -141,6 +145,13 @@ public class ResQ_TeleOp extends ResQ_Library {
             telemetry.addData("Tape:", "Sending Tape");
         } else {
             motorTapeMech.setPower(0);
+        }
+
+        ///Teleop Zipline drop
+        if (gamepad1.a) {
+            srvoScoreClimberRight.setPosition(1.0f);
+        } else {
+            srvoScoreClimberRight.setPosition(0.0f);
         }
 
         //Teleop Climber Drop
