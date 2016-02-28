@@ -153,13 +153,33 @@ public abstract class ResQ_Library extends OpMode {
         motorLeftSecondTread.setPower(left);
     }
 
+    /**
+     * Changes the speed of each side of robot to try to align it with the initialYaw.
+     * The more it is called, the more close the robot will get to the intented angle.
+     * Keep in mind that this function does NOT stop the robot.
+     * @param initialYaw target yaw for the robot to face.
+     */
+    public void driveStraight(double initialYaw) {
+        double yaw = getYaw();
+
+        double speedLeft = 0.5 + ((yaw - initialYaw)/initialYaw);
+        double speedRight = 0.5 - ((yaw - initialYaw)/initialYaw);
+
+        speedLeft = Range.clip(speedLeft, -1.0, 1.0);
+        speedRight = Range.clip(speedRight, -1.0, 1.0);
+
+        drive((float)speedLeft, (float)speedRight);
+    }
+
     /*This method should not be working...*/
     @Deprecated
-    public void driveStraight(double millis) {
+    public void driveStraight() {
         /*
         * This algorithm assumes yawAngle[0] returns
         * values between 0—359 or -180—179.
         */
+
+        double millis = 1000;
 
         double startDir = getYaw();
         double startTime = System.currentTimeMillis();
