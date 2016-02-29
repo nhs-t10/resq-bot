@@ -162,6 +162,10 @@ public abstract class ResQ_Library extends OpMode {
     public void driveStraight(double initialYaw) {
         double yaw = getYaw();
 
+        double offset = 180 - yaw;
+        yaw += offset;
+        initialYaw += offset;
+
         double speedLeft = 0.5 + ((yaw - initialYaw)/initialYaw);
         double speedRight = 0.5 - ((yaw - initialYaw)/initialYaw);
 
@@ -428,10 +432,14 @@ public abstract class ResQ_Library extends OpMode {
      * Converts any number to an angle value between 0 - 359.
      */
     public double scaleToAngle(double val) {
-        double scaledVal = Math.abs(val) + 360;
+        double scaledVal = val;
         while(scaledVal >= 360) {
             scaledVal-=360;
         }
+        while(scaledVal < 0) {
+            scaledVal+=360;
+        }
+
         return scaledVal;
     }
 
