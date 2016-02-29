@@ -10,21 +10,41 @@ import com.qualcomm.robotcore.util.Range;
  */
 public class ResQ_TeleOp extends ResQ_Library {
 
+    public enum Team {
+        RED, BLUE, UNKNOWN
+    }
+    protected Team teamWeAreOn; //enum that represent team
+
+    int bucketDownPos;
+    int bucketMidPos;
+    int bucketUpPos;
+
     @Override
     public void init() {
         //Do the map thing
         initializeMapping();
-        startIMU();
+        //startIMU();
         telemetry.addData("Version", "Sensorless. COLOR ERROR SHOULD NOT SHOW UP!");
         motorBlockArm.setPower(0.25);
         motorBlockArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
         motorBlockArm.setTargetPosition(0);
+
+        if(teamWeAreOn == Team.RED) {
+            bucketDownPos = 0;
+            bucketMidPos = 150;
+            bucketUpPos = 575;
+
+        } else if(teamWeAreOn == Team.BLUE) {
+            bucketDownPos = 0;
+            bucketMidPos = -150;
+            bucketUpPos = -575;
+        }
     }
 
 
     @Override
     public void loop() {
-        telemetry.addData("yaw", getYaw());
+        //telemetry.addData("yaw", getYaw());
         telemetry.addData("distance", getDistance());
         /*
          * Gamepad 1:
@@ -87,19 +107,19 @@ public class ResQ_TeleOp extends ResQ_Library {
         if(gamepad1.x) { //moves arm to bottom then powers it off.
             motorBlockArm.setPower(0.10);
             motorBlockArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-            motorBlockArm.setTargetPosition(0);
+            motorBlockArm.setTargetPosition(bucketDownPos);
         }
         if(gamepad1.y) { //moves arm to above ramp pos
             motorBlockArm.setPower(0.10);
             motorBlockArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-            motorBlockArm.setTargetPosition(150);
+            motorBlockArm.setTargetPosition(bucketMidPos);
         }
         if(gamepad1.b) { //moves arm to score pos
             motorBlockArm.setPower(0.10);
             motorBlockArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
             /*motorBlockArm.setTargetPosition(475);
             sleep(250);*/
-            motorBlockArm.setTargetPosition(525);
+            motorBlockArm.setTargetPosition(bucketUpPos);
         }
 
         //Gamepad 2 Functions
@@ -149,19 +169,19 @@ public class ResQ_TeleOp extends ResQ_Library {
 
         ///Teleop Zipline drop
         if (gamepad1.a) {
-            srvoScoreClimberRight.setPosition(1.0f);
+            srvoZiplineDrop.setPosition(0.3f);
         } else {
-            srvoScoreClimberRight.setPosition(0.0f);
+            srvoZiplineDrop.setPosition(1.0f);
         }
 
         //Teleop Climber Drop
-        if (gamepad2.a) {
+        /*if (gamepad2.a) {
             srvoScoreClimberRight.setPosition(1.0f);
-            srvoScoreClimberLeft.setPosition(1.0f);
+            srvoScoreClimberLeft.setPosition(0.0f);
         } else {
             srvoScoreClimberRight.setPosition(0.0f);
-            srvoScoreClimberLeft.setPosition(0.0f);
-        }
+            srvoScoreClimberLeft.setPosition(1.f);
+        }*/
 
     }
 }

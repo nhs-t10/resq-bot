@@ -91,19 +91,19 @@ public abstract class ResQ_Library extends OpMode {
         motorIntakeSpin = hardwareMap.dcMotor.get("m8");
 
         //Servos
-        srvoScoreClimberRight = hardwareMap.servo.get("s1");
-        srvoScoreClimberLeft = hardwareMap.servo.get("s2");
+        //srvoScoreClimberRight = hardwareMap.servo.get("s1");
+        //srvoScoreClimberLeft = hardwareMap.servo.get("s2");
         srvoIntakeManager = hardwareMap.servo.get("s3");
         srvoZiplineDrop = hardwareMap.servo.get("s4");
 
         //Sensors
         //(color sensors are initialized w/ loadSensor(Team)
         sensorUltra_1 = hardwareMap.analogInput.get("u1");
-        try {
+        /*try {
             imu = new AdafruitIMU(hardwareMap, "g1", (byte)(AdafruitIMU.BNO055_ADDRESS_A * 2), (byte)AdafruitIMU.OPERATION_MODE_IMU);
         } catch(RobotCoreException rce) {
             telemetry.addData("RobotCoreException", rce.getMessage());
-        }
+        }*/
 
         //set the direction of the motors
         motorRightTread.setDirection(DcMotor.Direction.REVERSE);
