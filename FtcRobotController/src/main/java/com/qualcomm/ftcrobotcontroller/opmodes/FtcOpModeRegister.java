@@ -37,6 +37,7 @@ import com.qualcomm.ftcrobotcontroller.opmodes.resqrobot2.ResQ_Drive;
 import com.qualcomm.ftcrobotcontroller.opmodes.resqrobot2.test.ColorTest;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.DegreesTest;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.GyroTest;
+import com.qualcomm.ftcrobotcontroller.opmodes.test.StraightTest;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.UltraTest;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
@@ -69,10 +70,10 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register("Solo Autonomous", ResQ_Solo.class);
     manager.register("Autonomous Red", ResQ_Autonomous_Red.class);
     manager.register("Autonomous Blue", ResQ_Autonomous_Blue.class);
-    /*manager.register("Yaw Test", GyroTest.class);
+    manager.register("Yaw Test", GyroTest.class);
     manager.register("Ultra Test", UltraTest.class);
-    manager.register("Color Test", ColorTest.class);
+    //manager.register("Color Test", ColorTest.class);
     manager.register("Turn Degrees Test", DegreesTest.class);
-    manager.register("Move Forward", MoveForwardAuto.class);*/
+    manager.register("Drive Straight", StraightTest.class);
   }
 }
