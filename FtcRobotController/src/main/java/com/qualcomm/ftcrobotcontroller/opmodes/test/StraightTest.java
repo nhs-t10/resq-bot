@@ -12,6 +12,10 @@ public class StraightTest extends ResQ_Library {
     }
 
     public void loop() {
+        telemetry.addData("Yaw", getYaw());
+        telemetry.addData("Motor Left", motorLeftTread.getPower());
+        telemetry.addData("Motor Right", motorLeftTread.getPower());
+        
         driveStraight(180);
     }
 }
