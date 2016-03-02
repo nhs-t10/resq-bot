@@ -14,11 +14,11 @@ adb usb
 Timeout 10
 adb tcpip 5555
 echo --
-echo --  Make sure your phone ALSO is connected to the "Router" network.
-echo --  Click the Settings-WiFi link to get the first phone's IP address
-set /p phoneip= --  Enter the IP address here:  
-adb connect %phoneip%
+echo --  Make sure your Code phone ALSO is connected to the "Robotics Intranet" network.
+pause
+adb connect 192.168.1.65:5555
 adb devices
 set /p ok= --  Unplug the phone and hit Enter to see the final connection.
+adb connect 192.168.1.65:5555
 adb devices
-Timeout 5
+pause
