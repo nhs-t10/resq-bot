@@ -96,10 +96,10 @@ public abstract class ResQ_Library extends OpMode {
         //--------------------------
 
         //Servos
-        srvoScoreClimberRight = hardwareMap.servo.get("s1");
+        /*srvoScoreClimberRight = hardwareMap.servo.get("s1");
         srvoScoreClimberLeft = hardwareMap.servo.get("s2");
         //srvoIntakeManager = hardwareMap.servo.get("s3");
-        srvoZiplineDrop = hardwareMap.servo.get("s4");
+        srvoZiplineDrop = hardwareMap.servo.get("s4");*/
 
         //Sensors
         //(color sensors are initialized w/ loadSensor(Team)
