@@ -33,6 +33,10 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import com.qualcomm.ftcrobotcontroller.opmodes.resqrobot2.ResQ_Drive;
 import com.qualcomm.ftcrobotcontroller.opmodes.resqrobot2.test.ColorTest;
+import com.qualcomm.ftcrobotcontroller.opmodes.supers_auto.AutoCircumLateAlly;
+import com.qualcomm.ftcrobotcontroller.opmodes.supers_auto.AutoCircumLateUs;
+import com.qualcomm.ftcrobotcontroller.opmodes.supers_auto.AutoCircumNoAlly;
+import com.qualcomm.ftcrobotcontroller.opmodes.supers_auto.TestingAuto;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.DegreesTest;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.GyroTest;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.StraightTest;
@@ -63,12 +67,15 @@ public class FtcOpModeRegister implements OpModeRegister {
      *
      * If two or more op modes are registered with the same name, the app will display an error.
      */
+    manager.register("Testing Autonomous", TestingAuto.class);
+    manager.register("No Ally Autonomous", AutoCircumNoAlly.class);
+    manager.register("Late Us Autonomous", AutoCircumLateUs.class);
+    manager.register("Late Ally Autonomous", AutoCircumLateAlly.class);
     manager.register("Red TeleOp", ResQ_Teleop_Red.class);
     manager.register("Blue TeleOp", ResQ_Teleop_Blue.class);
-    manager.register("Yaw Test", GyroTest.class);
+    /*manager.register("Yaw Test", GyroTest.class);
     manager.register("Ultra Test", UltraTest.class);
-    //manager.register("Color Test", ColorTest.class);
     manager.register("Turn Degrees Test", DegreesTest.class);
-    manager.register("Drive Straight", StraightTest.class);
+    manager.register("Drive Straight", StraightTest.class);*/
   }
 }
