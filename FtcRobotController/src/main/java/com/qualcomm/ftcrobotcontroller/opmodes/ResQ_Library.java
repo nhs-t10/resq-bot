@@ -63,7 +63,7 @@ public abstract class ResQ_Library extends OpMode {
     double accelerationThreshold = 0.1;
 
     //Other
-    int driveGear = 3; //3 is 100%, 2 is 50%, 1 is 25%
+    public int driveGear = 3; //3 is 100%, 2 is 50%, 1 is 25%
 
     public enum Color {
         RED, BLUE, GREEN, WHITE, NONE
