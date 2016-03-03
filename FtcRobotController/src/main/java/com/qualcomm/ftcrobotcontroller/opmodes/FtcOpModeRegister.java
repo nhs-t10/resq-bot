@@ -73,9 +73,10 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register("Late Ally Autonomous", AutoCircumLateAlly.class);
     manager.register("Red TeleOp", ResQ_Teleop_Red.class);
     manager.register("Blue TeleOp", ResQ_Teleop_Blue.class);
+    manager.register("Good Auto", ResQ_Good_Autonomous.class);
     /*manager.register("Yaw Test", GyroTest.class);
     manager.register("Ultra Test", UltraTest.class);
-    manager.register("Turn Degrees Test", DegreesTest.class);
-    manager.register("Drive Straight", StraightTest.class);*/
+    manager.register("Turn Degrees Test", DegreesTest.class);*/
+    manager.register("Drive Straight", StraightTest.class);
   }
 }
