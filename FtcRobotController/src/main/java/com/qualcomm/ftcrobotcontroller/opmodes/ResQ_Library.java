@@ -86,6 +86,8 @@ public abstract class ResQ_Library extends OpMode {
         motorLeftSecondTread = hardwareMap.dcMotor.get("m3");
         motorRightSecondTread = hardwareMap.dcMotor.get("m4");
 
+
+
         //COMMENTING FOR TESTING!!!! GET RID OF THIS WHEN DONE
 
         /*motorHangingMech = hardwareMap.dcMotor.get("m5");
