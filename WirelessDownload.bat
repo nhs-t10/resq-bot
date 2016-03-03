@@ -16,9 +16,9 @@ adb tcpip 5555
 echo --
 echo --  Make sure your Code phone ALSO is connected to the "Robotics Intranet" network.
 pause
-adb connect 192.168.1.65:5555
+adb connect 192.168.1.76:5555
 adb devices
 set /p ok= --  Unplug the phone and hit Enter to see the final connection.
-adb connect 192.168.1.65:5555
+adb connect 192.168.1.76:5555
 adb devices
 pause

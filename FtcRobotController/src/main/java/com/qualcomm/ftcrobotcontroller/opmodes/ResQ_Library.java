@@ -169,7 +169,8 @@ public abstract class ResQ_Library extends OpMode {
     public void driveStraight(double initialYaw) {
         double yaw = getYaw();
 
-        double offset = 180 - yaw;
+        double offset = 180 - initialYaw;
+
         yaw += offset;
         initialYaw += offset;
 
