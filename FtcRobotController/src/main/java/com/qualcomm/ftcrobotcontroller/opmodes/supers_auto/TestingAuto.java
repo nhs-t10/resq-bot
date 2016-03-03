@@ -9,9 +9,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * The purpose of this class is to test things before they're implemented into actual code.
  * It will also function as an interim library
  */
-public abstract class TestingAuto extends ResQ_Library {
+public class TestingAuto extends ResQ_Library {
 
-    /*public enum Team {
+    public enum Team {
         RED, BLUE, UNKNOWN
     }
     protected Team teamWeAreOn; //enum that represent team
@@ -61,11 +61,14 @@ public abstract class TestingAuto extends ResQ_Library {
         driveStraight(angle);
         sleep(2000);
         currentState = CurrentState.FirstTurn;
-    }*/
+    }
+
+    double startTime;
 
     public void init() {
         initializeMapping();
         startIMU();
+        startTime = getRuntime();
     }
 
     public void loop() {
@@ -73,8 +76,12 @@ public abstract class TestingAuto extends ResQ_Library {
         telemetry.addData("Motor Left", motorLeftTread.getPower());
         telemetry.addData("Motor Right", motorLeftTread.getPower());
 
-        driveStraight(180);
-        sleep(2000);
+        if(getRuntime() - startTime < 2.0) {
+            driveStraight(180);
+        } else {
+            stopDrive();
+        }
+        //sleep(2000);
     }
 
 }
