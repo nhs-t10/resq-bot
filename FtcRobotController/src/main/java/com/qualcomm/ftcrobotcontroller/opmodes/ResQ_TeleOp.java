@@ -25,9 +25,9 @@ public class ResQ_TeleOp extends ResQ_Library {
         initializeMapping();
         //startIMU();
         telemetry.addData("Version", "Sensorless. COLOR ERROR SHOULD NOT SHOW UP!");
-        motorBlockArm.setPower(0.25);
+        /*motorBlockArm.setPower(0.25);
         motorBlockArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-        motorBlockArm.setTargetPosition(0);
+        motorBlockArm.setTargetPosition(0);*/
 
         if(teamWeAreOn == Team.RED) {
             bucketDownPos = 0;

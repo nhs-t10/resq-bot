@@ -75,6 +75,7 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register("Blue TeleOp", ResQ_Teleop_Blue.class);
     manager.register("Test Teleop", ResQ_Drive.class);
     manager.register("Yaw Test", GyroTest.class);
+    manager.register("Good Auto", ResQ_Good_Autonomous.class);
     manager.register("Drive Straight", StraightTest.class);
   }
 }
