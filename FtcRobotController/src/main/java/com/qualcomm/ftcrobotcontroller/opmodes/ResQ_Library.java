@@ -27,11 +27,11 @@ public abstract class ResQ_Library extends OpMode {
     public DcMotor motorIntakeSpin;
 
     //Autonomous
-    public Servo srvoScoreClimberRight, srvoScoreClimberLeft, srvoIntakeManager, srvoZiplineDrop;
+    public Servo srvoScoreClimber, srvoIntakeManager, srvoZiplineDrop;
 
     //Sensors
     public AnalogInput sensorUltra_1, sensorUltra_2;
-    public ColorSensor sensorRGB_1, sensorRGB_2;
+    public ColorSensor sensorRGB;
     public AdafruitIMU imu;
 
     public CompassSensor compassSensor;
@@ -90,22 +90,20 @@ public abstract class ResQ_Library extends OpMode {
 
         //COMMENTING FOR TESTING!!!! GET RID OF THIS WHEN DONE
 
-        /*motorHangingMech = hardwareMap.dcMotor.get("m5");
+        motorHangingMech = hardwareMap.dcMotor.get("m5");
         motorTapeMech = hardwareMap.dcMotor.get("m6");
         motorBlockArm = hardwareMap.dcMotor.get("m7");
-        motorIntakeSpin = hardwareMap.dcMotor.get("m8");*/
+        motorIntakeSpin = hardwareMap.dcMotor.get("m8");
 
         //--------------------------
 
         //Servos
-        /*srvoScoreClimberRight = hardwareMap.servo.get("s1");
-        srvoScoreClimberLeft = hardwareMap.servo.get("s2");
-        //srvoIntakeManager = hardwareMap.servo.get("s3");
-        srvoZiplineDrop = hardwareMap.servo.get("s4");*/
+        srvoScoreClimber = hardwareMap.servo.get("s1");
+        srvoZiplineDrop = hardwareMap.servo.get("s2");
 
         //Sensors
-        //(color sensors are initialized w/ loadSensor(Team)
         sensorUltra_1 = hardwareMap.analogInput.get("u1");
+        sensorRGB = hardwareMap.colorSensor.get("c1");
         try {
             imu = new AdafruitIMU(hardwareMap, "g1", (byte)(AdafruitIMU.BNO055_ADDRESS_A * 2), (byte)AdafruitIMU.OPERATION_MODE_IMU);
         } catch(RobotCoreException rce) {
@@ -332,38 +330,24 @@ public abstract class ResQ_Library extends OpMode {
     }
 
     public void calibrateColors() {
-        offsetRed_1 = sensorRGB_1.red();
-        offsetGreen_1 = sensorRGB_1.green();
-        offsetBlue_1 = sensorRGB_1.blue();
-        offsetRed_2 = sensorRGB_2.red();
-        offsetGreen_2 = sensorRGB_2.green();
-        offsetBlue_2 = sensorRGB_2.blue();
+        offsetRed_1 = sensorRGB.red();
+        offsetGreen_1 = sensorRGB.green();
+        offsetBlue_1 = sensorRGB.blue();
     }
 
-    /*public Team getColor() {
-        Color color = getHue();
-        if (color == Color.BLUE) {
-            return Team.BLUE;
-        } else if (color == Color.RED) {
-            return Team.RED;
-        } else {
-            return Team.UNKNOWN;
-        }
-    }*/
-
     public Color getHue() {
-        int r1 = Math.abs(sensorRGB_1.red() - offsetRed_1), r2 = Math.abs(sensorRGB_2.red() - offsetRed_2);
-        int b1 = Math.abs(sensorRGB_1.blue() - offsetBlue_1), b2 = Math.abs(sensorRGB_2.blue() - offsetBlue_2);
-        int a1 = Math.abs(sensorRGB_1.alpha()), a2 = Math.abs(sensorRGB_2.alpha());
+        int r1 = Math.abs(sensorRGB.red() - offsetRed_1);
+        int b1 = Math.abs(sensorRGB.blue() - offsetBlue_1);
+        int a1 = Math.abs(sensorRGB.alpha());
         telemetry.addData("Red 1", r1);
         telemetry.addData("Blue 1", b1);
         telemetry.addData("White 1", a1);
-        if ((b1 > r1 && b1 > COLOR_THRESHOLD) || (b2 > r2 && b2 > COLOR_THRESHOLD)) {
+        if (b1 > r1 && b1 > COLOR_THRESHOLD) {
             return Color.BLUE;
-        } else if ((r1 > b1 && r1 > COLOR_THRESHOLD) || (r2 > b2 && r2 > COLOR_THRESHOLD)) {
+        } else if (r1 > b1 && r1 > COLOR_THRESHOLD) {
             return Color.RED;
         }
-        else if((a1 > 1000) || (a2 > 1000)) {
+        else if(a1 > 1000) {
             return Color.WHITE;
         }
         else {
@@ -495,11 +479,9 @@ public abstract class ResQ_Library extends OpMode {
     }
 
     public void DropClimber () {
-        srvoScoreClimberRight.setPosition(1.0f);
-        srvoScoreClimberLeft.setPosition(1.0f);
+        srvoScoreClimber.setPosition(1.0f);
         sleep(2000);
-        srvoScoreClimberRight.setPosition(0.0f);
-        srvoScoreClimberLeft.setPosition(0.0f);
+        srvoScoreClimber.setPosition(0.0f);
     }
 
     //****************MISC METHODS****************//

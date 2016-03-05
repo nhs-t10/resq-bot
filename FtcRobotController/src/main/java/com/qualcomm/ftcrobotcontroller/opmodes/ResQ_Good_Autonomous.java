@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 *   ANGLES: 230
 *
 * */
-public abstract class ResQ_Good_Autonomous extends ResQ_Library {
+public class ResQ_Good_Autonomous extends ResQ_Library {
     protected final double RED_WALL = 50;
     protected final double BLUE_WALL = 37.5;
     // First set is to turn to correct  beacon
@@ -50,7 +50,7 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     protected CurrentState currentState = CurrentState.STARTING;
 
     public ResQ_Good_Autonomous() {
-        teamWeAreOn = Team.UNKNOWN;
+        teamWeAreOn = Team.RED;
         driveGear = 3;
     }
 
@@ -131,7 +131,6 @@ public abstract class ResQ_Good_Autonomous extends ResQ_Library {
     public void getIntoTurnPosition() {
         drive(-0.5f, -0.5f);
         sleep(2000);
-        stopDrive();
         currentState = CurrentState.FIRSTTURN;
     }
 

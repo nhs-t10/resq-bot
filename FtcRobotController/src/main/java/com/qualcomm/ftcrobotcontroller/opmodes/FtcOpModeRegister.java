@@ -32,19 +32,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import com.qualcomm.ftcrobotcontroller.opmodes.test.ResQ_Drive;
-import com.qualcomm.ftcrobotcontroller.opmodes.resqrobot2.test.ColorTest;
 import com.qualcomm.ftcrobotcontroller.opmodes.supers_auto.AutoCircumLateAlly;
 import com.qualcomm.ftcrobotcontroller.opmodes.supers_auto.AutoCircumLateUs;
-import com.qualcomm.ftcrobotcontroller.opmodes.supers_auto.AutoCircumNoAlly;
 import com.qualcomm.ftcrobotcontroller.opmodes.supers_auto.TestingAuto;
-import com.qualcomm.ftcrobotcontroller.opmodes.test.DegreesTest;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.GyroTest;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.StraightTest;
-import com.qualcomm.ftcrobotcontroller.opmodes.test.UltraTest;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
-
-import javax.xml.transform.SourceLocator;
 
 
 /**
