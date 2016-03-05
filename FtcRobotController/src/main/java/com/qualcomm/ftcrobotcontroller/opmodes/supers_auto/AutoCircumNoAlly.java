@@ -28,7 +28,7 @@ public class AutoCircumNoAlly extends AutonomousLibrary {
 
         waitForStart();
 
-        //Davis's code should update team here 
+        //Davis's code should update team here
 
         //////////////////////////////////////
 
@@ -41,7 +41,7 @@ public class AutoCircumNoAlly extends AutonomousLibrary {
         while((getHue() != Color.WHITE)){
             drive(0.5f, 0.5f);
         }
-        // Turn towards beacon exactly
+        /*// Turn towards beacon exactly
         turningTeamProcessor(270, 90);
         // Move closer to beacon. Be careful not to damage the field
         encoderDriveStraight(0.5f, 1120);

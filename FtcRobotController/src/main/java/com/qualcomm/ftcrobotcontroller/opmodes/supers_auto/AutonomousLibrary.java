@@ -138,7 +138,7 @@ public abstract class AutonomousLibrary extends LinearOpMode {
 
         //COMMENTING FOR TESTING!!!! GET RID OF THIS WHEN DONE
 
-        motorHangingMech = hardwareMap.dcMotor.get("m5");
+        /*motorHangingMech = hardwareMap.dcMotor.get("m5");
         motorTapeMech = hardwareMap.dcMotor.get("m6");
         motorBlockArm = hardwareMap.dcMotor.get("m7");
         motorIntakeSpin = hardwareMap.dcMotor.get("m8");
@@ -147,7 +147,7 @@ public abstract class AutonomousLibrary extends LinearOpMode {
 
         //Servos
         srvoScoreClimber = hardwareMap.servo.get("s1");
-        srvoZiplineDrop = hardwareMap.servo.get("s2");
+        srvoZiplineDrop = hardwareMap.servo.get("s2");*/
 
         //Sensors
         sensorUltra_1 = hardwareMap.analogInput.get("u1");
