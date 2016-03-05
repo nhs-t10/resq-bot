@@ -33,6 +33,7 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import com.qualcomm.ftcrobotcontroller.opmodes.test.ResQ_Drive;
 import com.qualcomm.ftcrobotcontroller.opmodes.supers_auto.AutoCircumLateAlly;
+import com.qualcomm.ftcrobotcontroller.opmodes.supers_auto.AutoCircumNoAlly;
 import com.qualcomm.ftcrobotcontroller.opmodes.supers_auto.AutoCircumLateUs;
 import com.qualcomm.ftcrobotcontroller.opmodes.supers_auto.TestingAuto;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.GyroTest;
