@@ -24,10 +24,9 @@ public abstract class ResQ_Library extends OpMode {
     public DcMotor motorHangingMech;
     public DcMotor motorTapeMech;
     public DcMotor motorBlockArm;
-    public DcMotor motorIntakeSpin;
 
     //Autonomous
-    public Servo srvoScoreClimber, srvoIntakeManager, srvoZiplineDrop;
+    public Servo srvoScoreClimber, srvoZiplineDrop, srvoIntake1, srvoIntake2;
 
     //Sensors
     public AnalogInput sensorUltra_1, sensorUltra_2;
@@ -86,20 +85,19 @@ public abstract class ResQ_Library extends OpMode {
         motorLeftSecondTread = hardwareMap.dcMotor.get("m3");
         motorRightSecondTread = hardwareMap.dcMotor.get("m4");
 
-
-
         //COMMENTING FOR TESTING!!!! GET RID OF THIS WHEN DONE
 
         motorHangingMech = hardwareMap.dcMotor.get("m5");
         motorTapeMech = hardwareMap.dcMotor.get("m6");
-        motorBlockArm = hardwareMap.dcMotor.get("m7");
-        motorIntakeSpin = hardwareMap.dcMotor.get("m8");
+        //motorBlockArm = hardwareMap.dcMotor.get("m7"); //This may not exist if we use the big servo instead
 
         //--------------------------
 
         //Servos
         srvoScoreClimber = hardwareMap.servo.get("s1");
         srvoZiplineDrop = hardwareMap.servo.get("s2");
+        srvoIntake1 = hardwareMap.servo.get("s3");
+        srvoIntake2 = hardwareMap.servo.get("s4");
 
         //Sensors
         sensorUltra_1 = hardwareMap.analogInput.get("u1");

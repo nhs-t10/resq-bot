@@ -41,26 +41,26 @@ public class AutoCircumNoAlly extends AutonomousLibrary {
         while((getHue() != Color.WHITE)){
             drive(0.5f, 0.5f);
         }
-        /*// Turn towards beacon exactly
+        // Turn towards beacon exactly
         turningTeamProcessor(270, 90);
         // Move closer to beacon. Be careful not to damage the field
         encoderDriveStraight(0.5f, 1120);
         // Score Climbers
         srvoScoreClimber.setPosition(1.0f);
         sleep(1000);
-        //srvoScoreClimber.setPosition(0.0f);
+        srvoScoreClimber.setPosition(0.0f);
         // Back up from beacon
         encoderDriveStraight(-0.5f, 2240);
         // Turn to be perpendicular to ramp
-
+        turningTeamProcessor(360, 0);
         // Move forward until you're a bit past the ramp, clear all blocks
-
+        encoderDriveStraight(0.75f, 3360);
         // Move back until robot fits in climbing area
-
+        encoderDriveStraight(0.5f, 1120);
         // Turn 90 degrees to face ramp
-
+        turningTeamProcessor(270, 90);
         // Climb for a set amount of time
-
+        encoderDriveStraight(1f, 5600);
 
         /* This is just so we can easily add "/*" comments wherever we need in the code to test
         */
