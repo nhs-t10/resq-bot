@@ -167,7 +167,7 @@ public abstract class ResQ_Library extends OpMode {
 
         double offset = 180 - initialYaw;
 
-        yaw += offset;
+        yaw = Math.round(scaleToAngle(yaw + offset)*100)/100;
         initialYaw += offset;
 
         double speedLeft = 0.5 + ((yaw - initialYaw)/initialYaw);
@@ -178,6 +178,7 @@ public abstract class ResQ_Library extends OpMode {
 
         drive((float)speedLeft, (float)speedRight);
     }
+    //precision
 
     /*This method should not be working...*/
     @Deprecated
