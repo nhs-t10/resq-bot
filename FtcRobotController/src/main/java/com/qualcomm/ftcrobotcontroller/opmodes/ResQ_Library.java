@@ -96,7 +96,7 @@ public abstract class ResQ_Library extends OpMode {
         srvoZiplineDrop = hardwareMap.servo.get("s2");
 
         //Sensors
-        sensorUltra_1 = hardwareMap.analogInput.get("u1");
+        //sensorUltra_1 = hardwareMap.analogInput.get("u1");
         sensorRGB = hardwareMap.colorSensor.get("c1");
         try {
             imu = new AdafruitIMU(hardwareMap, "g1", (byte)(AdafruitIMU.BNO055_ADDRESS_A * 2), (byte)AdafruitIMU.OPERATION_MODE_IMU);

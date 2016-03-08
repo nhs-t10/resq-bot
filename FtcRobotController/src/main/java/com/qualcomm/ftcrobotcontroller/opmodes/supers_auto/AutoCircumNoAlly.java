@@ -21,11 +21,15 @@ public class AutoCircumNoAlly extends AutonomousLibrary {
 
     @Override
     public void runOpMode() throws InterruptedException {
+        telemetry.addData("Initializing Hardware", "");
         initializeMapping();
+        telemetry.addData("Calibrating Colors", "");
         calibrateColors();
+        telemetry.addData("Starting the IMU", "");
         startIMU();
+        telemetry.addData("Resetting Encoders", "");
         ChangeEncoderMode("Reset");
-
+        telemetry.addData("Ready to Start", "");
         waitForStart();
 
         //Davis's code should update team here
@@ -33,12 +37,18 @@ public class AutoCircumNoAlly extends AutonomousLibrary {
         //////////////////////////////////////
 
         // Move forward a bit
-        encoderDriveStraight(0.5f, 3360);
+        //encoderDriveStraight(0.5f, 3360);
+        drive(1f, 1f);
+        telemetry.addData("Debug", "kys");
+        sleep(3000);
         // Turn to face the beacon
-        turningTeamProcessor(225, 135);
+        //turningTeamProcessor(225, 135);
+        drive(-1f, 1f);
+        telemetry.addData("Debug", "START TIMER NOW");
+        sleep(1000);
         // Move forward until color sensor detects white line
         ChangeEncoderMode("Without");
-        while((getHue() != Color.WHITE)){
+        /*while((getHue() != Color.WHITE)){
             drive(0.5f, 0.5f);
         }
         // Turn towards beacon exactly
@@ -70,9 +80,9 @@ public class AutoCircumNoAlly extends AutonomousLibrary {
         //Code allows us to choose between team colors super easily instead of a giant
         //if/else thing every single time we need to turn
         if(teamWeAreOn == Team.RED) {
-            driveTurnDegrees(redTeamAngle);
+            while(!driveTurnDegrees(redTeamAngle));
         } else if(teamWeAreOn == Team.BLUE) {
-            driveTurnDegrees(blueTeamAngle);
+            while(!driveTurnDegrees(blueTeamAngle));
         }
     }
 }
