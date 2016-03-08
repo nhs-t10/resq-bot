@@ -129,25 +129,20 @@ public abstract class AutonomousLibrary extends LinearOpMode {
         hardwareMap.logDevices();
 
         //Motors
-        motorLeftTread = hardwareMap.dcMotor.get("m1");
+        motorLeftTread = hardwareMap.dcMotor.get("m1"); //mapped
         motorRightTread = hardwareMap.dcMotor.get("m2");
-        motorLeftSecondTread = hardwareMap.dcMotor.get("m3");
+        motorLeftSecondTread = hardwareMap.dcMotor.get("m3"); //mapped
         motorRightSecondTread = hardwareMap.dcMotor.get("m4");
 
-
-
-        //COMMENTING FOR TESTING!!!! GET RID OF THIS WHEN DONE
-
-        /*motorHangingMech = hardwareMap.dcMotor.get("m5");
-        motorTapeMech = hardwareMap.dcMotor.get("m6");
-        motorBlockArm = hardwareMap.dcMotor.get("m7");
-        motorIntakeSpin = hardwareMap.dcMotor.get("m8");
+        motorHangingMech = hardwareMap.dcMotor.get("m5"); //mapped
+        motorTapeMech = hardwareMap.dcMotor.get("m6"); //mapped
+        motorBlockArm = hardwareMap.dcMotor.get("m7"); //mapped
 
         //--------------------------
 
         //Servos
         srvoScoreClimber = hardwareMap.servo.get("s1");
-        srvoZiplineDrop = hardwareMap.servo.get("s2");*/
+        srvoZiplineDrop = hardwareMap.servo.get("s2");
 
         //Sensors
         sensorUltra_1 = hardwareMap.analogInput.get("u1");
