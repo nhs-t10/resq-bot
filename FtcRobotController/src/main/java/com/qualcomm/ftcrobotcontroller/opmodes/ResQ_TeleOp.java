@@ -96,13 +96,6 @@ public class ResQ_TeleOp extends ResQ_Library {
          */
 
         //Gamepad 1 Functions
-        if(gamepad1.left_trigger >= 0.5f){ //Toggles intake spin movement
-            motorIntakeSpin.setPower(1.0);
-        } else if (gamepad1.right_trigger >= 0.5f) {
-            motorIntakeSpin.setPower(-1.0);
-        } else {
-            motorIntakeSpin.setPower(0.0);
-        }
 
         if(gamepad1.x) { //moves arm to bottom then powers it off.
             motorBlockArm.setPower(0.10);
@@ -120,17 +113,6 @@ public class ResQ_TeleOp extends ResQ_Library {
             /*motorBlockArm.setTargetPosition(475);
             sleep(250);*/
             motorBlockArm.setTargetPosition(bucketUpPos);
-        }
-
-        //Gamepad 2 Functions
-        if (gamepad2.x) { //moves servo to bottom scoring pos
-            srvoIntakeManager.setPosition(0.04);
-        }
-        if (gamepad2.y) { //moves servo to bottom scoring pos
-            srvoIntakeManager.setPosition(0.25);
-        }
-        if (gamepad2.b) { //moves servo to bottom scoring pos
-            srvoIntakeManager.setPosition(0.78);
         }
 
 

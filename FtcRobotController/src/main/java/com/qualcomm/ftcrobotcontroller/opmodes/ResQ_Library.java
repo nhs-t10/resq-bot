@@ -80,24 +80,20 @@ public abstract class ResQ_Library extends OpMode {
         hardwareMap.logDevices();
 
         //Motors
-        motorLeftTread = hardwareMap.dcMotor.get("m1");
+        motorLeftTread = hardwareMap.dcMotor.get("m1"); //mapped
         motorRightTread = hardwareMap.dcMotor.get("m2");
-        motorLeftSecondTread = hardwareMap.dcMotor.get("m3");
+        motorLeftSecondTread = hardwareMap.dcMotor.get("m3"); //mapped
         motorRightSecondTread = hardwareMap.dcMotor.get("m4");
 
-        //COMMENTING FOR TESTING!!!! GET RID OF THIS WHEN DONE
-
-        motorHangingMech = hardwareMap.dcMotor.get("m5");
-        motorTapeMech = hardwareMap.dcMotor.get("m6");
-        //motorBlockArm = hardwareMap.dcMotor.get("m7"); //This may not exist if we use the big servo instead
+        motorHangingMech = hardwareMap.dcMotor.get("m5"); //mapped
+        motorTapeMech = hardwareMap.dcMotor.get("m6"); //mapped
+        motorBlockArm = hardwareMap.dcMotor.get("m7"); //mapped
 
         //--------------------------
 
         //Servos
         srvoScoreClimber = hardwareMap.servo.get("s1");
         srvoZiplineDrop = hardwareMap.servo.get("s2");
-        srvoIntake1 = hardwareMap.servo.get("s3");
-        srvoIntake2 = hardwareMap.servo.get("s4");
 
         //Sensors
         sensorUltra_1 = hardwareMap.analogInput.get("u1");
