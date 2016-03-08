@@ -31,6 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+import com.qualcomm.ftcrobotcontroller.opmodes.test.LinearDegreesTest;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.ResQ_Drive;
 import com.qualcomm.ftcrobotcontroller.opmodes.supers_auto.AutoCircumLateAlly;
 import com.qualcomm.ftcrobotcontroller.opmodes.supers_auto.AutoCircumNoAlly;
@@ -72,5 +73,6 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register("Yaw Test", GyroTest.class);
     manager.register("Good Auto", ResQ_Good_Autonomous.class);
     manager.register("Drive Straight", StraightTest.class);
+    manager.register("Linear Degrees Test", LinearDegreesTest.class);
   }
 }
