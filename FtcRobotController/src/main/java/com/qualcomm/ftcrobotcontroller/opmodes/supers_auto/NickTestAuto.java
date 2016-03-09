@@ -39,37 +39,38 @@ public class NickTestAuto extends AutonomousLibrary {
         while(!driveTurnDegrees(270)) {
             waitForNextHardwareCycle();
         }
+        telemetry.addData("First turn complete");
 
         driveForward(.2f, 4000);
         while(!driveTurnDegrees(360)){
             waitOneFullHardwareCycle();
         }
-        int timeC = getRuntime();
+        telemetry.addData("Second turn complete");
 
-        while((getHue() != Color.WHITE) || (getRuntime() > (timeC + 2)))
+        while(getHue() != Color.WHITE)
         {
             drive(.2f, .2f);
-        }
-
-        if(getHue() == Color.WHITE){
-            while(!driveTurnDegrees(270)){
-                waitOneFullHardwareCycle();
-            }
-        }
-        else{
-            driveForward(-.2f, 4000);
-        }
-
-        while (getHue() != Color.WHITE) {
-            drive(1f, 1f);
+            sleep(2000);
+            waitOneFullHardwareCycle();
+            drive(-.2f, -.2f);
+            sleep(2000);
             waitOneFullHardwareCycle();
         }
+        telemetry.addData("Line sensed");
+
+        while(!driveTurnDegrees(270)){
+            waitOneFullHardwareCycle();
+        }
+        telemetry.addData("Final turn complete");
+
+
+
+
+
 
     }
 
-    private static double PID() {
 
-    }
 
 
 }
