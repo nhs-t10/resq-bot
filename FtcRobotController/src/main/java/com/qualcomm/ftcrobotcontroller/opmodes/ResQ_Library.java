@@ -357,6 +357,11 @@ public abstract class ResQ_Library extends OpMode {
         return a;
     }
 
+    public int getRed () {
+        int a =  Math.abs(sensorRGB.red() - offsetRed_1);
+        return a;
+    }
+
     //****************NUMBER MANIPULATION METHODS****************//
     public void accelerateForward() {
         //get average powers for left and right motors (prevents any motor bias)

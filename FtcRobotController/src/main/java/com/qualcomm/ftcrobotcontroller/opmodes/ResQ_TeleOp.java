@@ -155,16 +155,5 @@ public class ResQ_TeleOp extends ResQ_Library {
         } else {
             srvoZiplineDrop.setPosition(1.0f);
         }
-
-        getHue();
-        //Teleop Climber Drop
-        /*if (gamepad2.a) {
-            srvoScoreClimberRight.setPosition(1.0f);
-            srvoScoreClimberLeft.setPosition(0.0f);
-        } else {
-            srvoScoreClimberRight.setPosition(0.0f);
-            srvoScoreClimberLeft.setPosition(1.f);
-        }*/
-
     }
 }
