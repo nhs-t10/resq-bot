@@ -159,7 +159,7 @@ public abstract class ResQ_Library extends OpMode {
      * @param initialYaw target yaw for the robot to face.
      */
     public void driveStraight(double initialYaw) {
-        final int INTENSITY = 2;
+        final int INTENSITY = 7;
 
         double yaw = getYaw();
 
@@ -168,8 +168,8 @@ public abstract class ResQ_Library extends OpMode {
         yaw = Math.round(scaleToAngle(yaw + offset)*100)/100;
         initialYaw += offset;
 
-        double speedLeft = 0.5 + ((yaw - initialYaw)/initialYaw) * INTENSITY;
-        double speedRight = 0.5 - ((yaw - initialYaw)/initialYaw) * INTENSITY;
+        double speedLeft = 1.0 + ((yaw - initialYaw)/initialYaw) * INTENSITY;
+        double speedRight = 1.0 - ((yaw - initialYaw)/initialYaw) * INTENSITY;
 
         speedLeft = Range.clip(speedLeft, -1.0, 1.0);
         speedRight = Range.clip(speedRight, -1.0, 1.0);
