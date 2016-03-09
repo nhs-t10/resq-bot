@@ -38,23 +38,28 @@ public class AutoCircumNoAlly extends AutonomousLibrary {
 
         // Move forward a bit
         //encoderDriveStraight(0.5f, 3360);
-        drive(1f, 1f);
-        telemetry.addData("Debug", "kys");
-        sleep(3000);
+        /*drive(1f, 1f);
+        sleep(3000);*/
+        driveForward(1f, 3000);
         // Turn to face the beacon
         //turningTeamProcessor(225, 135);
-        drive(-1f, 1f);
-        telemetry.addData("Debug", "START TIMER NOW");
-        sleep(1000);
-        // Move forward until color sensor detects white line
-        ChangeEncoderMode("Without");
-        /*while((getHue() != Color.WHITE)){
-            drive(0.5f, 0.5f);
+        while(!driveTurnDegrees(225)) {
+            waitForNextHardwareCycle();
         }
+        // Move forward until color sensor detects white line
+        //ChangeEncoderMode("Without");
+        /*while((getHue() != Color.WHITE)){
+            drive(1f, 1f);
+            //waitForNextHardwareCycle();
+        }*/
+        drive(1f, 1f);
+        sleep(10000);
         // Turn towards beacon exactly
-        turningTeamProcessor(270, 90);
+        while(!driveTurnDegrees(270)) {
+            waitForNextHardwareCycle();
+        }
         // Move closer to beacon. Be careful not to damage the field
-        encoderDriveStraight(0.5f, 1120);
+        /*encoderDriveStraight(0.5f, 1120);*/
         // Score Climbers
         srvoScoreClimber.setPosition(1.0f);
         sleep(1000);
@@ -76,13 +81,18 @@ public class AutoCircumNoAlly extends AutonomousLibrary {
         */
     }
 
-    public void turningTeamProcessor (int redTeamAngle, int blueTeamAngle){
+    public void turningTeamProcessor (int redTeamAngle, int blueTeamAngle) throws InterruptedException{
         //Code allows us to choose between team colors super easily instead of a giant
         //if/else thing every single time we need to turn
         if(teamWeAreOn == Team.RED) {
-            while(!driveTurnDegrees(redTeamAngle));
+            while(!driveTurnDegrees(redTeamAngle)) {
+                waitForNextHardwareCycle();
+            }
         } else if(teamWeAreOn == Team.BLUE) {
-            while(!driveTurnDegrees(blueTeamAngle));
+            while(!driveTurnDegrees(blueTeamAngle)) {
+                waitForNextHardwareCycle();
+            }
         }
     }
+
 }

@@ -31,7 +31,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+import com.qualcomm.ftcrobotcontroller.opmodes.test.ColorTest;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.DegreesTest;
+import com.qualcomm.ftcrobotcontroller.opmodes.test.DropClimber;
+import com.qualcomm.ftcrobotcontroller.opmodes.test.EncoderDriveTest;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.LinearDegreesTest;
 import com.qualcomm.ftcrobotcontroller.opmodes.supers_auto.AutoCircumLateAlly;
 import com.qualcomm.ftcrobotcontroller.opmodes.supers_auto.AutoCircumNoAlly;
@@ -66,10 +69,13 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register("No Ally Autonomous", AutoCircumNoAlly.class);
     manager.register("Late Us Autonomous", AutoCircumLateUs.class);
     manager.register("Late Ally Autonomous", AutoCircumLateAlly.class);
+    manager.register("red auto", ResQ_Good_Autonomous.class);
+    manager.register("Score", DropClimber.class);
+    manager.register("Color", ColorTest.class);
     manager.register("Red TeleOp", ResQ_Teleop_Red.class);
     manager.register("Blue TeleOp", ResQ_Teleop_Blue.class);
     manager.register("Drive Straight", StraightTest.class);
     manager.register("Turn Degrees Test", DegreesTest.class);
-    manager.register("Linear Degrees Test", LinearDegreesTest.class);
+    manager.register("Encoder", EncoderDriveTest.class);
   }
 }

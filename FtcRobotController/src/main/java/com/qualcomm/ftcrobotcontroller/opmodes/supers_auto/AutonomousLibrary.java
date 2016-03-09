@@ -97,7 +97,7 @@ public abstract class AutonomousLibrary extends LinearOpMode {
         }
     }
 
-    public void encoderDriveStraight (float power, int distance){
+    public void encoderDriveStraight (float power, int distance) throws InterruptedException{
         //this allows us to drive straight using encoders
         /*
         Rotation based numbers:
@@ -111,11 +111,26 @@ public abstract class AutonomousLibrary extends LinearOpMode {
         ChangeEncoderMode("Reset");
         motorRightTread.setTargetPosition(distance);
         motorLeftTread.setTargetPosition(distance);
+        motorRightTread.setPower(1);
+        motorLeftTread.setPower(1);
         ChangeEncoderMode("Position");
-        drive(power, power);
-        while(motorLeftTread.isBusy() && motorRightTread.isBusy()){}
+        while(motorRightTread.getCurrentPosition() < motorRightTread.getTargetPosition() ||
+                motorLeftTread.getCurrentPosition() < motorLeftTread.getTargetPosition()){
+            waitOneFullHardwareCycle();
+            driveBackWheels(power);
+        }
         stopDrive();
         ChangeEncoderMode("With");
+    }
+
+    public void driveBackWheels (float power) {
+        motorRightSecondTread.setPower(power);
+        motorLeftSecondTread.setPower(power);
+    }
+
+    public void driveForward(float power, int time) throws InterruptedException{
+        drive(power, power);
+        sleep(time);
     }
 
     //Non library code complete
@@ -145,7 +160,7 @@ public abstract class AutonomousLibrary extends LinearOpMode {
         srvoZiplineDrop = hardwareMap.servo.get("s2");
 
         //Sensors
-        //sensorUltra_1 = hardwareMap.analogInput.get("u1");
+        sensorUltra_1 = hardwareMap.analogInput.get("u1");
         sensorRGB = hardwareMap.colorSensor.get("c1");
         try {
             imu = new AdafruitIMU(hardwareMap, "g1", (byte)(AdafruitIMU.BNO055_ADDRESS_A * 2), (byte)AdafruitIMU.OPERATION_MODE_IMU);

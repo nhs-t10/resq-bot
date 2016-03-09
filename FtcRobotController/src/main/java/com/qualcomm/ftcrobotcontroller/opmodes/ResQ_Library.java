@@ -96,7 +96,7 @@ public abstract class ResQ_Library extends OpMode {
         srvoZiplineDrop = hardwareMap.servo.get("s2");
 
         //Sensors
-        //sensorUltra_1 = hardwareMap.analogInput.get("u1");
+        sensorUltra_1 = hardwareMap.analogInput.get("u1");
         sensorRGB = hardwareMap.colorSensor.get("c1");
         try {
             imu = new AdafruitIMU(hardwareMap, "g1", (byte)(AdafruitIMU.BNO055_ADDRESS_A * 2), (byte)AdafruitIMU.OPERATION_MODE_IMU);
@@ -344,12 +344,17 @@ public abstract class ResQ_Library extends OpMode {
         } else if (r1 > b1 && r1 > COLOR_THRESHOLD) {
             return Color.RED;
         }
-        else if(a1 > 1000) {
+        else if(a1 > 2000) {
             return Color.WHITE;
         }
         else {
             return Color.NONE;
         }
+    }
+
+    public int getAlpha() {
+        int a =  Math.abs(sensorRGB.alpha());
+        return a;
     }
 
     //****************NUMBER MANIPULATION METHODS****************//
