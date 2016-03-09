@@ -317,6 +317,16 @@ public abstract class AutonomousLibrary extends LinearOpMode {
         }
     }
 
+    public int getAlpha() {
+        int a =  Math.abs(sensorRGB.alpha());
+        return a;
+    }
+
+    public int getRed () {
+        int a =  Math.abs(sensorRGB.red() - offsetRed_1);
+        return a;
+    }
+
     /**
      * Converts any number to an angle value between 0 - 359.
      */
