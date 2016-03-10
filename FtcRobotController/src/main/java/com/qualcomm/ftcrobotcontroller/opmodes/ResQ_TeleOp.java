@@ -31,12 +31,12 @@ public class ResQ_TeleOp extends ResQ_Library {
 
         if(teamWeAreOn == Team.RED) {
             bucketDownPos = 0;
-            bucketMidPos = 150;
+            bucketMidPos = 30;
             bucketUpPos = 575;
 
         } else if(teamWeAreOn == Team.BLUE) {
             bucketDownPos = 0;
-            bucketMidPos = -150;
+            bucketMidPos = -30;
             bucketUpPos = -575;
         }
     }

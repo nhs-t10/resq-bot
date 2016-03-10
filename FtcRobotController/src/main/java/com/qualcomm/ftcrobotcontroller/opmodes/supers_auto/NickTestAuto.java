@@ -62,12 +62,6 @@ public class NickTestAuto extends AutonomousLibrary {
             waitOneFullHardwareCycle();
         }
         telemetry.addData("Final turn complete", "");
-
-
-
-
-
-
     }
 
 
