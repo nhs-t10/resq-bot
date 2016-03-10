@@ -115,6 +115,17 @@ public class ResQ_TeleOp extends ResQ_Library {
             motorBlockArm.setTargetPosition(bucketUpPos);
         }
 
+        if(gamepad1.left_trigger >= 0.5f) { //left trigger draws blocks in
+            srvoIntake_1.setPosition(1);
+            srvoIntake_2.setPosition(0);
+        } else if(gamepad1.right_trigger >= 0.5f) { //right trigger shoots them out
+            srvoIntake_1.setPosition(0);
+            srvoIntake_2.setPosition(1);
+        } else {
+            srvoIntake_1.setPosition(0.50);
+            srvoIntake_2.setPosition(0.55);
+        }
+
 
         //****************OTHER****************//
 
@@ -154,6 +165,11 @@ public class ResQ_TeleOp extends ResQ_Library {
             srvoZiplineDrop.setPosition(0.3f);
         } else {
             srvoZiplineDrop.setPosition(1.0f);
+        }
+        if (gamepad2.a) {
+            srvoScoreClimber.setPosition(0.0f);
+        } else {
+            srvoScoreClimber.setPosition(1.0f);
         }
     }
 }
