@@ -50,7 +50,8 @@ public class AutoCircumNoAlly extends AutonomousLibrary {
         //ChangeEncoderMode("Without");
         while(currentRedAlpha < 600){
             currentRedAlpha = getRed();
-            driveStraight(225);
+            telemetry.addData("Red Value", getRed()+"");
+            driveStraight(150);
             waitForNextHardwareCycle();
         }
         stopDrive();
