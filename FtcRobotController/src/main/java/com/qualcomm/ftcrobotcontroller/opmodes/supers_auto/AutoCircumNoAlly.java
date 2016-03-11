@@ -19,6 +19,8 @@ public class AutoCircumNoAlly extends AutonomousLibrary {
     }
     protected Team teamWeAreOn; //enum that represent team
 
+    public int currentRedAlpha;
+
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Initializing Hardware", "");
@@ -38,8 +40,6 @@ public class AutoCircumNoAlly extends AutonomousLibrary {
 
         // Move forward a bit
         //encoderDriveStraight(0.5f, 3360);
-        /*drive(1f, 1f);
-        sleep(3000);*/
         driveForward(1f, 3000);
         // Turn to face the beacon
         //turningTeamProcessor(225, 135);
@@ -48,11 +48,14 @@ public class AutoCircumNoAlly extends AutonomousLibrary {
         }
         // Move forward until color sensor detects white line
         //ChangeEncoderMode("Without");
-        /*while((getHue() != Color.WHITE)){
-            drive(1f, 1f);
-            //waitForNextHardwareCycle();
-        }*/
-        drive(1f, 1f);
+        while(currentRedAlpha < 150){
+            currentRedAlpha = getRed();
+            telemetry.addData("Red Value", getRed()+"");
+            driveStraight(225);
+            waitForNextHardwareCycle();
+        }
+        stopDrive();
+        /*drive(1f, 1f);
         sleep(10000);
         // Turn towards beacon exactly
         while(!driveTurnDegrees(270)) {

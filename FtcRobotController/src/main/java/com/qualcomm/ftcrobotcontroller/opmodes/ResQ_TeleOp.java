@@ -31,12 +31,12 @@ public class ResQ_TeleOp extends ResQ_Library {
 
         if(teamWeAreOn == Team.RED) {
             bucketDownPos = 0;
-            bucketMidPos = 150;
+            bucketMidPos = 30;
             bucketUpPos = 575;
 
         } else if(teamWeAreOn == Team.BLUE) {
             bucketDownPos = 0;
-            bucketMidPos = -150;
+            bucketMidPos = -30;
             bucketUpPos = -575;
         }
     }
@@ -98,9 +98,10 @@ public class ResQ_TeleOp extends ResQ_Library {
         //Gamepad 1 Functions
 
         if(gamepad1.x) { //moves arm to bottom then powers it off.
-            motorBlockArm.setPower(0.10);
+            /*motorBlockArm.setPower(0.10);
             motorBlockArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-            motorBlockArm.setTargetPosition(bucketDownPos);
+            motorBlockArm.setTargetPosition(bucketDownPos);*/
+            dropBlock(bucketMidPos);
         }
         if(gamepad1.y) { //moves arm to above ramp pos
             motorBlockArm.setPower(0.10);
@@ -113,6 +114,17 @@ public class ResQ_TeleOp extends ResQ_Library {
             /*motorBlockArm.setTargetPosition(475);
             sleep(250);*/
             motorBlockArm.setTargetPosition(bucketUpPos);
+        }
+
+        if(gamepad1.left_trigger >= 0.5f) { //left trigger draws blocks in
+            srvoIntake_1.setPosition(1);
+            srvoIntake_2.setPosition(0);
+        } else if(gamepad1.right_trigger >= 0.5f) { //right trigger shoots them out
+            srvoIntake_1.setPosition(0);
+            srvoIntake_2.setPosition(1);
+        } else {
+            srvoIntake_1.setPosition(0.50);
+            srvoIntake_2.setPosition(0.55);
         }
 
 
@@ -155,16 +167,10 @@ public class ResQ_TeleOp extends ResQ_Library {
         } else {
             srvoZiplineDrop.setPosition(1.0f);
         }
-
-        getHue();
-        //Teleop Climber Drop
-        /*if (gamepad2.a) {
-            srvoScoreClimberRight.setPosition(1.0f);
-            srvoScoreClimberLeft.setPosition(0.0f);
+        if (gamepad2.a) {
+            srvoScoreClimber.setPosition(0.0f);
         } else {
-            srvoScoreClimberRight.setPosition(0.0f);
-            srvoScoreClimberLeft.setPosition(1.f);
-        }*/
-
+            srvoScoreClimber.setPosition(1.0f);
+        }
     }
 }

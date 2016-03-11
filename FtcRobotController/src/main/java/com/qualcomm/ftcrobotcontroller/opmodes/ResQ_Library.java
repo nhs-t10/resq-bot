@@ -26,7 +26,7 @@ public abstract class ResQ_Library extends OpMode {
     public DcMotor motorBlockArm;
 
     //Autonomous
-    public Servo srvoScoreClimber, srvoZiplineDrop, srvoIntake1, srvoIntake2;
+    public Servo srvoScoreClimber, srvoZiplineDrop, srvoIntake_1, srvoIntake_2;
 
     //Sensors
     public AnalogInput sensorUltra_1, sensorUltra_2;
@@ -94,6 +94,8 @@ public abstract class ResQ_Library extends OpMode {
         //Servos
         srvoScoreClimber = hardwareMap.servo.get("s1");
         srvoZiplineDrop = hardwareMap.servo.get("s2");
+        srvoIntake_1 = hardwareMap.servo.get("s3");
+        srvoIntake_2 = hardwareMap.servo.get("s4");
 
         //Sensors
         sensorUltra_1 = hardwareMap.analogInput.get("u1");
@@ -357,6 +359,11 @@ public abstract class ResQ_Library extends OpMode {
         return a;
     }
 
+    public int getRed () {
+        int a =  Math.abs(sensorRGB.red() - offsetRed_1);
+        return a;
+    }
+
     //****************NUMBER MANIPULATION METHODS****************//
     public void accelerateForward() {
         //get average powers for left and right motors (prevents any motor bias)
@@ -484,6 +491,19 @@ public abstract class ResQ_Library extends OpMode {
         srvoScoreClimber.setPosition(1.0f);
         sleep(2000);
         srvoScoreClimber.setPosition(0.0f);
+    }
+
+    public boolean dropBlock(int pos) {
+        int currentPos = motorBlockArm.getCurrentPosition();
+        telemetry.addData("goto", pos);
+        telemetry.addData("current", currentPos);
+        if(currentPos < pos) {
+            motorBlockArm.setPower(Math.abs(currentPos - pos) / 10);
+        }
+        boolean reached = (Math.abs(currentPos - pos) <= 10);
+        if(reached) motorBlockArm.setPower(0);
+
+        return reached;
     }
 
     //****************MISC METHODS****************//

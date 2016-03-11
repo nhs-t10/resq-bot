@@ -32,7 +32,7 @@ public abstract class AutonomousLibrary extends LinearOpMode {
     public DcMotor motorIntakeSpin;
 
     //Autonomous
-    public Servo srvoScoreClimber, srvoZiplineDrop;
+    public Servo srvoScoreClimber, srvoZiplineDrop, srvoIntake_1, srvoIntake_2;
 
     //Sensors
     public AnalogInput sensorUltra_1;
@@ -158,6 +158,8 @@ public abstract class AutonomousLibrary extends LinearOpMode {
         //Servos
         srvoScoreClimber = hardwareMap.servo.get("s1");
         srvoZiplineDrop = hardwareMap.servo.get("s2");
+        srvoIntake_1 = hardwareMap.servo.get("s3");
+        srvoIntake_2 = hardwareMap.servo.get("s4");
 
         //Sensors
         sensorUltra_1 = hardwareMap.analogInput.get("u1");
@@ -194,20 +196,22 @@ public abstract class AutonomousLibrary extends LinearOpMode {
      * @param initialYaw target yaw for the robot to face.
      */
     public void driveStraight(double initialYaw) {
+        final int INTENSITY = 7;
+
         double yaw = getYaw();
 
         double offset = 180 - initialYaw;
 
-        yaw += offset;
+        yaw = Math.round(scaleToAngle(yaw + offset)*100)/100;
         initialYaw += offset;
 
-        double speedLeft = 0.5 + ((yaw - initialYaw)/initialYaw);
-        double speedRight = 0.5 - ((yaw - initialYaw)/initialYaw);
+        double speedLeft = 1.0 + ((yaw - initialYaw)/initialYaw) * INTENSITY;
+        double speedRight = 1.0 - ((yaw - initialYaw)/initialYaw) * INTENSITY;
 
         speedLeft = Range.clip(speedLeft, -1.0, 1.0);
         speedRight = Range.clip(speedRight, -1.0, 1.0);
 
-        drive((float) speedLeft, (float) speedRight);
+        drive((float)speedLeft, (float)speedRight);
     }
 
     private boolean foundQuickestRoute = false;
@@ -317,6 +321,16 @@ public abstract class AutonomousLibrary extends LinearOpMode {
         }
     }
 
+    public int getAlpha() {
+        int a =  Math.abs(sensorRGB.alpha());
+        return a;
+    }
+
+    public int getRed () {
+        int a =  Math.abs(sensorRGB.red() - offsetRed_1);
+        return a;
+    }
+
     /**
      * Converts any number to an angle value between 0 - 359.
      */
@@ -332,4 +346,10 @@ public abstract class AutonomousLibrary extends LinearOpMode {
         return scaledVal;
     }
 
+    /*public void sleep(int sec) {
+        double initialRun = getRuntime();
+        while(getRuntime() - initialRun < sec) {
+
+        }
+    }*/
 }
