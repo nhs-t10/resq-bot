@@ -498,7 +498,7 @@ public abstract class ResQ_Library extends OpMode {
         telemetry.addData("goto", pos);
         telemetry.addData("current", currentPos);
         if(currentPos < pos) {
-            motorBlockArm.setPower(Math.abs(currentPos - pos) / 100);
+            motorBlockArm.setPower(Math.abs(currentPos - pos) / 10);
         }
         boolean reached = (Math.abs(currentPos - pos) <= 10);
         if(reached) motorBlockArm.setPower(0);
