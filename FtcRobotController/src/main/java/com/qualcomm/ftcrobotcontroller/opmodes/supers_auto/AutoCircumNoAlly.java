@@ -48,10 +48,10 @@ public class AutoCircumNoAlly extends AutonomousLibrary {
         }
         // Move forward until color sensor detects white line
         //ChangeEncoderMode("Without");
-        while(currentRedAlpha < 600){
+        while(currentRedAlpha < 150){
             currentRedAlpha = getRed();
             telemetry.addData("Red Value", getRed()+"");
-            driveStraight(150);
+            driveStraight(225);
             waitForNextHardwareCycle();
         }
         stopDrive();
