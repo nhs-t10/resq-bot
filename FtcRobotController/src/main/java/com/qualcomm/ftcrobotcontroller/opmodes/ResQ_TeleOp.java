@@ -101,7 +101,7 @@ public class ResQ_TeleOp extends ResQ_Library {
             /*motorBlockArm.setPower(0.10);
             motorBlockArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
             motorBlockArm.setTargetPosition(bucketDownPos);*/
-            dropBlock(bucketDownPos);
+            dropBlock(bucketMidPos);
         }
         if(gamepad1.y) { //moves arm to above ramp pos
             motorBlockArm.setPower(0.10);
