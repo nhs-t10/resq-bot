@@ -156,8 +156,8 @@ public abstract class AutonomousLibrary extends LinearOpMode {
         //--------------------------
 
         //Servos
-        srvoScoreClimber = hardwareMap.servo.get("s1");
-        srvoZiplineDrop = hardwareMap.servo.get("s2");
+        srvoZiplineDrop = hardwareMap.servo.get("s1");
+        srvoScoreClimber = hardwareMap.servo.get("s2");
         srvoIntake_1 = hardwareMap.servo.get("s3");
         srvoIntake_2 = hardwareMap.servo.get("s4");
 
