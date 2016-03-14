@@ -175,7 +175,7 @@ public abstract class AutonomousLibrary extends LinearOpMode {
         motorRightSecondTread.setDirection(DcMotor.Direction.REVERSE);
     }
 
-    public void drive(float left, float right) {
+    public void drive(float left, float right) throws InterruptedException {
         // Drives
 
         //Clips it just in case there's a problem
@@ -187,6 +187,7 @@ public abstract class AutonomousLibrary extends LinearOpMode {
         motorLeftTread.setPower(left);
         motorRightSecondTread.setPower(right);
         motorLeftSecondTread.setPower(left);
+        waitOneFullHardwareCycle();
     }
 
     /**
