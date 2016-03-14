@@ -97,16 +97,18 @@ public class ResQ_TeleOp extends ResQ_Library {
 
         //Gamepad 1 Functions
 
-        /*if(gamepad1.x) { //moves arm to bottom then powers it off.
-            motorBlockArm.setPower(0.10);
-            /*motorBlockArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-            motorBlockArm.setTargetPosition(bucketDownPos);
+        if(gamepad1.x) { //moves arm to bottom then powers it off.
+            /*motorBlockArm.setPower(0.10);
+            motorBlockArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+            motorBlockArm.setTargetPosition(bucketDownPos);*/
             //dropBlock(bucketMidPos);
+            motorBlockArm.setPower(0.25);
         }
         if(gamepad1.y) { //moves arm to above ramp pos
-            motorBlockArm.setPower(0.10);
+            /*motorBlockArm.setPower(0.10);
             motorBlockArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-            motorBlockArm.setTargetPosition(bucketMidPos);
+            motorBlockArm.setTargetPosition(bucketMidPos);*/
+            motorBlockArm.setPower(-0.25);
         }
         if(gamepad1.b) { //moves arm to score pos
             motorBlockArm.setPower(0.10);
