@@ -55,14 +55,12 @@ public class AutoCircumNoAlly extends AutonomousLibrary {
             waitForNextHardwareCycle();
         }
         stopDrive();
-        /*drive(1f, 1f);
-        sleep(10000);
         // Turn towards beacon exactly
         while(!driveTurnDegrees(270)) {
             waitForNextHardwareCycle();
         }
         // Move closer to beacon. Be careful not to damage the field
-        /*encoderDriveStraight(0.5f, 1120);*/
+        /*encoderDriveStraight(0.5f, 1120);
         // Score Climbers
         srvoScoreClimber.setPosition(1.0f);
         sleep(1000);

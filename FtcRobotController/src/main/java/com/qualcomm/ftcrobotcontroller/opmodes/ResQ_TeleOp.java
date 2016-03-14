@@ -114,9 +114,12 @@ public class ResQ_TeleOp extends ResQ_Library {
             motorBlockArm.setPower(0.10);
             motorBlockArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
             /*motorBlockArm.setTargetPosition(475);
-            sleep(250);*/
+            sleep(250);
             motorBlockArm.setTargetPosition(bucketUpPos);
-        }
+        }*/
+
+
+
 
         if(gamepad1.left_trigger >= 0.5f) { //left trigger draws blocks in
             srvoIntake_1.setPosition(1);
@@ -165,7 +168,7 @@ public class ResQ_TeleOp extends ResQ_Library {
 
         ///Teleop Zipline drop
         if (gamepad1.a) {
-            srvoZiplineDrop.setPosition(0.3f);
+            srvoZiplineDrop.setPosition(0.0f);
         } else {
             srvoZiplineDrop.setPosition(1.0f);
         }
@@ -173,6 +176,13 @@ public class ResQ_TeleOp extends ResQ_Library {
             srvoScoreClimber.setPosition(0.0f);
         } else {
             srvoScoreClimber.setPosition(1.0f);
+        }
+
+        //block hitter
+        if (gamepad1.b) {
+            srvoBlockHit.setPosition(0.7f);
+        } else {
+            srvoBlockHit.setPosition(0.3f);
         }
     }
 }
