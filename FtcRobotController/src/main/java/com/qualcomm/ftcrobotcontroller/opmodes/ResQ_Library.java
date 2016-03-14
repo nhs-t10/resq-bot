@@ -494,20 +494,6 @@ public abstract class ResQ_Library extends OpMode {
         srvoScoreClimber.setPosition(0.0f);
     }
 
-    /*public boolean dropBlock(int pos) {
-        int currentPos = motorBlockArm.getCurrentPosition();
-        telemetry.addData("goto", pos);
-        telemetry.addData("current", currentPos);
-        if(currentPos < pos) {
-            motorBlockArm.setPower(Range.clip((Math.abs(currentPos - pos) / 10), -1.0, 1.0));
-        }
-        boolean reached = (Math.abs(currentPos - pos) <= 10);
-        if(reached) motorBlockArm.setPower(0);
-
-
-        return reached;
-    }*/
-
 
     //****************MISC METHODS****************//
     public void sleep(int millis) {
