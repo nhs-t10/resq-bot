@@ -196,7 +196,7 @@ public abstract class AutonomousLibrary extends LinearOpMode {
      * Keep in mind that this function does NOT stop the robot.
      * @param initialYaw target yaw for the robot to face.
      */
-    public void driveStraight(double initialYaw) {
+    public void driveStraight(double initialYaw) throws InterruptedException{
         final int INTENSITY = 7;
 
         double yaw = getYaw();
@@ -226,7 +226,7 @@ public abstract class AutonomousLibrary extends LinearOpMode {
      * @param degrees degree value for the robot to turn towards.
      * @return Returns true if turn is complete
      */
-    public boolean driveTurnDegrees(int degrees) {
+    public boolean driveTurnDegrees(int degrees) throws InterruptedException  {
         return driveTurnDegrees(degrees, 5);
     }
 
@@ -236,7 +236,7 @@ public abstract class AutonomousLibrary extends LinearOpMode {
      * @param precision how precise the turning is. (lower values increase the possibilty of error.)
      * @return Returns true if turn is complete
      */
-    public boolean driveTurnDegrees(int degrees, int precision) {
+    public boolean driveTurnDegrees(int degrees, int precision) throws InterruptedException  {
         double initialAngle = getYaw();
         float driveSpeed = 0.5f;
         //the angle across from the initialAngle on a circle
@@ -272,7 +272,7 @@ public abstract class AutonomousLibrary extends LinearOpMode {
         return false;
     }
 
-    public void stopDrive() {
+    public void stopDrive() throws InterruptedException {
         drive(0.0f, 0.0f);
     }
 
