@@ -6,6 +6,6 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 public class ResQ_Autonomous_Red extends ResQ_Good_Autonomous {
     public ResQ_Autonomous_Red() {
         super();
-
+        teamWeAreOn = Team.RED;
     }
 }

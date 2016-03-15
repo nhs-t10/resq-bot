@@ -160,8 +160,9 @@ public abstract class ResQ_Library extends OpMode {
      * The more it is called, the more close the robot will get to the intented angle.
      * Keep in mind that this function does NOT stop the robot.
      * @param initialYaw target yaw for the robot to face.
+     * @param speed default speed of the motors
      */
-    public void driveStraight(double initialYaw) {
+    public void driveStraight(double initialYaw, double speed) {
         final int INTENSITY = 7;
 
         double yaw = getYaw();
@@ -171,47 +172,13 @@ public abstract class ResQ_Library extends OpMode {
         yaw = Math.round(scaleToAngle(yaw + offset)*100)/100;
         initialYaw += offset;
 
-        double speedLeft = 1.0 + ((yaw - initialYaw)/initialYaw) * INTENSITY;
-        double speedRight = 1.0 - ((yaw - initialYaw)/initialYaw) * INTENSITY;
+        double speedLeft = speed + ((yaw - initialYaw)/initialYaw) * INTENSITY;
+        double speedRight = speed - ((yaw - initialYaw)/initialYaw) * INTENSITY;
 
         speedLeft = Range.clip(speedLeft, -1.0, 1.0);
         speedRight = Range.clip(speedRight, -1.0, 1.0);
 
         drive((float)speedLeft, (float)speedRight);
-    }
-    //precision
-
-    /*This method should not be working...*/
-    @Deprecated
-    public void driveStraight() {
-        /*
-        * This algorithm assumes yawAngle[0] returns
-        * values between 0—359 or -180—179.
-        */
-
-        double millis = 1000;
-
-        double startDir = getYaw();
-        double startTime = System.currentTimeMillis();
-        double currentTime = 0.0;
-
-        double rSpeed = 1.0f;
-        double lSpeed = 1.0f;
-
-        while(currentTime - startTime < millis) {
-            rSpeed = (startDir + yawAngle[0]) * RIGHT_ROTATION_CONST + ROTATION_OFFSET;
-            lSpeed = (startDir - yawAngle[0]) * LEFT_ROTATION_CONST + ROTATION_OFFSET;
-            //360 + 100 = 40
-            //360 - 100 = 260
-
-            //round any values <0 or >1 to 0 or 1.
-            rSpeed = Math.max(0, Math.min(1.0, rSpeed));
-            lSpeed = Math.max(0, Math.min(1.0, lSpeed));
-
-            drive((float) lSpeed, (float) rSpeed);
-            currentTime = System.currentTimeMillis();
-            sleep(10);
-        }
     }
 
     private boolean foundQuickestRoute = false;

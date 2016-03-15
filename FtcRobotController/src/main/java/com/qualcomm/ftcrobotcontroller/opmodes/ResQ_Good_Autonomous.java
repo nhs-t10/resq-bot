@@ -11,8 +11,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 *
 * */
 public class ResQ_Good_Autonomous extends ResQ_Library {
-    protected final double RED_WALL = 37.5;
-    protected final double BLUE_WALL = 37.5;
+    protected final double RED_WALL = 50;
+    protected final double BLUE_WALL = 50;
     // First set is to turn to correct  beacon
     final int RED_ANGLE_1 = 225;
     final int BLUE_ANGLE_1 = 135;
@@ -57,6 +57,7 @@ public class ResQ_Good_Autonomous extends ResQ_Library {
     @Override
     public void init() {
         initializeMapping();
+        calibrateColors();
         startIMU();
         telemetry.addData("Init Yaw", getYaw());
         /*if(wait5) waitFive();
@@ -158,8 +159,8 @@ public class ResQ_Good_Autonomous extends ResQ_Library {
 
         double distance = (teamWeAreOn == Team.RED ? RED_WALL : BLUE_WALL);
 
-        float speed = 0.5f;
-        drive(speed, speed);
+        double speed = 1.0d;
+        driveStraight(RED_ANGLE_1, speed);
 
         if(firstCall) {
             runTime = getRuntime();
@@ -168,14 +169,17 @@ public class ResQ_Good_Autonomous extends ResQ_Library {
         }
 
         //check to see if enough time has passed and if we are at the wall
-        if(runTime - startTime > sec && ultraValue < distance) {
-            stopDrive();
-            currentState = CurrentState.GETPARKEDCORRECTLY;
-            startTime = getRuntime();
+        if(getRuntime() - startTime > sec) {
+            speed = 0.3d;
+            if (ultraValue < distance) {
+                stopDrive();
+                currentState = CurrentState.GETPARKEDCORRECTLY;
+                //startTime = getRuntime();
+            }
         }
 
         //stop robot and pause timer if something too close.
-        if(getDistance() <= 13) {
+        /*if(getDistance() <= 13) {
             stopDrive();
             startTimer();
         } else if(timerStarted) {
@@ -183,7 +187,7 @@ public class ResQ_Good_Autonomous extends ResQ_Library {
             timerStarted = false;
         } else {
             runTime = getRuntime();
-        }
+        }*/
     }
 
     private void startTimer() {
