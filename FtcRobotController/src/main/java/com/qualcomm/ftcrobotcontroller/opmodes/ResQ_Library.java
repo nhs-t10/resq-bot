@@ -96,7 +96,7 @@ public abstract class ResQ_Library extends OpMode {
         srvoZiplineDrop = hardwareMap.servo.get("s2");
         srvoIntake_1 = hardwareMap.servo.get("s3");
         srvoIntake_2 = hardwareMap.servo.get("s4");
-        srvoBlockHit = hardwareMap.servo.get("s5");
+        //srvoBlockHit = hardwareMap.servo.get("s5");
 
         //Sensors
         sensorUltra_1 = hardwareMap.analogInput.get("u1");

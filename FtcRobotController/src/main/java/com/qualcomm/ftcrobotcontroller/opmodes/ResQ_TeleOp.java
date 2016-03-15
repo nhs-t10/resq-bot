@@ -13,6 +13,7 @@ public class ResQ_TeleOp extends ResQ_Library {
     public enum Team {
         RED, BLUE, UNKNOWN
     }
+
     protected Team teamWeAreOn; //enum that represent team
 
     int bucketDownPos;
@@ -29,12 +30,12 @@ public class ResQ_TeleOp extends ResQ_Library {
         motorBlockArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
         motorBlockArm.setTargetPosition(0);*/
 
-        if(teamWeAreOn == Team.RED) {
+        if (teamWeAreOn == Team.RED) {
             bucketDownPos = 0;
             bucketMidPos = 30;
             bucketUpPos = 575;
 
-        } else if(teamWeAreOn == Team.BLUE) {
+        } else if (teamWeAreOn == Team.BLUE) {
             bucketDownPos = 0;
             bucketMidPos = -30;
             bucketUpPos = -575;
@@ -67,11 +68,11 @@ public class ResQ_TeleOp extends ResQ_Library {
         float X = ProcessToMotorFromJoy(gamepad1.left_stick_x); //X is inverted with the negative sign
         float Y = ProcessToMotorFromJoy(gamepad1.left_stick_y); //NOT inverted
 
-        float V = (100-Math.abs(X)) * (Y/100) + Y; // R+L
-        float W = (100-Math.abs(Y)) * (X/100) + X; // R-L
+        float V = (100 - Math.abs(X)) * (Y / 100) + Y; // R+L
+        float W = (100 - Math.abs(Y)) * (X / 100) + X; // R-L
 
-        float right = (V+W)/2;
-        float left = (V-W)/2;
+        float right = (V + W) / 2;
+        float left = (V - W) / 2;
 
         right = Range.clip(right, -0.9f, 0.9f);
         left = Range.clip(left, -0.9f, 0.9f);
@@ -97,34 +98,20 @@ public class ResQ_TeleOp extends ResQ_Library {
 
         //Gamepad 1 Functions
 
-        if(gamepad1.x) { //moves arm to bottom then powers it off.
-            /*motorBlockArm.setPower(0.10);
-            motorBlockArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-            motorBlockArm.setTargetPosition(bucketDownPos);*/
-            //dropBlock(bucketMidPos);
-            motorBlockArm.setPower(0.25);
-        }
-        if(gamepad1.y) { //moves arm to above ramp pos
-            /*motorBlockArm.setPower(0.10);
-            motorBlockArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-            motorBlockArm.setTargetPosition(bucketMidPos);*/
-            motorBlockArm.setPower(-0.25);
-        }
-        if(gamepad1.b) { //moves arm to score pos
+        if (gamepad1.x) { //moves arm to bottom then powers it off.
             motorBlockArm.setPower(0.10);
-            motorBlockArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-            /*motorBlockArm.setTargetPosition(475);
-            sleep(250);
-            motorBlockArm.setTargetPosition(bucketUpPos);
-        }*/
+        }
+        else if (gamepad1.y) { //moves arm to above ramp pos
+            motorBlockArm.setPower(-0.10);
+        } else {
+            motorBlockArm.setPower(0);
+        }
 
 
-
-
-        if(gamepad1.left_trigger >= 0.5f) { //left trigger draws blocks in
+        if (gamepad1.left_trigger >= 0.5f) { //left trigger draws blocks in
             srvoIntake_1.setPosition(1);
             srvoIntake_2.setPosition(0);
-        } else if(gamepad1.right_trigger >= 0.5f) { //right trigger shoots them out
+        } else if (gamepad1.right_trigger >= 0.5f) { //right trigger shoots them out
             srvoIntake_1.setPosition(0);
             srvoIntake_2.setPosition(1);
         } else {
@@ -176,13 +163,6 @@ public class ResQ_TeleOp extends ResQ_Library {
             srvoScoreClimber.setPosition(0.0f);
         } else {
             srvoScoreClimber.setPosition(1.0f);
-        }
-
-        //block hitter
-        if (gamepad1.b) {
-            srvoBlockHit.setPosition(0.7f);
-        } else {
-            srvoBlockHit.setPosition(0.3f);
         }
     }
 }

@@ -15,7 +15,7 @@ public class DropClimber extends AutonomousLibrary {
         }
     }
 
-    public void loops() {
+    public void loops() throws InterruptedException {
         if(getDistance() > 20) {
             drive(1.0f, 1.0f);
         } else {

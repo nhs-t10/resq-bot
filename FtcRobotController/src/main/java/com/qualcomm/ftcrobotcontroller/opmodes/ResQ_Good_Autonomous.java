@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 *
 * */
 public class ResQ_Good_Autonomous extends ResQ_Library {
-    protected final double RED_WALL = 50;
+    protected final double RED_WALL = 37.5;
     protected final double BLUE_WALL = 37.5;
     // First set is to turn to correct  beacon
     final int RED_ANGLE_1 = 225;

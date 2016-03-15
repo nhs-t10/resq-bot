@@ -40,22 +40,27 @@
 
             // Move forward a bit
             //encoderDriveStraight(0.5f, 3360);
-            driveForward(1f, 3000);
+            telemetry.addData("status", "driving forward");
+            driveForward(1f, 2000);
+
             // Turn to face the beacon
             //turningTeamProcessor(225, 135);
+            telemetry.addData("status", "turning  to 225");
             while(!driveTurnDegrees(225)) {
                 waitForNextHardwareCycle();
             }
             // Move forward until color sensor detects white line
             //ChangeEncoderMode("Without");
+            telemetry.addData("status", "finding red line");
             while(currentRedAlpha < 150){
                 currentRedAlpha = getRed();
                 telemetry.addData("Red Value", getRed()+"");
-                driveStraight(225);
+                drive(1.0f, 1.0f);
                 waitForNextHardwareCycle();
             }
             stopDrive();
             // Turn towards beacon exactly
+            telemetry.addData("status", "turning to beacon");
             while(!driveTurnDegrees(270)) {
                 waitForNextHardwareCycle();
             }
