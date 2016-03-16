@@ -20,6 +20,8 @@ public class ResQ_TeleOp extends ResQ_Library {
     int bucketMidPos;
     int bucketUpPos;
 
+    public boolean SpeedToggle = false; //if set true, drive speed is capped at .6
+
     @Override
     public void init() {
         //Do the map thing
@@ -53,7 +55,7 @@ public class ResQ_TeleOp extends ResQ_Library {
 		 */
 
         //****************DRIVING****************//
-        
+
         /* Procedure for Aman's tank single stick drive code:
             Get X and Y from the Joystick, do whatever scaling and calibrating you need to do based on your hardware.
             Invert X
@@ -74,11 +76,22 @@ public class ResQ_TeleOp extends ResQ_Library {
         float right = (V + W) / 2;
         float left = (V - W) / 2;
 
-        right = Range.clip(right, -0.9f, 0.9f);
-        left = Range.clip(left, -0.9f, 0.9f);
+        if(SpeedToggle){
+            right = Range.clip(right, -0.2f, 0.2f);
+            left = Range.clip(left, -0.2f, 0.2f);
+        } else {
+            right = Range.clip(right, -1f, 1f);
+            left = Range.clip(left, -1f, 1f);
+        }
 
         // we're reversing it because we are redefining the front of the robot without actually changing anything hardware.
         drive(-left, -right);
+
+        if (gamepad1.a) {
+            SpeedToggle = false;
+        } else if (gamepad1.b){
+            SpeedToggle = true;
+        }
 
 
         //****************BLOCK SCORING****************//
@@ -99,16 +112,16 @@ public class ResQ_TeleOp extends ResQ_Library {
         //Gamepad 1 Functions
 
         if (gamepad1.x) { //moves arm to bottom then powers it off.
-            motorBlockArm.setPower(0.10);
+            motorBlockArm.setPower(0.20);
         }
         else if (gamepad1.y) { //moves arm to above ramp pos
-            motorBlockArm.setPower(-0.10);
+            motorBlockArm.setPower(-0.20);
         } else {
             motorBlockArm.setPower(0);
         }
 
 
-        if (gamepad1.left_trigger >= 0.5f) { //left trigger draws blocks in
+        /*if (gamepad1.left_trigger >= 0.5f) { //left trigger draws blocks in
             srvoIntake_1.setPosition(1);
             srvoIntake_2.setPosition(0);
         } else if (gamepad1.right_trigger >= 0.5f) { //right trigger shoots them out
@@ -117,12 +130,19 @@ public class ResQ_TeleOp extends ResQ_Library {
         } else {
             srvoIntake_1.setPosition(0.50);
             srvoIntake_2.setPosition(0.55);
+        }*/
+
+        if (gamepad1.left_trigger >= 0.5f) { //left trigger draws blocks in
+            telemetry.addData("Ayy", "lmao");
+            srvoBlockHit.setPosition(1.0f);
+        } else {
+            srvoBlockHit.setPosition(0.0f);
         }
 
 
         //****************OTHER****************//
 
-        //Hanging
+        //Hanging urself
         /**
          * Winch: Right trigger is +tension, right bumper is -tension
          * Tape: Left trigger is +length, left bumper is -length
@@ -154,7 +174,7 @@ public class ResQ_TeleOp extends ResQ_Library {
         }
 
         ///Teleop Zipline drop
-        if (gamepad1.a) {
+        if (gamepad2.x) {
             srvoZiplineDrop.setPosition(0.0f);
         } else {
             srvoZiplineDrop.setPosition(1.0f);
