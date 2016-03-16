@@ -76,7 +76,7 @@ public class ResQ_TeleOp extends ResQ_Library {
         float right = (V + W) / 2;
         float left = (V - W) / 2;
 
-        if(SpeedToggle){
+        if (SpeedToggle) {
             right = Range.clip(right, -0.2f, 0.2f);
             left = Range.clip(left, -0.2f, 0.2f);
         } else {
@@ -89,7 +89,7 @@ public class ResQ_TeleOp extends ResQ_Library {
 
         if (gamepad1.a) {
             SpeedToggle = false;
-        } else if (gamepad1.b){
+        } else if (gamepad1.b) {
             SpeedToggle = true;
         }
 
@@ -112,16 +112,15 @@ public class ResQ_TeleOp extends ResQ_Library {
         //Gamepad 1 Functions
 
         if (gamepad1.x) { //moves arm to bottom then powers it off.
-            motorBlockArm.setPower(0.20);
-        }
-        else if (gamepad1.y) { //moves arm to above ramp pos
-            motorBlockArm.setPower(-0.20);
+            motorBlockArm.setPower(0.85);
+        } else if (gamepad1.y) { //moves arm to above ramp pos
+            motorBlockArm.setPower(-0.85);
         } else {
             motorBlockArm.setPower(0);
         }
 
 
-        /*if (gamepad1.left_trigger >= 0.5f) { //left trigger draws blocks in
+        if (gamepad1.left_trigger >= 0.5f) { //left trigger draws blocks in
             srvoIntake_1.setPosition(1);
             srvoIntake_2.setPosition(0);
         } else if (gamepad1.right_trigger >= 0.5f) { //right trigger shoots them out
@@ -130,10 +129,9 @@ public class ResQ_TeleOp extends ResQ_Library {
         } else {
             srvoIntake_1.setPosition(0.50);
             srvoIntake_2.setPosition(0.55);
-        }*/
+        }
 
-        if (gamepad1.left_trigger >= 0.5f) { //left trigger draws blocks in
-            telemetry.addData("Ayy", "lmao");
+        if (gamepad1.left_bumper) { //left trigger draws blocks in
             srvoBlockHit.setPosition(1.0f);
         } else {
             srvoBlockHit.setPosition(0.0f);
