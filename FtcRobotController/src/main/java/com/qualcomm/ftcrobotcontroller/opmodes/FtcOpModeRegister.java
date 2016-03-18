@@ -68,15 +68,15 @@ public class FtcOpModeRegister implements OpModeRegister {
      *
      * If two or more op modes are registered with the same name, the app will display an error.
      */
-    manager.register("No Ally Autonomous", AutoCircumNoAlly.class);
+    /*manager.register("No Ally Autonomous", AutoCircumNoAlly.class);
     manager.register("Late Us Autonomous", AutoCircumLateUs.class);
-    manager.register("Late Ally Autonomous", AutoCircumLateAlly.class);
-    manager.register("red auto", ResQ_Good_Autonomous.class);
-    manager.register("Color", ColorTest.class);
+    manager.register("Late Ally Autonomous", AutoCircumLateAlly.class);*/
+    manager.register("red auto (may work/penalty)", ResQ_Good_Autonomous.class);
+    //manager.register("Color", ColorTest.class);
     manager.register("Red TeleOp", ResQ_Teleop_Red.class);
     manager.register("Blue TeleOp", ResQ_Teleop_Blue.class);
-    manager.register("Drive Straight", StraightTest.class);
+    /*manager.register("Drive Straight", StraightTest.class);
     manager.register("Nick's code", NickTestAuto.class);
-    manager.register("Encoder", EncoderPositionConfig.class);
+    manager.register("Encoder", EncoderPositionConfig.class);*/
   }
 }
