@@ -172,11 +172,12 @@ public class ResQ_TeleOp extends ResQ_Library {
         }
 
         ///Teleop Zipline drop
-        /*if (gamepad2.x) {
-            srvoZiplineDrop.setPosition(0.0f);
-        } else {
+        if (gamepad2.x) {
             srvoZiplineDrop.setPosition(1.0f);
-        }*/
+        } else {
+            srvoZiplineDrop.setPosition(0.0f);
+        }
+
         if (gamepad2.a) {
             srvoScoreClimber.setPosition(0.0f);
         } else {
