@@ -98,6 +98,12 @@ public abstract class ResQ_Library extends OpMode {
         srvoIntake_2 = hardwareMap.servo.get("s4");
         srvoBlockHit = hardwareMap.servo.get("s5");
 
+        //set the direction of the motors
+        motorRightTread.setDirection(DcMotor.Direction.REVERSE);
+        motorRightSecondTread.setDirection(DcMotor.Direction.REVERSE);
+    }
+
+    public void initSensors () {
         //Sensors
         sensorUltra_1 = hardwareMap.analogInput.get("u1");
         sensorRGB = hardwareMap.colorSensor.get("c1");
@@ -106,12 +112,7 @@ public abstract class ResQ_Library extends OpMode {
         } catch(RobotCoreException rce) {
             telemetry.addData("RobotCoreException", rce.getMessage());
         }
-
-        //set the direction of the motors
-        motorRightTread.setDirection(DcMotor.Direction.REVERSE);
-        motorRightSecondTread.setDirection(DcMotor.Direction.REVERSE);
     }
-
     //****************DRIVE METHODS****************//
 
     //Reading from compass sensor

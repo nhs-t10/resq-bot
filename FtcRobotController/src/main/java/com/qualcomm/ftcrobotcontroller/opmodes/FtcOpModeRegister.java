@@ -37,6 +37,7 @@ import com.qualcomm.ftcrobotcontroller.opmodes.test.DegreesTest;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.DropClimber;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.EncoderDriveTest;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.EncoderPositionConfig;
+import com.qualcomm.ftcrobotcontroller.opmodes.test.HitTest;
 import com.qualcomm.ftcrobotcontroller.opmodes.test.LinearDegreesTest;
 import com.qualcomm.ftcrobotcontroller.opmodes.supers_auto.AutoCircumLateAlly;
 import com.qualcomm.ftcrobotcontroller.opmodes.supers_auto.AutoCircumNoAlly;

@@ -45,7 +45,7 @@ public class ResQ_Good_Autonomous extends ResQ_Library {
     public boolean AreWeNearRamp;
 
     public enum CurrentState{
-        STARTING, GETINTOTURNPOSITION, FIRSTTURN, APPROACHBEACON, GETPARKEDCORRECTLY, DOA360FAM, FINALAPPROACH, PARKEDFORDROP, SECONDTURN, FINALPARK, UNKNOWN
+        STARTING, GETINTOTURNPOSITION, FIRSTTURN, APPROACHBEACON, GETPARKEDCORRECTLY, DOA360FAM, FINALAPPROACH, EXTRATURN, PARKEDFORDROP, SECONDTURN, FINALPARK, UNKNOWN
     }
     protected CurrentState currentState = CurrentState.STARTING;
 
@@ -57,6 +57,7 @@ public class ResQ_Good_Autonomous extends ResQ_Library {
     @Override
     public void init() {
         initializeMapping();
+        initSensors();
         calibrateColors();
         startIMU();
         telemetry.addData("Init Yaw", getYaw());
@@ -105,6 +106,10 @@ public class ResQ_Good_Autonomous extends ResQ_Library {
         else if (currentState == CurrentState.FINALAPPROACH){
             telemetry.addData("Current State: ", "Moving forward");
             finalApproach();
+        }
+        else if (currentState == CurrentState.EXTRATURN){
+            telemetry.addData("Current State: ", "Adjusting robot");
+            extraTurn();
         }
         else if (currentState == CurrentState.PARKEDFORDROP){
             telemetry.addData("Current State: ", "Dropping Climbers...");
@@ -239,6 +244,12 @@ public class ResQ_Good_Autonomous extends ResQ_Library {
         }
         else {
             stopDrive();
+            currentState = CurrentState.EXTRATURN;
+        }
+    }
+
+    protected void extraTurn() {
+        if(driveTurnDegrees(300)) {
             currentState = CurrentState.PARKEDFORDROP;
         }
     }

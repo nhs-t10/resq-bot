@@ -3,6 +3,7 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 //import android.database.CrossProcessCursor;
 
 import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 /**
@@ -16,9 +17,15 @@ public class ResQ_TeleOp extends ResQ_Library {
 
     protected Team teamWeAreOn; //enum that represent team
 
+    //position instance variables
     int bucketDownPos;
     int bucketMidPos;
     int bucketUpPos;
+
+    float zipPos;
+    double zipTime;
+
+    double hitInitPos;
 
     public boolean SpeedToggle = false; //if set true, drive speed is capped at .6
 
@@ -31,6 +38,11 @@ public class ResQ_TeleOp extends ResQ_Library {
         /*motorBlockArm.setPower(0.25);
         motorBlockArm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
         motorBlockArm.setTargetPosition(0);*/
+
+        zipPos = 0.9f;
+        zipTime = getRuntime();
+
+        hitInitPos = srvoBlockHit.getPosition();
 
         if (teamWeAreOn == Team.RED) {
             bucketDownPos = 0;
@@ -48,7 +60,7 @@ public class ResQ_TeleOp extends ResQ_Library {
     @Override
     public void loop() {
         //telemetry.addData("yaw", getYaw());
-        telemetry.addData("distance", getDistance());
+        //telemetry.addData("distance", getDistance());
         /*
          * Gamepad 1:
 		 * Left joystick moves the left track, and the right joystick moves the right track
@@ -128,13 +140,13 @@ public class ResQ_TeleOp extends ResQ_Library {
             srvoIntake_2.setPosition(1);
         } else {
             srvoIntake_1.setPosition(0.50);
-            srvoIntake_2.setPosition(0.55);
+            srvoIntake_2.setPosition(0.50);
         }
 
         if (gamepad1.left_bumper) { //left trigger draws blocks in
-            srvoBlockHit.setPosition(1.0f);
+            srvoBlockHit.setPosition(0.3);
         } else {
-            srvoBlockHit.setPosition(0.0f);
+            srvoBlockHit.setPosition(0.9);
         }
 
 
@@ -172,10 +184,10 @@ public class ResQ_TeleOp extends ResQ_Library {
         }
 
         ///Teleop Zipline drop
-        if (gamepad2.x) {
-            srvoZiplineDrop.setPosition(1.0f);
-        } else {
-            srvoZiplineDrop.setPosition(0.0f);
+        if (gamepad2.x && getRuntime() - zipTime > 0.3d) {
+            zipTime = getRuntime();
+            zipPos = zipPos == 0.9f? 0.0f : 0.9f;
+            srvoZiplineDrop.setPosition(zipPos);
         }
 
         if (gamepad2.a) {
