@@ -42,7 +42,7 @@ public class ResQ_TeleOp extends ResQ_Library {
         zipPos = 0.9f;
         zipTime = getRuntime();
 
-        hitInitPos = srvoBlockHit.getPosition();
+        //hitInitPos = srvoBlockHit.getPosition();
 
         if (teamWeAreOn == Team.RED) {
             bucketDownPos = 0;
@@ -123,7 +123,7 @@ public class ResQ_TeleOp extends ResQ_Library {
 
         //Gamepad 1 Functions
 
-        if (gamepad1.x) { //moves arm to bottom then powers it off.
+        /*if (gamepad1.x) { //moves arm to bottom then powers it off.
             motorBlockArm.setPower(0.85);
         } else if (gamepad1.y) { //moves arm to above ramp pos
             motorBlockArm.setPower(-0.85);
@@ -147,7 +147,7 @@ public class ResQ_TeleOp extends ResQ_Library {
             srvoBlockHit.setPosition(0.3);
         } else {
             srvoBlockHit.setPosition(0.9);
-        }
+        }*/
 
 
         //****************OTHER****************//
@@ -184,7 +184,7 @@ public class ResQ_TeleOp extends ResQ_Library {
         }
 
         ///Teleop Zipline drop
-        if (gamepad2.x && getRuntime() - zipTime > 0.3d) {
+        /*if (gamepad2.x && getRuntime() - zipTime > 0.3d) {
             zipTime = getRuntime();
             zipPos = zipPos == 0.9f? 0.0f : 0.9f;
             srvoZiplineDrop.setPosition(zipPos);
@@ -194,6 +194,6 @@ public class ResQ_TeleOp extends ResQ_Library {
             srvoScoreClimber.setPosition(0.0f);
         } else {
             srvoScoreClimber.setPosition(1.0f);
-        }
+        }*/
     }
 }

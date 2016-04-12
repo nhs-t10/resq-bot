@@ -87,16 +87,16 @@ public abstract class ResQ_Library extends OpMode {
 
         motorHangingMech = hardwareMap.dcMotor.get("m5"); //mapped
         motorTapeMech = hardwareMap.dcMotor.get("m6"); //mapped
-        motorBlockArm = hardwareMap.dcMotor.get("m7"); //mapped
+        //motorBlockArm = hardwareMap.dcMotor.get("m7"); //mapped
 
         //--------------------------
 
         //Servos
-        srvoScoreClimber = hardwareMap.servo.get("s1");
-        srvoZiplineDrop = hardwareMap.servo.get("s2");
-        srvoIntake_1 = hardwareMap.servo.get("s3");
-        srvoIntake_2 = hardwareMap.servo.get("s4");
-        srvoBlockHit = hardwareMap.servo.get("s5");
+        //srvoScoreClimber = hardwareMap.servo.get("s1");
+        //srvoZiplineDrop = hardwareMap.servo.get("s2");
+        //srvoIntake_1 = hardwareMap.servo.get("s3");
+        //srvoIntake_2 = hardwareMap.servo.get("s4");
+        //srvoBlockHit = hardwareMap.servo.get("s5");
 
         //set the direction of the motors
         motorRightTread.setDirection(DcMotor.Direction.REVERSE);
